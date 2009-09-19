@@ -10,7 +10,7 @@ begin
     gem.email = "code@ryansobol.com"
     gem.homepage = "http://github.com/ryansobol/plow"
     gem.authors = ["Ryan Sobol"]
-    gem.add_dependency "erubis", "=2.6.5"
+    gem.add_dependency "erubis", ">=2.6.5"
     gem.add_development_dependency "rspec"
     gem.add_development_dependency "yard"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings

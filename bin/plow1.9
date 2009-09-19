@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby1.9
 # encoding: UTF-8
 
-## defend against < ruby1.9
+unless $LOAD_PATH.include?(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
+  $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
+end
 
-$:.unshift File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'plow'
 
 Plow::Application.run!(*ARGV)

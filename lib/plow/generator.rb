@@ -1,6 +1,15 @@
 # encoding: UTF-8
 
-require 'erubis'
+begin
+  require 'erubis'
+rescue Exception => e
+  abort <<-ERROR
+Unexpected #{e.class} exception in #{__FILE__} near line #{__LINE__}
+
+This file depends on the erubis library, which is not available.
+You may install the library via rubygems with: sudo gem install erubis -r    
+  ERROR
+end
 
 class Plow
   ## define custom Plow exceptions
