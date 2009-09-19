@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+## defend against < ruby1.9
+
+$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+require 'plow'
+
+Plow::Application.run!(*ARGV)
