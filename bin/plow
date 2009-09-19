@@ -3,7 +3,7 @@
 
 ## defend against < ruby1.9
 
-$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+$:.unshift File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'plow'
 
 Plow::Application.run!(*ARGV)
