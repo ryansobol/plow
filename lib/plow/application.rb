@@ -44,7 +44,7 @@ MESSAGE
           $stderr.puts "ERROR: #{invalid} is an invalid website alias"
           return 1
         rescue Plow::NonRootProcessOwnerError
-          $stderr.puts "ERROR: This process is required to be owned or executed by root"
+          $stderr.puts "ERROR: This process must be owned or executed by root"
           return 1
         end
         

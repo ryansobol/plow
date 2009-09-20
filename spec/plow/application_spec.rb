@@ -133,7 +133,7 @@ MESSAGE
       generator.should_receive(:run!).and_raise(expected_error)
       
       Plow::Application.run!(*argv)
-      $stderr.string.should == "ERROR: This process is required to be owned or executed by root\n"
+      $stderr.string.should == "ERROR: This process must be owned or executed by root\n"
     end
   end
 end
