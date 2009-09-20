@@ -27,6 +27,7 @@ The obvious potential improvements are ported the package to additional operatin
   * More specific data validations
   * Handing of more complex web application structures
   * automatic deployment of web applications from github
+  * better argument parsing and including option flags as needed
   
 == A Brief Note About Security
 
