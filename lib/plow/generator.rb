@@ -4,7 +4,7 @@ begin
   require 'erubis'
 rescue LoadError
   abort <<-ERROR
-Unexpected LoadError exception in #{__FILE__} near line #{__LINE__}
+Unexpected LoadError exception caught in #{__FILE__} on #{__LINE__}
 
 This file depends on the erubis library, which is not available.
 You may install the library via rubygems with: sudo gem install erubis -r    

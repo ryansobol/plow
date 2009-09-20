@@ -35,17 +35,13 @@ MESSAGE
           generator.run!
           return 0
         rescue Plow::InvalidSystemUserNameError => invalid
-          $stderr.puts "ERROR: #{invalid} is an invalid system user name"
-          return 1
+          abort "ERROR: #{invalid} is an invalid system user name"
         rescue Plow::InvalidWebSiteNameError => invalid
-          $stderr.puts "ERROR: #{invalid} is an invalid website name"
-          return 1
+          abort "ERROR: #{invalid} is an invalid website name"
         rescue Plow::InvalidWebSiteAliasError => invalid
-          $stderr.puts "ERROR: #{invalid} is an invalid website alias"
-          return 1
+          abort "ERROR: #{invalid} is an invalid website alias"
         rescue Plow::NonRootProcessOwnerError
-          $stderr.puts "ERROR: This process must be owned or executed by root"
-          return 1
+          abort "ERROR: This process must be owned or executed by root"
         end
         
       end

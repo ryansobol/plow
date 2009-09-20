@@ -46,35 +46,38 @@ MESSAGE
 
   describe "\#run! when passing" do
     it "should start the generator with 2 arguments" do
+      argv      = ['apple-steve', 'www.apple.com']
       generator = mock('generator')
+      
       Plow::Generator.should_receive(:new)
-        .with('marco-polo', 'www.marcopolo.com')
+        .with(*argv)
         .and_return(generator)
       generator.should_receive(:run!)
       
-      argv = ['marco-polo', 'www.marcopolo.com']
       Plow::Application.run!(*argv)
     end
     
     it "should start the generator with 3 arguments" do
+      argv      = ['marco-polo', 'www.marcopolo.com', 'marcopolo.com']
       generator = mock('generator')
+      
       Plow::Generator.should_receive(:new)
-        .with('marco-polo', 'www.marcopolo.com', 'marcopolo.com')
+        .with(*argv)
         .and_return(generator)
       generator.should_receive(:run!)
       
-      argv = ['marco-polo', 'www.marcopolo.com', 'marcopolo.com']
       Plow::Application.run!(*argv)
     end
     
     it "should start the generator with 4 arguments" do
+      argv      = ['marco-polo', 'www.marcopolo.com', 'marcopolo.com', 'asia.marcopolo.com']
       generator = mock('generator')
+      
       Plow::Generator.should_receive(:new)
-        .with('marco-polo', 'www.marcopolo.com', 'marcopolo.com', 'asia.marcopolo.com')
+        .with(*argv)
         .and_return(generator)
       generator.should_receive(:run!)
       
-      argv = ['marco-polo', 'www.marcopolo.com', 'marcopolo.com', 'asia.marcopolo.com']
       Plow::Application.run!(*argv)
     end
   end
@@ -94,22 +97,25 @@ MESSAGE
     it "should render error message to the user for raised Plow::InvalidSystemUserNameError" do
       expected_error = Plow::InvalidSystemUserNameError.new(@bad_argv[0])
       Plow::Generator.should_receive(:new).and_raise(expected_error)
-      Plow::Application.run!(*@bad_argv)
-      $stderr.string.should == "ERROR: #{@bad_argv[0]} is an invalid system user name\n"
+
+      expected_message = "ERROR: #{@bad_argv[0]} is an invalid system user name"
+      lambda { Plow::Application.run!(*@bad_argv) }.should raise_error(SystemExit, expected_message)
     end
     
     it "should render error message to the user for raised Plow::InvalidWebSiteNameError" do
       expected_error = Plow::InvalidWebSiteNameError.new(@bad_argv[1])
       Plow::Generator.should_receive(:new).and_raise(expected_error)
-      Plow::Application.run!(*@bad_argv)
-      $stderr.string.should == "ERROR: #{@bad_argv[1]} is an invalid website name\n"
+      
+      expected_message = "ERROR: #{@bad_argv[1]} is an invalid website name"
+      lambda { Plow::Application.run!(*@bad_argv) }.should raise_error(SystemExit, expected_message)
     end
     
     it "should render error message to the user for raised Plow::InvalidWebSiteAliasError" do
       expected_error = Plow::InvalidWebSiteAliasError.new(@bad_argv[2])
       Plow::Generator.should_receive(:new).and_raise(expected_error)
-      Plow::Application.run!(*@bad_argv)
-      $stderr.string.should == "ERROR: #{@bad_argv[2]} is an invalid website alias\n"
+      
+      expected_message = "ERROR: #{@bad_argv[2]} is an invalid website alias"
+      lambda { Plow::Application.run!(*@bad_argv) }.should raise_error(SystemExit, expected_message)
     end
   end
   
@@ -129,11 +135,11 @@ MESSAGE
       
       Plow::Generator.should_receive(:new)
         .with(*argv)
-        .and_return(generator)        
+        .and_return(generator)
       generator.should_receive(:run!).and_raise(expected_error)
       
-      Plow::Application.run!(*argv)
-      $stderr.string.should == "ERROR: This process must be owned or executed by root\n"
+      expected_message = "ERROR: This process must be owned or executed by root"
+      lambda { Plow::Application.run!(*argv) }.should raise_error(SystemExit, expected_message)
     end
   end
 end
