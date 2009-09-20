@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 class Object
   # See http://api.rubyonrails.org/classes/Object.html#M000279
   def blank?
