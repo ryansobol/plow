@@ -116,7 +116,7 @@ class Plow
     
     def generate_virtual_host_configuration
       template_file_name = 'apache2-vhost.conf'
-      template_contents  = File.read(File.join(template_pathname, template_file_name))      
+      template_contents  = File.read(File.join(template_pathname, template_file_name))
       template           = Erubis::Eruby.new(template_contents)
       
       context = {
