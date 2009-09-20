@@ -19,11 +19,11 @@ class Plow
     
     def initialize(user_name, site_name, *site_aliases)
       if user_name.blank? || user_name.include?(' ')
-        raise Plow::InvalidSystemUserNameError 
+        raise Plow::InvalidSystemUserNameError
       end
       
       if site_name.blank? || site_name.include?(' ')
-        raise Plow::InvalidWebSiteNameError 
+        raise Plow::InvalidWebSiteNameError
       end
       
       site_aliases.compact!
