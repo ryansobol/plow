@@ -54,7 +54,7 @@ MESSAGE
         .and_return(generator)
       generator.should_receive(:run!)
       
-      Plow::Application.run!(*argv)
+      Plow::Application.run!(*argv).should == 0
     end
     
     it "should start the generator with 3 arguments" do
@@ -66,7 +66,7 @@ MESSAGE
         .and_return(generator)
       generator.should_receive(:run!)
       
-      Plow::Application.run!(*argv)
+      Plow::Application.run!(*argv).should == 0
     end
     
     it "should start the generator with 4 arguments" do
@@ -78,7 +78,7 @@ MESSAGE
         .and_return(generator)
       generator.should_receive(:run!)
       
-      Plow::Application.run!(*argv)
+      Plow::Application.run!(*argv).should == 0
     end
   end
 
