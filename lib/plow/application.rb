@@ -1,5 +1,4 @@
 # encoding: UTF-8
-
 require 'plow/generator'
 
 class Plow
@@ -32,12 +31,20 @@ MESSAGE
         site_aliases         = arguments.drop(2)
         
         begin
-          generator = Plow::Generator.new(user_name, site_name, site_aliases)
+          generator = Plow::Generator.new(user_name, site_name, *site_aliases)
           generator.run!
           return 0
-        rescue RuntimeError => e
-          ## handle each custom Plow exception in isolation
-          puts e
+        rescue Plow::NonRootProcessOwnerError
+          $stderr.puts "ERROR: Invoking Plow::Generator.run! requires a root process owner!"
+          return 1
+        rescue Plow::InvalidSystemUserNameError
+          $stderr.puts "ERROR: #{user_name} is an invalid system user name"
+          return 1
+        rescue Plow::InvalidWebSiteNameError
+          $stderr.puts "ERROR: #{site_name} is an invalid website name"
+          return 1
+        rescue Plow::InvalidWebSiteAliasError
+          $stderr.puts "ERROR: #{site_aliases} is an invalid website alias"
           return 1
         end
         

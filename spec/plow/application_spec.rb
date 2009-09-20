@@ -1,12 +1,11 @@
 # encoding: UTF-8
-
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Plow::Application do
   
   ##################################################################################################
   
-  describe "should abort with usage message when run!" do
+  describe "\#run! when failing" do
     before(:each) do
       @expected_message = <<-MESSAGE
 Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
@@ -34,22 +33,22 @@ MESSAGE
       $stderr = STDERR
     end
     
-    it "with 0 arguments" do
+    it "should abort with usage message with 0 arguments" do
       lambda { Plow::Application.run! }.should raise_error(SystemExit, @expected_message)
     end
     
-    it "with 1 argument" do
+    it "should abort with usage message with 1 argument" do
       lambda { Plow::Application.run!('marco') }.should raise_error(SystemExit, @expected_message)
     end
   end
 
   ##################################################################################################
 
-  describe "should start the generator when run!" do
-    it "with 2 arguments" do
+  describe "\#run! when passing" do
+    it "should start the generator with 2 arguments" do
       generator = mock('generator')
       Plow::Generator.should_receive(:new)
-        .with('marco-polo', 'www.marcopolo.com', [])
+        .with('marco-polo', 'www.marcopolo.com')
         .and_return(generator)
       generator.should_receive(:run!)
       
@@ -57,10 +56,10 @@ MESSAGE
       Plow::Application.run!(*argv)
     end
     
-    it "with 3 arguments" do
+    it "should start the generator with 3 arguments" do
       generator = mock('generator')
       Plow::Generator.should_receive(:new)
-        .with('marco-polo', 'www.marcopolo.com', ['marcopolo.com'])
+        .with('marco-polo', 'www.marcopolo.com', 'marcopolo.com')
         .and_return(generator)
       generator.should_receive(:run!)
       
@@ -68,10 +67,10 @@ MESSAGE
       Plow::Application.run!(*argv)
     end
     
-    it "with 4 arguments" do
+    it "should start the generator with 4 arguments" do
       generator = mock('generator')
       Plow::Generator.should_receive(:new)
-        .with('marco-polo', 'www.marcopolo.com', ['marcopolo.com', 'asia.marcopolo.com'])
+        .with('marco-polo', 'www.marcopolo.com', 'marcopolo.com', 'asia.marcopolo.com')
         .and_return(generator)
       generator.should_receive(:run!)
       

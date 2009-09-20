@@ -8,7 +8,6 @@ unless $LOAD_PATH.include?(File.expand_path(File.dirname(__FILE__) + '/../lib'))
   $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '/../lib'))
 end
 
-
 require 'plow'
 require 'spec'
 require 'spec/autorun'

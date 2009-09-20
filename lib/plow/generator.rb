@@ -12,22 +12,37 @@ You may install the library via rubygems with: sudo gem install erubis -r
 end
 
 class Plow
-  ## define custom Plow exceptions
-  
   class Generator
     attr_accessor :user_name, :site_name, :site_aliases
     
-    attr_accessor :template_directory
+    attr_accessor :template_pathname
     
-    def initialize(user_name, site_name, site_aliases = [])
+    def initialize(user_name, site_name, *site_aliases)
+      if user_name.blank? || user_name.include?(' ')
+        raise Plow::InvalidSystemUserNameError 
+      end
+      
+      if site_name.blank? || site_name.include?(' ')
+        raise Plow::InvalidWebSiteNameError 
+      end
+      
+      site_aliases.compact!
+      site_aliases.each do |site_alias|
+        if site_alias.blank? || site_alias.include?(' ')
+          raise Plow::InvalidWebSiteAliasError
+        end
+      end
+      
       self.user_name    = user_name
       self.site_name    = site_name
       self.site_aliases = site_aliases
       
-      self.template_directory = File.join(File.dirname(__FILE__), 'templates')
+      self.template_pathname = File.dirname(__FILE__) + '/templates'
     end
     
     def run!
+      raise Plow::NonRootProcessOwnerError unless Process.uid == 0
+      
       ensure_system_account_exists
       ensure_system_account_home_exists
       ensure_system_account_sites_home_exists
@@ -101,7 +116,7 @@ class Plow
     
     def generate_virtual_host_configuration
       template_file_name = 'apache2-vhost.conf'
-      template_contents  = File.read(File.join(template_directory, template_file_name))      
+      template_contents  = File.read(File.join(template_pathname, template_file_name))      
       template           = Erubis::Eruby.new(template_contents)
       
       context = {

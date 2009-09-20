@@ -8,6 +8,9 @@ Please see http://www.ruby-lang.org/
   ERROR
 end
 
+require 'plow/core_ext/object'
+
+require 'plow/errors'
 require 'plow/application'
 
 class Plow
