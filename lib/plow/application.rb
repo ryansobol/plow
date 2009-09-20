@@ -29,13 +29,13 @@ MESSAGE
         end
 
         user_name, site_name = arguments.first(2)
-        site_aliases = arguments.drop(2)
+        site_aliases         = arguments.drop(2)
         
         begin
           generator = Plow::Generator.new(user_name, site_name, site_aliases)
-          generator.run
+          generator.run!
           return 0
-        rescue Exception => e
+        rescue RuntimeError => e
           ## handle each custom Plow exception in isolation
           puts e
           return 1

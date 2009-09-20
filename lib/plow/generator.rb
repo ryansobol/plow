@@ -19,7 +19,7 @@ class Plow
     
     attr_accessor :template_directory
     
-    def initialize(user_name, site_name, site_aliases)
+    def initialize(user_name, site_name, site_aliases = [])
       self.user_name    = user_name
       self.site_name    = site_name
       self.site_aliases = site_aliases
@@ -27,7 +27,7 @@ class Plow
       self.template_directory = File.join(File.dirname(__FILE__), 'templates')
     end
     
-    def run
+    def run!
       ensure_system_account_exists
       ensure_system_account_home_exists
       ensure_system_account_sites_home_exists
