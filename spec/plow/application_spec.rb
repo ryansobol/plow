@@ -46,7 +46,7 @@ MESSAGE
   ##################################################################################################
 
   describe "should start the generator when run!" do
-    it "with 2 arguments" do      
+    it "with 2 arguments" do
       generator = mock('generator')
       Plow::Generator.should_receive(:new)
         .with('marco-polo', 'www.marcopolo.com', [])
@@ -57,7 +57,7 @@ MESSAGE
       Plow::Application.run!(*argv)
     end
     
-    it "with 3 arguments" do      
+    it "with 3 arguments" do
       generator = mock('generator')
       Plow::Generator.should_receive(:new)
         .with('marco-polo', 'www.marcopolo.com', ['marcopolo.com'])
@@ -68,7 +68,7 @@ MESSAGE
       Plow::Application.run!(*argv)
     end
     
-    it "with 4 arguments" do      
+    it "with 4 arguments" do
       generator = mock('generator')
       Plow::Generator.should_receive(:new)
         .with('marco-polo', 'www.marcopolo.com', ['marcopolo.com', 'asia.marcopolo.com'])
