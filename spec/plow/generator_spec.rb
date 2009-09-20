@@ -11,23 +11,28 @@ describe Plow::Generator do
   
   describe "\#new when failing" do
     it "should raise Plow::InvalidSystemUserNameError if first argument is blank" do
-      lambda { Plow::Generator.new(nil, 'not-blank') }.should raise_error(Plow::InvalidSystemUserNameError)
+      lambda { Plow::Generator.new(nil, 'not-blank') }.should 
+        raise_error(Plow::InvalidSystemUserNameError, nil)
     end
 
     it "should raise Plow::InvalidSystemUserNameError if first argument contains a blank space" do
-      lambda { Plow::Generator.new('oh noes!', 'not-blank') }.should raise_error(Plow::InvalidSystemUserNameError)
+      lambda { Plow::Generator.new('oh noes!', 'not-blank') }.should 
+        raise_error(Plow::InvalidSystemUserNameError, 'oh noes!')
     end
 
     it "should raise Plow::InvalidWebSiteNameError if second argument is blank" do
-      lambda { Plow::Generator.new('not-blank', nil) }.should raise_error(Plow::InvalidWebSiteNameError)
+      lambda { Plow::Generator.new('not-blank', nil) }.should 
+        raise_error(Plow::InvalidWebSiteNameError, nil)
     end
 
     it "should raise Plow::InvalidWebSiteNameError if second argument contains a blank space" do
-      lambda { Plow::Generator.new('not-blank', 'oh noes!') }.should raise_error(Plow::InvalidWebSiteNameError)
+      lambda { Plow::Generator.new('not-blank', 'oh noes!') }.should 
+        raise_error(Plow::InvalidWebSiteNameError, 'oh noes!')
     end
     
     it "should raise Plow::InvalidWebSiteAliasError if third argument contains a blank space" do
-      lambda { Plow::Generator.new('not-blank', 'not-blank', 'oh noes!') }.should raise_error(Plow::InvalidWebSiteAliasError)
+      lambda { Plow::Generator.new('not-blank', 'not-blank', 'oh noes!') }.should 
+        raise_error(Plow::InvalidWebSiteAliasError, 'oh noes!')
     end
   end
   

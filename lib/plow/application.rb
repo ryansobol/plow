@@ -34,17 +34,17 @@ MESSAGE
           generator = Plow::Generator.new(user_name, site_name, *site_aliases)
           generator.run!
           return 0
+        rescue Plow::InvalidSystemUserNameError => invalid
+          $stderr.puts "ERROR: #{invalid} is an invalid system user name"
+          return 1
+        rescue Plow::InvalidWebSiteNameError => invalid
+          $stderr.puts "ERROR: #{invalid} is an invalid website name"
+          return 1
+        rescue Plow::InvalidWebSiteAliasError => invalid
+          $stderr.puts "ERROR: #{invalid} is an invalid website alias"
+          return 1
         rescue Plow::NonRootProcessOwnerError
-          $stderr.puts "ERROR: Invoking Plow::Generator.run! requires a root process owner!"
-          return 1
-        rescue Plow::InvalidSystemUserNameError
-          $stderr.puts "ERROR: #{user_name} is an invalid system user name"
-          return 1
-        rescue Plow::InvalidWebSiteNameError
-          $stderr.puts "ERROR: #{site_name} is an invalid website name"
-          return 1
-        rescue Plow::InvalidWebSiteAliasError
-          $stderr.puts "ERROR: #{site_aliases} is an invalid website alias"
+          $stderr.puts "ERROR: This process is required to be owned or executed by root"
           return 1
         end
         

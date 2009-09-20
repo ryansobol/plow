@@ -79,4 +79,61 @@ MESSAGE
     end
   end
 
+  ##################################################################################################
+  
+  describe "\#new when handling errors" do
+    before(:each) do
+      @bad_argv = ['bad user name', 'bad site name', 'bad site alias']
+      $stderr   = StringIO.new
+    end
+    
+    after(:each) do
+      $stderr = STDERR
+    end
+    
+    it "should render error message to the user for raised Plow::InvalidSystemUserNameError" do
+      expected_error = Plow::InvalidSystemUserNameError.new(@bad_argv[0])
+      Plow::Generator.should_receive(:new).and_raise(expected_error)
+      Plow::Application.run!(*@bad_argv)
+      $stderr.string.should == "ERROR: #{@bad_argv[0]} is an invalid system user name\n"
+    end
+    
+    it "should render error message to the user for raised Plow::InvalidWebSiteNameError" do
+      expected_error = Plow::InvalidWebSiteNameError.new(@bad_argv[1])
+      Plow::Generator.should_receive(:new).and_raise(expected_error)
+      Plow::Application.run!(*@bad_argv)
+      $stderr.string.should == "ERROR: #{@bad_argv[1]} is an invalid website name\n"
+    end
+    
+    it "should render error message to the user for raised Plow::InvalidWebSiteAliasError" do
+      expected_error = Plow::InvalidWebSiteAliasError.new(@bad_argv[2])
+      Plow::Generator.should_receive(:new).and_raise(expected_error)
+      Plow::Application.run!(*@bad_argv)
+      $stderr.string.should == "ERROR: #{@bad_argv[2]} is an invalid website alias\n"
+    end
+  end
+  
+  describe "\#run! when handing errors" do
+    before(:each) do
+      $stderr = StringIO.new
+    end
+    
+    after(:each) do
+      $stderr = STDERR
+    end
+    
+    it "should render error message to the user for raised Plow::NonRootProcessOwnerError" do
+      argv           = ['apple-steve', 'www.apple.com', 'apple.com']
+      generator      = mock('generator')
+      expected_error = Plow::NonRootProcessOwnerError
+      
+      Plow::Generator.should_receive(:new)
+        .with(*argv)
+        .and_return(generator)        
+      generator.should_receive(:run!).and_raise(expected_error)
+      
+      Plow::Application.run!(*argv)
+      $stderr.string.should == "ERROR: This process is required to be owned or executed by root\n"
+    end
+  end
 end
