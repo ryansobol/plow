@@ -26,7 +26,6 @@ class Plow
         raise(Plow::InvalidWebSiteNameError, site_name)
       end
       
-      site_aliases.compact!
       site_aliases.each do |site_alias|
         if site_alias.blank? || site_alias.include?(' ')
           raise(Plow::InvalidWebSiteAliasError, site_alias)

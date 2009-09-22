@@ -26,6 +26,10 @@ describe Plow::Generator do
       lambda { Plow::Generator.new('not-blank', 'oh noes!') }.should raise_error(Plow::InvalidWebSiteNameError, 'oh noes!')
     end
     
+    it "should raise Plow::InvalidWebSiteAliasError if third argument is blank" do
+      lambda { Plow::Generator.new('not-blank', 'not-blank', nil) }.should raise_error(Plow::InvalidWebSiteAliasError, nil)
+    end
+    
     it "should raise Plow::InvalidWebSiteAliasError if third argument contains a blank space" do
       lambda { Plow::Generator.new('not-blank', 'not-blank', 'oh noes!') }.should raise_error(Plow::InvalidWebSiteAliasError, 'oh noes!')
     end
