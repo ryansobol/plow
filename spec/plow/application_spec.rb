@@ -5,9 +5,9 @@ describe Plow::Application do
   
   ##################################################################################################
   
-  describe "\#run! when failing" do
+  describe "\#launch when failing" do
     before(:each) do
-      @expected_message = <<-MESSAGE
+      @expected_message = <<MESSAGE
 Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
 
   Arguments:
@@ -34,17 +34,17 @@ MESSAGE
     end
     
     it "should abort with usage message with 0 arguments" do
-      lambda { Plow::Application.run! }.should raise_error(SystemExit, @expected_message)
+      lambda { Plow::Application.launch }.should raise_error(SystemExit, @expected_message)
     end
     
     it "should abort with usage message with 1 argument" do
-      lambda { Plow::Application.run!('marco') }.should raise_error(SystemExit, @expected_message)
+      lambda { Plow::Application.launch('marco') }.should raise_error(SystemExit, @expected_message)
     end
   end
 
   ##################################################################################################
 
-  describe "\#run! when passing" do
+  describe "\#launch when passing" do
     it "should start the generator with 2 arguments" do
       argv      = ['apple-steve', 'www.apple.com']
       generator = mock('generator')
@@ -54,7 +54,7 @@ MESSAGE
         .and_return(generator)
       generator.should_receive(:run!)
       
-      Plow::Application.run!(*argv).should == 0
+      Plow::Application.launch(*argv).should == 0
     end
     
     it "should start the generator with 3 arguments" do
@@ -66,7 +66,7 @@ MESSAGE
         .and_return(generator)
       generator.should_receive(:run!)
       
-      Plow::Application.run!(*argv).should == 0
+      Plow::Application.launch(*argv).should == 0
     end
     
     it "should start the generator with 4 arguments" do
@@ -78,7 +78,7 @@ MESSAGE
         .and_return(generator)
       generator.should_receive(:run!)
       
-      Plow::Application.run!(*argv).should == 0
+      Plow::Application.launch(*argv).should == 0
     end
   end
 
@@ -99,7 +99,7 @@ MESSAGE
       Plow::Generator.should_receive(:new).and_raise(expected_error)
 
       expected_message = "ERROR: #{@bad_argv[0]} is an invalid system user name"
-      lambda { Plow::Application.run!(*@bad_argv) }.should raise_error(SystemExit, expected_message)
+      lambda { Plow::Application.launch(*@bad_argv) }.should raise_error(SystemExit, expected_message)
     end
     
     it "should render error message to the user for raised Plow::InvalidWebSiteNameError" do
@@ -107,7 +107,7 @@ MESSAGE
       Plow::Generator.should_receive(:new).and_raise(expected_error)
       
       expected_message = "ERROR: #{@bad_argv[1]} is an invalid website name"
-      lambda { Plow::Application.run!(*@bad_argv) }.should raise_error(SystemExit, expected_message)
+      lambda { Plow::Application.launch(*@bad_argv) }.should raise_error(SystemExit, expected_message)
     end
     
     it "should render error message to the user for raised Plow::InvalidWebSiteAliasError" do
@@ -115,11 +115,11 @@ MESSAGE
       Plow::Generator.should_receive(:new).and_raise(expected_error)
       
       expected_message = "ERROR: #{@bad_argv[2]} is an invalid website alias"
-      lambda { Plow::Application.run!(*@bad_argv) }.should raise_error(SystemExit, expected_message)
+      lambda { Plow::Application.launch(*@bad_argv) }.should raise_error(SystemExit, expected_message)
     end
   end
   
-  describe "\#run! when handing errors" do
+  describe "\#launch when handing errors" do
     before(:each) do
       $stderr = StringIO.new
     end
@@ -139,7 +139,7 @@ MESSAGE
       generator.should_receive(:run!).and_raise(expected_error)
       
       expected_message = "ERROR: This process must be owned or executed by root"
-      lambda { Plow::Application.run!(*argv) }.should raise_error(SystemExit, expected_message)
+      lambda { Plow::Application.launch(*argv) }.should raise_error(SystemExit, expected_message)
     end
   end
 end

@@ -7,4 +7,4 @@ end
 
 require 'plow'
 
-Plow::Application.run!(*ARGV)
+Plow::Application.launch(*ARGV)

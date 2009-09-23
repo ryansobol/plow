@@ -4,7 +4,7 @@ require 'plow/generator'
 class Plow
   class Application
     class << self
-      def run!(*arguments)
+      def launch(*arguments)
         if arguments.length < 2
           abort <<-MESSAGE
 Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
