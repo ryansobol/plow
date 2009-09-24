@@ -9,15 +9,15 @@ describe Plow::Generator do
     it "should raise Plow::InvalidSystemUserNameError if first argument is blank" do
       lambda { Plow::Generator.new(nil, 'not-blank') }.should raise_error(Plow::InvalidSystemUserNameError, nil)
     end
-
+    
     it "should raise Plow::InvalidSystemUserNameError if first argument contains a blank space" do
       lambda { Plow::Generator.new('oh noes!', 'not-blank') }.should raise_error(Plow::InvalidSystemUserNameError, 'oh noes!')
     end
-
+    
     it "should raise Plow::InvalidWebSiteNameError if second argument is blank" do
       lambda { Plow::Generator.new('not-blank', nil) }.should raise_error(Plow::InvalidWebSiteNameError, nil)
     end
-
+    
     it "should raise Plow::InvalidWebSiteNameError if second argument contains a blank space" do
       lambda { Plow::Generator.new('not-blank', 'oh noes!') }.should raise_error(Plow::InvalidWebSiteNameError, 'oh noes!')
     end
@@ -91,17 +91,19 @@ describe Plow::Generator do
   
   ##################################################################################################
   
-  it "\#run! should raise Plow::NonRootProcessOwnerError when process is owned by non-root user" do
-    Process.stub!(:uid).and_return(1)
-    generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
-    lambda { generator.run! }.should raise_error(Plow::NonRootProcessOwnerError)
-  end
-  
-  it "\#run! should execute the strategy when process is owned by root user" do
-    Process.stub!(:uid).and_return(0)
-    generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
-    generator.strategy.should_receive(:execute)
-    generator.run!
+  describe "\#run! " do
+    it "should raise Plow::NonRootProcessOwnerError when process is owned by non-root user" do
+      Process.stub!(:uid).and_return(1)
+      generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+      lambda { generator.run! }.should raise_error(Plow::NonRootProcessOwnerError)
+    end
+    
+    it "should execute the strategy when process is owned by root user" do
+      Process.stub!(:uid).and_return(0)
+      generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+      generator.strategy.should_receive(:execute)
+      generator.run!
+    end
   end
   
   ##################################################################################################
@@ -125,16 +127,18 @@ describe Plow::Generator do
   
   ##################################################################################################
   
-  it "\#evaluate_template should proxy to Erubis::Eruby" do
-    expected_template = "<%= local_var %>"
-    expected_context  = { local_var: 'some_data' }
-    expected_output   = "some_data"
-
-    eruby_mock = mock("eruby")
-    Erubis::Eruby.should_receive(:new).with(expected_template).and_return(eruby_mock)
-    eruby_mock.should_receive(:evaluate).with(expected_context).and_return(expected_output)
-    
-    generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
-    generator.evaluate_template(expected_template, expected_context).should == expected_output
+  describe "\#evaluate_template " do
+    it "should proxy to Erubis::Eruby" do
+      expected_template = "<%= local_var %>"
+      expected_context  = { local_var: 'some_data' }
+      expected_output   = "some_data"
+      
+      eruby_mock = mock("eruby")
+      Erubis::Eruby.should_receive(:new).with(expected_template).and_return(eruby_mock)
+      eruby_mock.should_receive(:evaluate).with(expected_context).and_return(expected_output)
+      
+      generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+      generator.evaluate_template(expected_template, expected_context).should == expected_output
+    end
   end
 end
