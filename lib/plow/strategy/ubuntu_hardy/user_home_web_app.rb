@@ -30,7 +30,7 @@ class Plow
           end
           
           if system_account_sites_home_exists?
-            say "System account sites home already exists... Skipping"
+            say "System account sites home already exists... skipping"
           else
             say "Creating system account sites home..."
             create_system_account_sites_home
