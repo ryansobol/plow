@@ -38,6 +38,9 @@ class Plow
           
           @app_home = "#{sites_home}/#{context.site_name}"
           
+          ## we can now safely assume that the following instance variables are valid
+          ## @user_home, @site_home, @app_home
+          
           build_app_home
           build_app_logs
           
