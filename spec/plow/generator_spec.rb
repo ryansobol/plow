@@ -3,10 +3,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Plow::Generator do
   
-  before(:all) do
-    @expected_template_pathname = File.expand_path(File.dirname(__FILE__) + '/../../lib/plow/templates')
-  end
-  
   ##################################################################################################
   
   describe "\#new when failing" do
@@ -39,7 +35,8 @@ describe Plow::Generator do
   
   describe "\#new when passing with two good arguments" do
     before(:all) do
-      @generator = Plow::Generator.new('apple-steve', 'www.apple.com')
+      @generator                  = Plow::Generator.new('apple-steve', 'www.apple.com')
+      @expected_template_pathname = File.expand_path(File.dirname(__FILE__) + '/../../lib/plow/templates')
     end
     
     it "should set user_name" do
@@ -57,13 +54,18 @@ describe Plow::Generator do
     it "should set template pathname" do
       @generator.template_pathname.should == @expected_template_pathname
     end
+    
+    it "should set strategy to an instance of Plow::Strategy::UbuntuHardy::UserHomeWebApp" do
+      @generator.strategy.should be_an_instance_of(Plow::Strategy::UbuntuHardy::UserHomeWebApp)
+    end
   end
   
   ##################################################################################################
   
   describe "\#new when passing with three good arguments" do
     before(:all) do
-      @generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+      @expected_template_pathname = File.expand_path(File.dirname(__FILE__) + '/../../lib/plow/templates')
+      @generator                  = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
     end
     
     it "should set user_name" do
@@ -81,6 +83,43 @@ describe Plow::Generator do
     it "should set template pathname" do
       @generator.template_pathname.should == @expected_template_pathname
     end
+    
+    it "should set strategy to an instance of Plow::Strategy::UbuntuHardy::UserHomeWebApp" do
+      @generator.strategy.should be_an_instance_of(Plow::Strategy::UbuntuHardy::UserHomeWebApp)
+    end
   end
   
+  ##################################################################################################
+  
+  it "\#run! should raise Plow::NonRootProcessOwnerError when process is owned by non-root user" do
+    Process.stub!(:uid).and_return(1)
+    generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+    lambda { generator.run! }.should raise_error(Plow::NonRootProcessOwnerError)
+  end
+  
+  it "\#run! should execute the strategy when process is owned by root user" do
+    Process.stub!(:uid).and_return(0)
+    generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+    generator.strategy.should_receive(:execute)
+    generator.run!
+  end
+  
+  ##################################################################################################
+  
+  describe "\#say " do
+    before(:each) do
+      $stdout    = StringIO.new
+      @generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+    end
+    
+    after(:each) do
+      $stdout = STDOUT
+    end
+    
+    it "should output message to the user" do
+      message = "Something great happened!"
+      @generator.say(message)
+      $stdout.string.should == "--> #{message}\n"
+    end
+  end
 end
