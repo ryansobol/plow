@@ -7,6 +7,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     @strategy = Plow::Strategy::UbuntuHardy::UserHomeWebApp.new(@context)      
   end
   
+  ##################################################################################################
+  
   describe "\#new " do  
     it "should set context" do
       @strategy.context.should == @context
