@@ -12,4 +12,10 @@ class Plow
   
   class InvalidWebSiteAliasError < StandardError
   end
+  
+  class ReservedSystemUserNameError < StandardError
+  end
+  
+  class Plow::SystemUserNameNotFoundError < StandardError
+  end
 end

@@ -17,4 +17,12 @@ describe "Custom Application Errors" do
   it "Plow::InvalidWebSiteAliasError should be a kind of StandardError" do
     Plow::InvalidWebSiteAliasError.new.should be_a_kind_of(StandardError)
   end
+  
+  it "Plow::ReservedSystemUserNameError should be a kind of StandardError" do
+    Plow::ReservedSystemUserNameError.new.should be_a_kind_of(StandardError)
+  end
+  
+  it "Plow::SystemUserNameNotFoundError should be a kind of StandardError" do
+    Plow::SystemUserNameNotFoundError.new.should be_a_kind_of(StandardError)
+  end
 end
