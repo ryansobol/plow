@@ -122,4 +122,19 @@ describe Plow::Generator do
       $stdout.string.should == "--> #{message}\n"
     end
   end
+  
+  ##################################################################################################
+  
+  it "\#evaluate_template should proxy to Erubis::Eruby" do
+    expected_template = "<%= local_var %>"
+    expected_context  = { local_var: 'some_data' }
+    expected_output   = "some_data"
+
+    eruby_mock = mock("eruby")
+    Erubis::Eruby.should_receive(:new).with(expected_template).and_return(eruby_mock)
+    eruby_mock.should_receive(:evaluate).with(expected_context).and_return(expected_output)
+    
+    generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+    generator.evaluate_template(expected_template, expected_context).should == expected_output
+  end
 end

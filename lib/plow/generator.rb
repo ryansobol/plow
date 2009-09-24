@@ -51,5 +51,10 @@ class Plow
     def say(message)
       puts "--> #{message}"
     end
+    
+    def evaluate_template(template, context)
+      eruby = Erubis::Eruby.new(template)
+      eruby.evaluate(context)
+    end
   end
 end
