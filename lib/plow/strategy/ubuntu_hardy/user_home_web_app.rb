@@ -158,7 +158,7 @@ class Plow
           EOS
           
           commands.each_line do |command|
-            say(command)
+            system(command)
           end
         end
         
@@ -166,7 +166,7 @@ class Plow
         
         def generate_virtual_host_configuration
           template_file_name = 'apache2-vhost.conf'
-          template_contents  = File.read(File.join(template_pathname, file_name))
+          template_contents  = File.read(File.join(context.template_pathname, template_file_name))
                     
           template_context = {
             :site_name    => context.site_name,
