@@ -5,13 +5,13 @@ class Plow
     class UbuntuHardy
       
       class UserHomeWebApp
-        attr_reader :context, :users_file_name, :vhost_file_name
-        attr_reader :user_home, :site_home, :app_home
+        attr_reader :context, :users_file_path, :vhost_file_path
+        attr_reader :user_home, :sites_home, :app_home
         
         def initialize(context)
           @context         = context
-          @users_file_name = "/etc/passwd"
-          @vhost_file_name = "/etc/apache2/sites-available/#{context.site_name}.conf"
+          @users_file_path = "/etc/passwd"
+          @vhost_file_path = "/etc/apache2/sites-available/#{context.site_name}.conf"
         end
         
         def execute
@@ -57,21 +57,30 @@ class Plow
           context.say(message)
         end
         
-        def read_users_data(&block)
-          File.readlines(users_file_name).each do |user_line|
-            yield user_line.split(':')
+        def system_accounts(&block)
+          File.readlines(users_file_path).each do |user_line|
+            user_line = user_line.chomp.split(':')
+            user_hash = {
+              :user_name  => user_line[0],
+              :password   => user_line[1],
+              :user_id    => user_line[2].to_i,
+              :group_id   => user_line[3].to_i,
+              :user_info  => user_line[4],
+              :home_path  => user_line[5],
+              :shell_path => user_line[6]
+            }
+            yield user_hash
           end
         end
         
         ############################################################################################################
         
         def system_account_exists?
-          read_users_data do |user_data|
-            user_name = user_data[0]
-            user_id   = user_data[2]
-            
-            if user_name == context.user_name
-              raise Plow::ReservedSystemUserNameError unless user_id >= 1000
+          system_accounts do |account|
+            if account[:user_name] == context.user_name
+              unless account[:user_id] >= 1000 && account[:user_id] != 65534
+                raise Plow::ReservedSystemUserNameError
+              end
               return true
             end
           end
@@ -80,21 +89,18 @@ class Plow
         end
         
         def create_system_account
-          say "adduser #{context.user_name}"
+          system("adduser #{context.user_name}")
         end
         
         ############################################################################################################
         
         def system_account_home_exists?
-          read_users_data do |user_data|
-            user_name = user_data[0]
-            user_home = user_data[5]
-            
-            if user_name == context.user_name
-              if Dir.exists?(user_home)
+          system_accounts do |account|
+            if account[:user_name] == context.user_name
+              if Dir.exists?(account[:home_path])
                 return true
               else
-                @user_home = user_home
+                @user_home = account[:home_path]
                 return false
               end
             end
@@ -104,8 +110,8 @@ class Plow
         end
         
         def create_system_account_home
-          say "mkdir #{user_home}"
-          say "chown #{context.user_name}:#{context.user_name} #{user_home}"
+          system("mkdir #{user_home}")
+          system("chown #{context.user_name}:#{context.user_name} #{user_home}")
         end
         
         ############################################################################################################
@@ -116,7 +122,8 @@ class Plow
         end
         
         def create_system_account_sites_home
-          say "mkdir #{sites_home}"
+          system("mkdir #{sites_home}")
+          system("chown #{context.user_name}:#{context.user_name} #{sites_home}")
         end
         
         ############################################################################################################

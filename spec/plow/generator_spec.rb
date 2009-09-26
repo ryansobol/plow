@@ -34,7 +34,7 @@ describe Plow::Generator do
   ##################################################################################################
   
   describe "\#new when passing with two good arguments" do
-    before(:all) do
+    before(:each) do
       @generator                  = Plow::Generator.new('apple-steve', 'www.apple.com')
       @expected_template_pathname = File.expand_path(File.dirname(__FILE__) + '/../../lib/plow/templates')
     end
@@ -63,7 +63,7 @@ describe Plow::Generator do
   ##################################################################################################
   
   describe "\#new when passing with three good arguments" do
-    before(:all) do
+    before(:each) do
       @expected_template_pathname = File.expand_path(File.dirname(__FILE__) + '/../../lib/plow/templates')
       @generator                  = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
     end
