@@ -169,7 +169,7 @@ class Plow
         def generate_virtual_host_configuration
           template_file_name = 'apache2-vhost.conf'
           template_contents  = File.read(File.join(context.template_pathname, template_file_name))
-                    
+          
           template_context = {
             :site_name    => context.site_name,
             :site_aliases => context.site_aliases,
