@@ -2,7 +2,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Plow" do
-  describe " version synchronizing" do
+  describe "version synchronizing" do
     before(:each) do
       @expected = "0.0.0"
     end
