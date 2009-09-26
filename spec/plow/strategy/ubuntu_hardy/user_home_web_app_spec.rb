@@ -136,9 +136,9 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
         @strategy.send(:system_account_home_exists?).should be_true
       end
       
-      it "should set user home variable to nil" do
+      it "should set user home variable to correct home path" do
         @strategy.send(:system_account_home_exists?)
-        @strategy.user_home.should be_nil
+        @strategy.user_home.should == @account[:home_path]
       end
     end
     

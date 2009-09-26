@@ -97,12 +97,8 @@ class Plow
         def system_account_home_exists?
           system_accounts do |account|
             if account[:user_name] == context.user_name
-              if Dir.exists?(account[:home_path])
-                return true
-              else
-                @user_home = account[:home_path]
-                return false
-              end
+              @user_home = account[:home_path]
+              return Dir.exists?(account[:home_path])
             end
           end
           
