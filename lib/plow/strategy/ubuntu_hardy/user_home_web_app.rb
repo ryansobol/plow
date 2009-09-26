@@ -151,7 +151,7 @@ class Plow
             
             touch #{log_home}/apache2/access.log
             touch #{log_home}/apache2/error.log
-            chmod 640 *.log
+            chmod 640 #{log_home}/apache2/*.log
             
             chown -R #{context.user_name}:#{context.user_name} #{log_home}
             chown root -R #{log_home}/apache2
@@ -171,7 +171,8 @@ class Plow
           template_context = {
             :site_name    => context.site_name,
             :site_aliases => context.site_aliases,
-            :app_home     => apphome
+            :app_home     => app_home,
+            :log_home     => log_home
           }
           
           context.evaluate_template(template_contents, template_context)
