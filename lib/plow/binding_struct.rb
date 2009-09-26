@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 class Plow
   class BindingStruct
     def initialize(hash)
