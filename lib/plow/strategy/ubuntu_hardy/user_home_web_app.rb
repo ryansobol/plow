@@ -5,13 +5,14 @@ class Plow
     class UbuntuHardy
       
       class UserHomeWebApp
-        attr_reader :context, :users_file_path, :vhost_file_path
+        attr_reader :context, :users_file_path, :vhost_file_name, :vhost_file_path
         attr_reader :user_home, :sites_home, :app_home, :log_home
         
         def initialize(context)
           @context         = context
           @users_file_path = "/etc/passwd"
-          @vhost_file_path = "/etc/apache2/sites-available/#{context.site_name}.conf"
+          @vhost_file_name = "#{context.site_name}.conf"
+          @vhost_file_path = "/etc/apache2/sites-available/#{vhost_file_name}"
         end
         
         def execute
@@ -181,7 +182,7 @@ class Plow
         def install_virtual_host_configuration(config)
           system("touch #{vhost_file_path}")
           File.open(vhost_file_path, 'wt') { |f| f.write(config) }
-          system("a2ensite #{context.site_name}")
+          system("a2ensite #{vhost_file_name}")
         end
         
         def restart_web_server
