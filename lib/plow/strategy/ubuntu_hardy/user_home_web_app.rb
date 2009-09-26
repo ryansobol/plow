@@ -49,9 +49,14 @@ class Plow
           @log_home = "#{app_home}/log"
           say "Building the application log structure in #{log_home}..."
           build_app_logs
-          
+
+          say "Generating the apache2 configuration from a template..."
           config = generate_virtual_host_configuration
+          
+          say "Installing configuration file to #{vhost_file_path}..."
           install_virtual_host_configuration(config)
+          
+          say "Restarting apache2..."
           restart_web_server
         end
         
