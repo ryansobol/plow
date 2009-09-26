@@ -128,17 +128,13 @@ describe Plow::Generator do
   ##################################################################################################
   
   describe "\#evaluate_template " do
-    it "should proxy to Erubis::Eruby" do
-      expected_template = "<%= local_var %>"
-      expected_context  = { local_var: 'some_data' }
-      expected_output   = "some_data"
-      
-      eruby_mock = mock("eruby")
-      Erubis::Eruby.should_receive(:new).with(expected_template).and_return(eruby_mock)
-      eruby_mock.should_receive(:evaluate).with(expected_context).and_return(expected_output)
+    it "should accept a template data as a String and a context of elements as a Hash and evaluate them together" do
+      template_string = "Wow, you're so amazing, <%= @name %>!!!"
+      context_hash    = { name: 'Carl Sagan' }
+      expected_output = "Wow, you're so amazing, Carl Sagan!!!"      
       
       generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
-      generator.evaluate_template(expected_template, expected_context).should == expected_output
+      generator.evaluate_template(template_string, context_hash).should == expected_output
     end
   end
 end

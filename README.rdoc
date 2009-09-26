@@ -13,7 +13,7 @@ Since there are numerous existing software packages that aim to accomplish the v
   * handling load-time and run-time errors gracefully for the user
   * decoupling the executable files from and the library source code
   * decoupling the argument parsing and error handling from the system administrative tasks
-  * learning the erubis API.  ERB is nice but I'm not a fan of how templates can modify instance variables it acquires from the ruby's binding object
+  * learning how to create a class to encapsulate a Binding object of cloned data stored in instance variables a Binding object.  that way, ERB can mangle instance variables evaluated within a template file all it wants and the data saved in memory of the program is unaffected
   * continuing to work with RSpec, which is slowly gaining ground as my favorite library for test covering ruby code
   * incorporating deployments with jeweler and github.  the combination is extremely powerful and seems alot more practical than maintaining my own rubygem server.  
   * inviting others to review my code and submitting patches!  long live the open-source community!

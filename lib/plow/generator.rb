@@ -1,16 +1,8 @@
 # encoding: UTF-8
 
-begin
-  require 'erubis'
-rescue LoadError
-  abort <<-ERROR
-Unexpected LoadError exception caught in #{__FILE__} on #{__LINE__}
+require 'erb'
 
-This file depends on the erubis library, which is not available.
-You may install the library via rubygems with: sudo gem install erubis
-  ERROR
-end
-
+require 'plow/binding_struct'
 require 'plow/strategy/ubuntu_hardy/user_home_web_app'
 
 class Plow
@@ -53,8 +45,8 @@ class Plow
     end
     
     def evaluate_template(template, context)
-      eruby = Erubis::Eruby.new(template)
-      eruby.evaluate(context)
+      context_struct = Plow::BindingStruct.new(context)
+      ERB.new(template).result(context_struct.get_binding)
     end
-  end
+  end  
 end
