@@ -26,7 +26,7 @@ Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
     plow apple-steve www.apple.com apple.com
 MESSAGE
         end
-
+        
         user_name, site_name = arguments.first(2)
         site_aliases         = arguments.drop(2)
         

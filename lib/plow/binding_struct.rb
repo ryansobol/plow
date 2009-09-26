@@ -7,7 +7,7 @@ class Plow
         instance_variable_set("@#{name}".to_sym, val.clone)
       end
     end
-
+    
     def get_binding
       binding
     end
