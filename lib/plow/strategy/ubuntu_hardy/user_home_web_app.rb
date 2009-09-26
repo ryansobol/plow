@@ -16,23 +16,23 @@ class Plow
         
         def execute
           if system_account_exists?
-            say "System account already exists... skipping"
+            say "System account (#{context.user_name}) already exists... skipping"
           else
-            say "Creating system account..."
+            say "Creating system account for #{context.user_name}..."
             create_system_account
           end
           
           if system_account_home_exists?
-            say "System account home already exists... skipping"
+            say "System account home (#{user_home}) already exists... skipping"
           else
-            say "Creating system account home..."
+            say "Creating system account home (#{user_home})..."
             create_system_account_home
           end
           
           if system_account_sites_home_exists?
-            say "System account sites home already exists... skipping"
+            say "System account sites home (#{sites_home}) already exists... skipping"
           else
-            say "Creating system account sites home..."
+            say "Creating system account sites home (#{sites_home})..."
             create_system_account_sites_home
           end
           
