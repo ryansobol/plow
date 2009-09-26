@@ -38,7 +38,7 @@ class Plow
           end
           
           @app_home = "#{sites_home}/#{context.site_name}"
-          raise Plow::AppHomeAlreadyExistsError, app_home if Dir.exists(app_home)
+          raise Plow::AppHomeAlreadyExistsError, app_home if Dir.exists?(app_home)
           
           ## we can now safely assume that the following instance variables are valid
           ## @user_home, @site_home, @app_home
