@@ -18,4 +18,7 @@ class Plow
   
   class Plow::SystemUserNameNotFoundError < StandardError
   end
+  
+  class Plow::AppHomeAlreadyExistsError < StandardError
+  end
 end
