@@ -6,7 +6,7 @@ class Plow
       
       class UserHomeWebApp
         attr_reader :context, :users_file_path, :vhost_file_path
-        attr_reader :user_home, :sites_home, :app_home
+        attr_reader :user_home, :sites_home, :app_home, :log_home
         
         def initialize(context)
           @context         = context
@@ -41,7 +41,11 @@ class Plow
           ## we can now safely assume that the following instance variables are valid
           ## @user_home, @site_home, @app_home
           
+          say "Building the application structure in #{app_home}..."
           build_app_home
+          
+          @log_home = "#{app_home}/log"
+          say "Building the application log structure in #{log_home}..."
           build_app_logs
           
           config = generate_virtual_host_configuration
@@ -135,22 +139,22 @@ class Plow
           EOS
           
           commands.each_line do |command|
-            say(command)
+            system(command)
           end
         end
         
         def build_app_logs
           commands = <<-EOS
-            mkdir #{app_home}/log
-            mkdir #{app_home}/log/apache2
-            chmod 750 #{app_home}/log/apache2
+            mkdir #{log_home}
+            mkdir #{log_home}/apache2
+            chmod 750 #{log_home}/apache2
             
-            touch #{app_home}/log/apache2/access.log
-            touch #{app_home}/log/apache2/error.log
+            touch #{log_home}/apache2/access.log
+            touch #{log_home}/apache2/error.log
             chmod 640 *.log
             
-            chown -R #{context.user_name}:#{context.user_name} #{app_home}/log
-            chown root -R #{app_home}/log/apache2
+            chown -R #{context.user_name}:#{context.user_name} #{log_home}
+            chown root -R #{log_home}/apache2
           EOS
           
           commands.each_line do |command|
