@@ -179,13 +179,13 @@ class Plow
         end
         
         def install_virtual_host_configuration(config)
-          say("touch #{vhost_file_name}")
-          File.open(vhost_file_name, 'wt') { |f| f.write(config) }
-          say("a2siteen #{context.site_name}")
+          system("touch #{vhost_file_path}")
+          File.open(vhost_file_path, 'wt') { |f| f.write(config) }
+          system("a2ensite #{context.site_name}")
         end
         
         def restart_web_server
-          say("apache2ctl graceful")
+          system("apache2ctl graceful")
         end
       end
       
