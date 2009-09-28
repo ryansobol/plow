@@ -90,7 +90,7 @@ class Plow
           system_accounts do |account|
             if account[:user_name] == context.user_name
               unless account[:user_id] >= 1000 && account[:user_id] != 65534
-                raise Plow::ReservedSystemUserNameError
+                raise(Plow::ReservedSystemUserNameError, context.user_name)
               end
               return true
             end

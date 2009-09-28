@@ -42,6 +42,8 @@ MESSAGE
           abort "ERROR: #{invalid} is an invalid website alias"
         rescue Plow::NonRootProcessOwnerError
           abort "ERROR: This process must be owned or executed by root"
+        rescue Plow::ReservedSystemUserNameError => reserved_user_name
+          abort "ERROR: #{reserved_user_name} is a reserved system user name"
         end
         
       end

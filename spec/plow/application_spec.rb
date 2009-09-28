@@ -5,7 +5,7 @@ describe Plow::Application do
   
   ##################################################################################################
   
-  describe "\#launch when failing" do
+  describe ".launch when failing" do
     before(:each) do
       @expected_message = <<MESSAGE
 Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
@@ -44,7 +44,7 @@ MESSAGE
 
   ##################################################################################################
 
-  describe "\#launch when passing" do
+  describe ".launch when passing" do
     it "should start the generator with 2 arguments" do
       argv      = ['apple-steve', 'www.apple.com']
       generator = mock('generator')
@@ -84,7 +84,7 @@ MESSAGE
 
   ##################################################################################################
   
-  describe "\#new when handling errors" do
+  describe "when handling errors from Plow::Generator.new" do
     before(:each) do
       @bad_argv = ['bad user name', 'bad site name', 'bad site alias']
       $stderr   = StringIO.new
@@ -119,9 +119,11 @@ MESSAGE
     end
   end
   
-  describe "\#launch when handing errors" do
+  describe "when handing errors from Plow::Generator.run!" do
     before(:each) do
-      $stderr = StringIO.new
+      $stderr   = StringIO.new
+      @argv      = ['apple-steve', 'www.apple.com', 'apple.com']
+      @generator = mock('generator')
     end
     
     after(:each) do
@@ -129,17 +131,27 @@ MESSAGE
     end
     
     it "should render error message to the user for raised Plow::NonRootProcessOwnerError" do
-      argv           = ['apple-steve', 'www.apple.com', 'apple.com']
-      generator      = mock('generator')
       expected_error = Plow::NonRootProcessOwnerError
       
       Plow::Generator.should_receive(:new)
-        .with(*argv)
-        .and_return(generator)
-      generator.should_receive(:run!).and_raise(expected_error)
+        .with(*@argv)
+        .and_return(@generator)
+      @generator.should_receive(:run!).and_raise(expected_error)
       
       expected_message = "ERROR: This process must be owned or executed by root"
-      lambda { Plow::Application.launch(*argv) }.should raise_error(SystemExit, expected_message)
+      lambda { Plow::Application.launch(*@argv) }.should raise_error(SystemExit, expected_message)
+    end
+    
+    it "should render error message to the user for raised Plow::ReservedSystemUserNameError" do
+      expected_error = Plow::ReservedSystemUserNameError.new(@argv[0])
+      
+      Plow::Generator.should_receive(:new)
+        .with(*@argv)
+        .and_return(@generator)
+      @generator.should_receive(:run!).and_raise(expected_error)
+      
+      expected_message = "ERROR: #{@argv[0]} is a reserved system user name"
+      lambda { Plow::Application.launch(*@argv) }.should raise_error(SystemExit, expected_message)
     end
   end
 end
