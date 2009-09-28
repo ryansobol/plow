@@ -5,7 +5,7 @@ class Plow
     class UbuntuHardy
       
       class UserHomeWebApp
-        attr_reader :context, :users_file_path, :vhost_file_name, :vhost_file_path
+        attr_reader :context, :users_file_path, :vhost_file_name, :vhost_file_path, :vhost_template_file_path
         attr_reader :user_home_path, :sites_home_path, :app_root_path, :app_public_path, :app_log_path
         
         def initialize(context)
@@ -13,6 +13,8 @@ class Plow
           @users_file_path = "/etc/passwd"
           @vhost_file_name = "#{context.site_name}.conf"
           @vhost_file_path = "/etc/apache2/sites-available/#{vhost_file_name}"
+          
+          @vhost_template_file_path = "#{File.dirname(__FILE__)}/templates/apache2-vhost.conf"
         end
         
         def execute
@@ -190,9 +192,6 @@ class Plow
         ############################################################################################################
         
         def generate_virtual_host_configuration
-          template_file_name = 'apache2-vhost.conf'
-          template_contents  = File.read(File.join(context.template_pathname, template_file_name))
-          
           template_context = {
             :site_name       => context.site_name,
             :site_aliases    => context.site_aliases,
@@ -200,7 +199,7 @@ class Plow
             :app_log_path    => app_log_path
           }
           
-          context.evaluate_template(template_contents, template_context)
+          context.evaluate_template(vhost_template_file_path, template_context)
         end
         
         def install_virtual_host_configuration(config)

@@ -8,7 +8,6 @@ require 'plow/strategy/ubuntu_hardy/user_home_web_app'
 class Plow
   class Generator
     attr_reader :user_name, :site_name, :site_aliases
-    attr_reader :template_pathname
     attr_reader :strategy
     
     def initialize(user_name, site_name, *site_aliases)
@@ -30,8 +29,6 @@ class Plow
       @site_name    = site_name
       @site_aliases = site_aliases
       
-      @template_pathname = File.dirname(__FILE__) + '/templates'
-      
       @strategy = Plow::Strategy::UbuntuHardy::UserHomeWebApp.new(self)
     end
     
@@ -44,7 +41,8 @@ class Plow
       puts "--> #{message}"
     end
     
-    def evaluate_template(template, context)
+    def evaluate_template(template_path, context)
+      template = File.read(template_path)
       context_struct = Plow::BindingStruct.new(context)
       ERB.new(template).result(context_struct.get_binding)
     end

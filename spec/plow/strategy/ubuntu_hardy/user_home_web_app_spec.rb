@@ -49,8 +49,17 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       @strategy.users_file_path.should == '/etc/passwd'
     end
     
+    it "should set virtual host configuration file name" do
+      @strategy.vhost_file_name.should == "www.apple.com.conf"
+    end
+    
     it "should set virtual host configuration file path" do
       @strategy.vhost_file_path.should == "/etc/apache2/sites-available/www.apple.com.conf"
+    end
+    
+    it "should set virtual host configuration template file path" do
+      expected = File.expand_path(File.dirname(__FILE__) + '/../../../../lib/plow/strategy/ubuntu_hardy/templates/apache2-vhost.conf')
+      @strategy.vhost_template_file_path.should == expected
     end
   end
   

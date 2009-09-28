@@ -5,7 +5,7 @@ describe Plow::Generator do
   
   ##################################################################################################
   
-  describe "\#new when failing" do
+  describe ".new when failing" do
     it "should raise Plow::InvalidSystemUserNameError if first argument is blank" do
       lambda { Plow::Generator.new(nil, 'not-blank') }.should raise_error(Plow::InvalidSystemUserNameError, nil)
     end
@@ -33,10 +33,9 @@ describe Plow::Generator do
   
   ##################################################################################################
   
-  describe "\#new when passing with two good arguments" do
+  describe ".new when passing with two good arguments" do
     before(:each) do
-      @generator                  = Plow::Generator.new('apple-steve', 'www.apple.com')
-      @expected_template_pathname = File.expand_path(File.dirname(__FILE__) + '/../../lib/plow/templates')
+      @generator = Plow::Generator.new('apple-steve', 'www.apple.com')
     end
     
     it "should set user_name" do
@@ -51,10 +50,6 @@ describe Plow::Generator do
       @generator.site_aliases.should == []
     end
     
-    it "should set template pathname" do
-      @generator.template_pathname.should == @expected_template_pathname
-    end
-    
     it "should set strategy to an instance of Plow::Strategy::UbuntuHardy::UserHomeWebApp" do
       @generator.strategy.should be_an_instance_of(Plow::Strategy::UbuntuHardy::UserHomeWebApp)
     end
@@ -62,10 +57,9 @@ describe Plow::Generator do
   
   ##################################################################################################
   
-  describe "\#new when passing with three good arguments" do
+  describe ".new when passing with three good arguments" do
     before(:each) do
-      @expected_template_pathname = File.expand_path(File.dirname(__FILE__) + '/../../lib/plow/templates')
-      @generator                  = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+      @generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
     end
     
     it "should set user_name" do
@@ -80,10 +74,6 @@ describe Plow::Generator do
       @generator.site_aliases.should == ['apple.com']
     end
     
-    it "should set template pathname" do
-      @generator.template_pathname.should == @expected_template_pathname
-    end
-    
     it "should set strategy to an instance of Plow::Strategy::UbuntuHardy::UserHomeWebApp" do
       @generator.strategy.should be_an_instance_of(Plow::Strategy::UbuntuHardy::UserHomeWebApp)
     end
@@ -91,7 +81,7 @@ describe Plow::Generator do
   
   ##################################################################################################
   
-  describe "\#run! " do
+  describe ".run!" do
     it "should raise Plow::NonRootProcessOwnerError when process is owned by non-root user" do
       Process.stub!(:uid).and_return(1)
       generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
@@ -108,7 +98,7 @@ describe Plow::Generator do
   
   ##################################################################################################
   
-  describe "\#say " do
+  describe '#say' do
     before(:each) do
       $stdout    = StringIO.new
       @generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
@@ -127,14 +117,18 @@ describe Plow::Generator do
   
   ##################################################################################################
   
-  describe "\#evaluate_template " do
-    it "should accept a template data as a String and a context of elements as a Hash and evaluate them together" do
-      template_string = "Wow, you're so amazing, <%= @name %>!!!"
-      context_hash    = { name: 'Carl Sagan' }
-      expected_output = "Wow, you're so amazing, Carl Sagan!!!"      
+  describe '#evaluate_template' do
+    it "should accept a template path and a context Hash and evaluate them together" do
+      template_path   = FIXTURES_PATH + '/vhost.conf'
+      context_hash    = { site_name: 'www.apple.com' }
+      expected_output = <<-OUTPUT
+<VirtualHost *:80>
+  ServerName www.apple.com
+</VirtualHost>
+      OUTPUT
       
       generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
-      generator.evaluate_template(template_string, context_hash).should == expected_output
+      generator.evaluate_template(template_path, context_hash).should == expected_output
     end
   end
 end
