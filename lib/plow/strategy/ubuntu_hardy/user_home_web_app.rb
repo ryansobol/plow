@@ -53,15 +53,12 @@ class Plow
           @app_log_path = "#{app_root_path}/log"
           say "Creating the application log structure in #{app_log_path}..."
           create_app_logs
-
-          say "Generating the apache2 configuration from a template..."
-          config = generate_virtual_host_configuration
           
-          say "Installing configuration file to #{vhost_file_path}..."
-          install_virtual_host_configuration(config)
+          say "Installing apache2 vhost configuration file to #{vhost_file_path}..."
+          install_vhost_config
           
           say "Restarting apache2..."
-          restart_web_server
+          restart_apache2
         end
         
         ############################################################################################################
@@ -191,7 +188,7 @@ class Plow
         
         ############################################################################################################
         
-        def generate_virtual_host_configuration
+        def install_vhost_config
           template_context = {
             :site_name       => context.site_name,
             :site_aliases    => context.site_aliases,
@@ -199,19 +196,18 @@ class Plow
             :app_log_path    => app_log_path
           }
           
-          context.evaluate_template(vhost_template_file_path, template_context)
-        end
-        
-        def install_virtual_host_configuration(config)
-          system("touch #{vhost_file_path}")
-          File.open(vhost_file_path, 'wt') { |f| f.write(config) }
-          system("a2ensite #{vhost_file_name}")
+          File.open(vhost_file_path, 'wt') do |file|
+            config = context.evaluate_template(vhost_template_file_path, template_context)
+            file.write(config)
+          end
+          
+          shell "a2ensite #{vhost_file_name}"
         end
         
         ############################################################################################################
         
-        def restart_web_server
-          system("apache2ctl graceful")
+        def restart_apache2
+          shell "apache2ctl graceful"
         end
       end
       

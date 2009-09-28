@@ -314,4 +314,13 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       @strategy.send(:create_app_logs)
     end
   end
+  
+  ##################################################################################################
+  
+  describe '#restart_apache2 (private)' do
+    it "should do so gracefully" do
+      @strategy.should_receive(:shell).with('apache2ctl graceful')
+      @strategy.send(:restart_apache2)
+    end
+  end
 end
