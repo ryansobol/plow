@@ -6,7 +6,7 @@ class Plow
       
       class UserHomeWebApp
         attr_reader :context, :users_file_path, :vhost_file_name, :vhost_file_path
-        attr_reader :user_home, :sites_home, :app_home, :log_home
+        attr_reader :user_home_path, :sites_home_path, :app_root_path, :app_public_path, :app_log_path
         
         def initialize(context)
           @context         = context
@@ -16,39 +16,41 @@ class Plow
         end
         
         def execute
-          if system_account_exists?
+          if user_exists?
             say "System account (#{context.user_name}) already exists... skipping"
           else
             say "Creating system account for #{context.user_name}..."
-            create_system_account
+            create_user
           end
           
-          if system_account_home_exists?
-            say "System account home (#{user_home}) already exists... skipping"
+          if user_home_exists?
+            say "System account home (#{user_home_path}) already exists... skipping"
           else
-            say "Creating system account home (#{user_home})..."
-            create_system_account_home
+            say "Creating system account home (#{user_home_path})..."
+            create_user_home
           end
           
-          if system_account_sites_home_exists?
-            say "System account sites home (#{sites_home}) already exists... skipping"
+          if sites_home_exists?
+            say "System account sites home (#{sites_home_path}) already exists... skipping"
           else
-            say "Creating system account sites home (#{sites_home})..."
-            create_system_account_sites_home
+            say "Creating system account sites home (#{sites_home_path})..."
+            create_sites_home
           end
           
-          @app_home = "#{sites_home}/#{context.site_name}"
-          raise(Plow::AppHomeAlreadyExistsError, app_home) if Dir.exists?(app_home)
+          if app_root_exists?
+            raise(Plow::AppHomeAlreadyExistsError, app_root_path)
+          else
+            say "Creating the application home in #{app_root_path}"
+            create_app_root
+          end
           
-          ## we can now safely assume that the following instance variables are valid
-          ## @user_home, @site_home, @app_home
+          @app_public_path = "#{app_root_path}/public"
+          say "Building the application public structure in #{@app_public_path}..."
+          create_app_public
           
-          say "Building the application structure in #{app_home}..."
-          build_app_home
-          
-          @log_home = "#{app_home}/log"
-          say "Building the application log structure in #{log_home}..."
-          build_app_logs
+          @app_log_path = "#{app_root_path}/log"
+          say "Creating the application log structure in #{app_log_path}..."
+          create_app_logs
 
           say "Generating the apache2 configuration from a template..."
           config = generate_virtual_host_configuration
@@ -84,9 +86,16 @@ class Plow
           end
         end
         
+        def execute_lines(commands)
+          commands.each_line do |command|
+            command.strip!
+            system(command) unless command.blank?
+          end
+        end
+        
         ############################################################################################################
         
-        def system_account_exists?
+        def user_exists?
           system_accounts do |account|
             if account[:user_name] == context.user_name
               unless account[:user_id] >= 1000 && account[:user_id] != 65534
@@ -99,16 +108,16 @@ class Plow
           return false
         end
         
-        def create_system_account
-          system("adduser #{context.user_name}")
+        def create_user
+          execute_lines("adduser #{context.user_name}")
         end
         
         ############################################################################################################
         
-        def system_account_home_exists?
+        def user_home_exists?
           system_accounts do |account|
             if account[:user_name] == context.user_name
-              @user_home = account[:home_path]
+              @user_home_path = account[:home_path]
               return Dir.exists?(account[:home_path])
             end
           end
@@ -116,57 +125,66 @@ class Plow
           raise(Plow::SystemUserNameNotFoundError, context.user_name)
         end
         
-        def create_system_account_home
-          system("mkdir #{user_home}")
-          system("chown #{context.user_name}:#{context.user_name} #{user_home}")
+        def create_user_home
+          execute_lines(<<-LINES)
+            mkdir #{user_home_path}
+            chown #{context.user_name}:#{context.user_name} #{user_home_path}
+          LINES
         end
         
         ############################################################################################################
         
-        def system_account_sites_home_exists?
-          @sites_home = "#{user_home}/sites"
-          Dir.exists?(sites_home)
+        def sites_home_exists?
+          @sites_home_path = "#{user_home_path}/sites"
+          Dir.exists?(sites_home_path)
         end
         
-        def create_system_account_sites_home
-          system("mkdir #{sites_home}")
-          system("chown #{context.user_name}:#{context.user_name} #{sites_home}")
+        def create_sites_home
+          execute_lines(<<-LINES)
+            mkdir #{sites_home_path}
+            chown #{context.user_name}:#{context.user_name} #{sites_home_path}
+          LINES
         end
         
         ############################################################################################################
         
-        def build_app_home
-          commands = <<-EOS
-            mkdir #{app_home}
-            mkdir #{app_home}/public
-            
-            touch #{app_home}/public/index.html
-            
-            chown -R #{context.user_name}:#{context.user_name} #{app_home}
-          EOS
-          
-          commands.each_line do |command|
-            system(command)
-          end
+        def app_root_exists?
+          @app_root_path = "#{sites_home_path}/#{context.site_name}"
+          Dir.exists?(app_root_path)
         end
         
-        def build_app_logs
-          commands = <<-EOS
-            mkdir #{log_home}
-            mkdir #{log_home}/apache2
-            chmod 750 #{log_home}/apache2
+        def create_app_root
+          execute_lines(<<-LINES)
+            mkdir #{app_root_path}
+            chown #{context.user_name}:#{context.user_name} #{app_root_path}
+          LINES
+        end
+        
+        ############################################################################################################
+        
+        def create_app_public
+          execute_lines(<<-LINES)
+            mkdir #{app_public_path}
+            touch #{app_public_path}/index.html
+            chown -R #{context.user_name}:#{context.user_name} #{app_public_path}
+          LINES
+        end
+        
+        ############################################################################################################
+        
+        def create_app_logs
+          execute_lines(<<-LINES)
+            mkdir #{app_log_path}
+            mkdir #{app_log_path}/apache2
+            chmod 750 #{app_log_path}/apache2
             
-            touch #{log_home}/apache2/access.log
-            touch #{log_home}/apache2/error.log
-            chmod 640 #{log_home}/apache2/*.log
+            touch #{app_log_path}/apache2/access.log
+            touch #{app_log_path}/apache2/error.log
             
-            chown -R #{context.user_name}:#{context.user_name} #{log_home}
-            chown root -R #{log_home}/apache2
-          EOS
-          
-          commands.each_line do |command|
-            system(command)
-          end
+            chmod 640 #{app_log_path}/apache2/*.log
+            chown -R #{context.user_name}:#{context.user_name} #{app_log_path}
+            chown root -R #{app_log_path}/apache2
+          LINES
         end
         
         ############################################################################################################
@@ -176,10 +194,10 @@ class Plow
           template_contents  = File.read(File.join(context.template_pathname, template_file_name))
           
           template_context = {
-            :site_name    => context.site_name,
-            :site_aliases => context.site_aliases,
-            :app_home     => app_home,
-            :log_home     => log_home
+            :site_name       => context.site_name,
+            :site_aliases    => context.site_aliases,
+            :app_public_path => app_public_path,
+            :app_log_path    => app_log_path
           }
           
           context.evaluate_template(template_contents, template_context)
@@ -190,6 +208,8 @@ class Plow
           File.open(vhost_file_path, 'wt') { |f| f.write(config) }
           system("a2ensite #{vhost_file_name}")
         end
+        
+        ############################################################################################################
         
         def restart_web_server
           system("apache2ctl graceful")

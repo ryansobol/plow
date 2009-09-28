@@ -50,7 +50,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     end
     
     it "should set virtual host configuration file path" do
-      @strategy.vhost_file_path.should == "/etc/apache2/sites-available/#{@context.site_name}.conf"
+      @strategy.vhost_file_path.should == "/etc/apache2/sites-available/www.apple.com.conf"
     end
   end
   
@@ -78,51 +78,75 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   ##################################################################################################
   
-  describe "\#system_account_exists? (private)" do
+  describe '#execute_lines (private)' do
+    it "should invoke a system call for a single-line command String" do
+      command = " echo * "
+      @strategy.should_receive(:system).with(command.strip)
+      @strategy.send(:execute_lines, command)
+    end
+    
+    it "should invoke a system call for a multi-line command String" do
+      commands = <<-COMMANDS
+        echo *
+        
+        ls -al
+      COMMANDS
+      
+      commands.each_line do |command|
+        command.strip!
+        @strategy.should_receive(:system).with(command) unless command.blank?
+      end
+      @strategy.send(:execute_lines, commands)
+    end
+  end
+  
+  ##################################################################################################
+  
+  describe "\#user_exists? (private)" do
     before(:each) do
       @strategy.stub!(:users_file_path).and_return(FIXTURES_PATH + '/passwd.txt')
     end
     
     it "should raise Plow::ReservedSystemUserNameError for a system account where user id < 1000" do
       @context.stub!(:user_name).and_return('sshd')
-      lambda { @strategy.send(:system_account_exists?) }.should raise_error(Plow::ReservedSystemUserNameError, @context.user_name)
+      lambda { @strategy.send(:user_exists?) }.should raise_error(Plow::ReservedSystemUserNameError, @context.user_name)
     end
     
     it "should raise Plow::ReservedSystemUserNameError for a system account where user id == 65534" do
       @context.stub!(:user_name).and_return('nobody')
-      lambda { @strategy.send(:system_account_exists?) }.should raise_error(Plow::ReservedSystemUserNameError, @context.user_name)
+      lambda { @strategy.send(:user_exists?) }.should raise_error(Plow::ReservedSystemUserNameError, @context.user_name)
     end
     
     it "should return false when no matching non-system account is found" do
       @context.stub!(:user_name).and_return('microsoft-steve')
-      @strategy.send(:system_account_exists?).should be_false
+      @strategy.send(:user_exists?).should be_false
     end
     
     it "should return true when a matching non-system account is found" do
       @context.stub!(:user_name).and_return('apple-steve')
-      @strategy.send(:system_account_exists?).should be_true
+      @strategy.send(:user_exists?).should be_true
     end
   end
   
   ##################################################################################################
   
-  describe "\#create_system_account (private)" do
+  describe "\#create_user (private)" do
     it "should invoke a adduser as a system call" do
-      @strategy.should_receive(:system).with("adduser #{@context.user_name}")
-      @strategy.send(:create_system_account)
+      @strategy.should_receive(:execute_lines).with("adduser apple-steve")
+      @strategy.send(:create_user)
     end
   end
   
   ##################################################################################################
   
-  describe "\#system_account_home_exists? (private)" do
+  describe "\#user_home_exists? (private)" do
     before(:each) do
       @strategy.stub!(:users_file_path).and_return(FIXTURES_PATH + '/passwd.txt')
     end
     
     it "should raise Plow::SystemUserNameNotFoundError if no matching user name is found" do
       @context.stub!(:user_name).and_return('microsoft-steve')
-      lambda { @strategy.send(:system_account_home_exists?) }.should raise_error(Plow::SystemUserNameNotFoundError, @context.user_name)
+      lambda { @strategy.send(:user_home_exists?) }.should raise_error(Plow::SystemUserNameNotFoundError, @context.user_name)
     end
     
     describe "when home directory exists for existing user" do
@@ -133,12 +157,12 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       end
       
       it "should return true" do
-        @strategy.send(:system_account_home_exists?).should be_true
+        @strategy.send(:user_home_exists?).should be_true
       end
       
       it "should set user home variable to correct home path" do
-        @strategy.send(:system_account_home_exists?)
-        @strategy.user_home.should == @account[:home_path]
+        @strategy.send(:user_home_exists?)
+        @strategy.user_home_path.should == @account[:home_path]
       end
     end
     
@@ -150,67 +174,135 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       end
       
       it "should return false" do
-        @strategy.send(:system_account_home_exists?).should be_false
+        @strategy.send(:user_home_exists?).should be_false
       end
       
       it "should set user home variable to correct home path" do
-        @strategy.send(:system_account_home_exists?)
-        @strategy.user_home.should == @account[:home_path]
+        @strategy.send(:user_home_exists?)
+        @strategy.user_home_path.should == @account[:home_path]
       end
     end
   end
   
   ##################################################################################################
   
-  describe "\#create_system_account_home (private)" do
+  describe "\#create_user_home (private)" do
     it "should create a user home with the correct ownership" do
-      @strategy.stub!(:user_home).and_return("/home/apple-steve")
-      @strategy.should_receive(:system)
-        .with("mkdir #{@strategy.user_home}")
-        .ordered
-      @strategy.should_receive(:system)
-        .with("chown #{@context.user_name}:#{@context.user_name} #{@strategy.user_home}")
-        .ordered
-      @strategy.send(:create_system_account_home)
+      @strategy.stub!(:user_home_path).and_return("/home/apple-steve")
+      @strategy.should_receive(:execute_lines).with(<<-COMMANDS)
+            mkdir /home/apple-steve
+            chown apple-steve:apple-steve /home/apple-steve
+      COMMANDS
+      @strategy.send(:create_user_home)
     end
   end
   
   ##################################################################################################
   
-  describe "\#system_account_sites_home_exists? (private)" do
+  describe "\#sites_home_exists? (private)" do
     before(:each) do
       @account = @parsed_passwd_fixture.last
-      @strategy.stub!(:user_home).and_return(@account[:home_path])
+      @strategy.stub!(:user_home_path).and_return(@account[:home_path])
     end
     
     it "should set sites home variable" do
-      @strategy.send(:system_account_sites_home_exists?)
-      @strategy.sites_home.should == "#{@account[:home_path]}/sites"
+      @strategy.send(:sites_home_exists?)
+      @strategy.sites_home_path.should == "/home/apple-steve/sites"
     end
     
     it "should return true if the directory exists" do
       Dir.should_receive(:exists?).and_return(true)
-      @strategy.send(:system_account_sites_home_exists?).should be_true
+      @strategy.send(:sites_home_exists?).should be_true
     end
     
     it "should return false if the directory does not exist" do
       Dir.should_receive(:exists?).and_return(false)
-      @strategy.send(:system_account_sites_home_exists?).should be_false
+      @strategy.send(:sites_home_exists?).should be_false
     end
   end
   
   ##################################################################################################
   
-  describe "\#create_system_account_sites_home (private)" do
+  describe "\#create_sites_home (private)" do
     it "should create a sites home with the correct ownership" do
-      @strategy.stub!(:user_home).and_return("/home/apple-steve/sites")
-      @strategy.should_receive(:system)
-        .with("mkdir #{@strategy.sites_home}")
-        .ordered
-      @strategy.should_receive(:system)
-        .with("chown #{@context.user_name}:#{@context.user_name} #{@strategy.sites_home}")
-        .ordered
-      @strategy.send(:create_system_account_sites_home)
+      @strategy.stub!(:sites_home_path).and_return("/home/apple-steve/sites")
+      @strategy.should_receive(:execute_lines).with(<<-COMMANDS)
+            mkdir /home/apple-steve/sites
+            chown apple-steve:apple-steve /home/apple-steve/sites
+      COMMANDS
+      @strategy.send(:create_sites_home)
+    end
+  end
+  
+  ##################################################################################################
+  
+  describe "\#app_root_exists? (private)" do
+    before(:each) do
+      @account = @parsed_passwd_fixture.last
+      @strategy.stub!(:sites_home_path).and_return("#{@account[:home_path]}/sites")
+    end
+    
+    it "should set sites home variable" do
+      @strategy.send(:app_root_exists?)
+      @strategy.app_root_path.should == "/home/apple-steve/sites/www.apple.com"
+    end
+    
+    it "should return true if the directory exists" do
+      Dir.should_receive(:exists?).and_return(true)
+      @strategy.send(:app_root_exists?).should be_true
+    end
+    
+    it "should return false if the directory does not exist" do
+      Dir.should_receive(:exists?).and_return(false)
+      @strategy.send(:app_root_exists?).should be_false
+    end
+  end
+  
+  ##################################################################################################
+  
+  describe '#create_app_root (private)' do
+    it "should create an application home correctly" do
+      @strategy.stub!(:app_root_path).and_return('/home/apple-steve/sites/www.apple.com')
+      @strategy.should_receive(:execute_lines).with(<<-COMMANDS)
+            mkdir /home/apple-steve/sites/www.apple.com
+            chown apple-steve:apple-steve /home/apple-steve/sites/www.apple.com
+      COMMANDS
+      @strategy.send(:create_app_root)
+    end
+  end
+  
+  ##################################################################################################
+  
+  describe '#create_app_public (private)' do
+    it "should build an application's public files correctly" do
+      @strategy.stub!(:app_public_path).and_return('/home/apple-steve/sites/www.apple.com/public')
+      @strategy.should_receive(:execute_lines).with(<<-COMMANDS)
+            mkdir /home/apple-steve/sites/www.apple.com/public
+            touch /home/apple-steve/sites/www.apple.com/public/index.html
+            chown -R apple-steve:apple-steve /home/apple-steve/sites/www.apple.com/public
+      COMMANDS
+      @strategy.send(:create_app_public)
+    end
+  end
+  
+  ##################################################################################################
+  
+  describe '#create_app_logs (private)' do
+    it "should build an application's log files correctly" do
+      @strategy.stub!(:app_log_path).and_return('/home/apple-steve/sites/www.apple.com/log')
+      @strategy.should_receive(:execute_lines).with(<<-COMMANDS)
+            mkdir /home/apple-steve/sites/www.apple.com/log
+            mkdir /home/apple-steve/sites/www.apple.com/log/apache2
+            chmod 750 /home/apple-steve/sites/www.apple.com/log/apache2
+            
+            touch /home/apple-steve/sites/www.apple.com/log/apache2/access.log
+            touch /home/apple-steve/sites/www.apple.com/log/apache2/error.log
+            
+            chmod 640 /home/apple-steve/sites/www.apple.com/log/apache2/*.log
+            chown -R apple-steve:apple-steve /home/apple-steve/sites/www.apple.com/log
+            chown root -R /home/apple-steve/sites/www.apple.com/log/apache2
+      COMMANDS
+      @strategy.send(:create_app_logs)
     end
   end
 end
