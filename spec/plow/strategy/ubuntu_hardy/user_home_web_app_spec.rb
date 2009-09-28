@@ -6,34 +6,34 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     @context  = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
     @strategy = Plow::Strategy::UbuntuHardy::UserHomeWebApp.new(@context)      
     
-    @parsed_passwd_fixture = [ 
-      { user_name: "root",          password: "x", user_id: 0,      group_id: 0,     user_info: "root",                               home_path: "/root",              shell_path: "/bin/bash" }, 
-      { user_name: "daemon",        password: "x", user_id: 1,      group_id: 1,     user_info: "daemon",                             home_path: "/usr/sbin",          shell_path: "/bin/sh" }, 
-      { user_name: "bin",           password: "x", user_id: 2,      group_id: 2,     user_info: "bin",                                home_path: "/bin",               shell_path: "/bin/sh" }, 
-      { user_name: "sys",           password: "x", user_id: 3,      group_id: 3,     user_info: "sys",                                home_path: "/dev",               shell_path: "/bin/sh" }, 
-      { user_name: "sync",          password: "x", user_id: 4,      group_id: 65534, user_info: "sync",                               home_path: "/bin",               shell_path: "/bin/sync" }, 
-      { user_name: "games",         password: "x", user_id: 5,      group_id: 60,    user_info: "games",                              home_path: "/usr/games",         shell_path: "/bin/sh" }, 
-      { user_name: "man",           password: "x", user_id: 6,      group_id: 12,    user_info: "man",                                home_path: "/var/cache/man",     shell_path: "/bin/sh" }, 
-      { user_name: "lp",            password: "x", user_id: 7,      group_id: 7,     user_info: "lp",                                 home_path: "/var/spool/lpd",     shell_path: "/bin/sh" }, 
-      { user_name: "mail",          password: "x", user_id: 8,      group_id: 8,     user_info: "mail",                               home_path: "/var/mail",          shell_path: "/bin/sh" }, 
-      { user_name: "news",          password: "x", user_id: 9,      group_id: 9,     user_info: "news",                               home_path: "/var/spool/news",    shell_path: "/bin/sh" }, 
-      { user_name: "uucp",          password: "x", user_id: 10,     group_id: 10,    user_info: "uucp",                               home_path: "/var/spool/uucp",    shell_path: "/bin/sh" }, 
-      { user_name: "proxy",         password: "x", user_id: 13,     group_id: 13,    user_info: "proxy",                              home_path: "/bin",               shell_path: "/bin/sh" }, 
-      { user_name: "www-data",      password: "x", user_id: 33,     group_id: 33,    user_info: "www-data",                           home_path: "/var/www",           shell_path: "/bin/sh" }, 
-      { user_name: "backup",        password: "x", user_id: 34,     group_id: 34,    user_info: "backup",                             home_path: "/var/backups",       shell_path: "/bin/sh" }, 
-      { user_name: "list",          password: "x", user_id: 38,     group_id: 38,    user_info: "Mailing List Manager",               home_path: "/var/list",          shell_path: "/bin/sh" }, 
-      { user_name: "irc",           password: "x", user_id: 39,     group_id: 39,    user_info: "ircd",                               home_path: "/var/run/ircd",      shell_path: "/bin/sh" }, 
-      { user_name: "gnats",         password: "x", user_id: 41,     group_id: 41,    user_info: "Gnats Bug-Reporting System (admin)", home_path: "/var/lib/gnats",     shell_path: "/bin/sh" }, 
-      { user_name: "nobody",        password: "x", user_id: 65534,  group_id: 65534, user_info: "nobody",                             home_path: "/nonexistent",       shell_path: "/bin/sh" }, 
-      { user_name: "libuuid",       password: "x", user_id: 100,    group_id: 101,   user_info: "",                                   home_path: "/var/lib/libuuid",   shell_path: "/bin/sh" }, 
-      { user_name: "dhcp",          password: "x", user_id: 101,    group_id: 102,   user_info: "",                                   home_path: "/nonexistent",       shell_path: "/bin/false" }, 
-      { user_name: "syslog",        password: "x", user_id: 102,    group_id: 103,   user_info: "",                                   home_path: "/home/syslog",       shell_path: "/bin/false" }, 
-      { user_name: "klog",          password: "x", user_id: 103,    group_id: 104,   user_info: "",                                   home_path: "/home/klog",         shell_path: "/bin/false" }, 
-      { user_name: "sshd",          password: "x", user_id: 104,    group_id: 65534, user_info: "",                                   home_path: "/var/run/sshd",      shell_path: "/usr/sbin/nologin" }, 
-      { user_name: "Debian-exim",   password: "x", user_id: 105,    group_id: 109,   user_info: "",                                   home_path: "/var/spool/exim4",   shell_path: "/bin/false" }, 
-      { user_name: "sadmin",        password: "x", user_id: 1000,   group_id: 1000,  user_info: ",,,",                                home_path: "/home/sadmin",       shell_path: "/bin/bash" }, 
-      { user_name: "mysql",         password: "x", user_id: 106,    group_id: 111,   user_info: "MySQL Server,,,",                    home_path: "/var/lib/mysql",     shell_path: "/bin/false" }, 
-      { user_name: "apple-steve",   password: "x", user_id: 1001,   group_id: 1001,  user_info: ",,,",                                home_path: "/home/apple-steve",  shell_path: "/bin/bash" }
+    @parsed_users_fixture = [ 
+      { name: "root",          password: "x", id: 0,      group_id: 0,     info: "root",                               home_path: "/root",              shell_path: "/bin/bash" }, 
+      { name: "daemon",        password: "x", id: 1,      group_id: 1,     info: "daemon",                             home_path: "/usr/sbin",          shell_path: "/bin/sh" }, 
+      { name: "bin",           password: "x", id: 2,      group_id: 2,     info: "bin",                                home_path: "/bin",               shell_path: "/bin/sh" }, 
+      { name: "sys",           password: "x", id: 3,      group_id: 3,     info: "sys",                                home_path: "/dev",               shell_path: "/bin/sh" }, 
+      { name: "sync",          password: "x", id: 4,      group_id: 65534, info: "sync",                               home_path: "/bin",               shell_path: "/bin/sync" }, 
+      { name: "games",         password: "x", id: 5,      group_id: 60,    info: "games",                              home_path: "/usr/games",         shell_path: "/bin/sh" }, 
+      { name: "man",           password: "x", id: 6,      group_id: 12,    info: "man",                                home_path: "/var/cache/man",     shell_path: "/bin/sh" }, 
+      { name: "lp",            password: "x", id: 7,      group_id: 7,     info: "lp",                                 home_path: "/var/spool/lpd",     shell_path: "/bin/sh" }, 
+      { name: "mail",          password: "x", id: 8,      group_id: 8,     info: "mail",                               home_path: "/var/mail",          shell_path: "/bin/sh" }, 
+      { name: "news",          password: "x", id: 9,      group_id: 9,     info: "news",                               home_path: "/var/spool/news",    shell_path: "/bin/sh" }, 
+      { name: "uucp",          password: "x", id: 10,     group_id: 10,    info: "uucp",                               home_path: "/var/spool/uucp",    shell_path: "/bin/sh" }, 
+      { name: "proxy",         password: "x", id: 13,     group_id: 13,    info: "proxy",                              home_path: "/bin",               shell_path: "/bin/sh" }, 
+      { name: "www-data",      password: "x", id: 33,     group_id: 33,    info: "www-data",                           home_path: "/var/www",           shell_path: "/bin/sh" }, 
+      { name: "backup",        password: "x", id: 34,     group_id: 34,    info: "backup",                             home_path: "/var/backups",       shell_path: "/bin/sh" }, 
+      { name: "list",          password: "x", id: 38,     group_id: 38,    info: "Mailing List Manager",               home_path: "/var/list",          shell_path: "/bin/sh" }, 
+      { name: "irc",           password: "x", id: 39,     group_id: 39,    info: "ircd",                               home_path: "/var/run/ircd",      shell_path: "/bin/sh" }, 
+      { name: "gnats",         password: "x", id: 41,     group_id: 41,    info: "Gnats Bug-Reporting System (admin)", home_path: "/var/lib/gnats",     shell_path: "/bin/sh" }, 
+      { name: "nobody",        password: "x", id: 65534,  group_id: 65534, info: "nobody",                             home_path: "/nonexistent",       shell_path: "/bin/sh" }, 
+      { name: "libuuid",       password: "x", id: 100,    group_id: 101,   info: "",                                   home_path: "/var/lib/libuuid",   shell_path: "/bin/sh" }, 
+      { name: "dhcp",          password: "x", id: 101,    group_id: 102,   info: "",                                   home_path: "/nonexistent",       shell_path: "/bin/false" }, 
+      { name: "syslog",        password: "x", id: 102,    group_id: 103,   info: "",                                   home_path: "/home/syslog",       shell_path: "/bin/false" }, 
+      { name: "klog",          password: "x", id: 103,    group_id: 104,   info: "",                                   home_path: "/home/klog",         shell_path: "/bin/false" }, 
+      { name: "sshd",          password: "x", id: 104,    group_id: 65534, info: "",                                   home_path: "/var/run/sshd",      shell_path: "/usr/sbin/nologin" }, 
+      { name: "Debian-exim",   password: "x", id: 105,    group_id: 109,   info: "",                                   home_path: "/var/spool/exim4",   shell_path: "/bin/false" }, 
+      { name: "sadmin",        password: "x", id: 1000,   group_id: 1000,  info: ",,,",                                home_path: "/home/sadmin",       shell_path: "/bin/bash" }, 
+      { name: "mysql",         password: "x", id: 106,    group_id: 111,   info: "MySQL Server,,,",                    home_path: "/var/lib/mysql",     shell_path: "/bin/false" }, 
+      { name: "apple-steve",   password: "x", id: 1001,   group_id: 1001,  info: ",,,",                                home_path: "/home/apple-steve",  shell_path: "/bin/bash" }
     ]
     
   end
@@ -66,12 +66,12 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   ##################################################################################################
   
-  describe "\#system_accounts (private)" do
+  describe "\#users (private)" do
     it "should read and parse a system accounts file (e.g. /etc/passwd)" do
       @strategy.stub!(:users_file_path).and_return(FIXTURES_PATH + '/passwd.txt')
       
-      @strategy.send(:system_accounts) do |system_account|
-        system_account.should == @parsed_passwd_fixture.shift
+      @strategy.send(:users) do |user|
+        user.should == @parsed_users_fixture.shift
       end
     end
   end
@@ -151,8 +151,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     
     describe "when home directory exists for existing user" do
       before(:each) do
-        @account = @parsed_passwd_fixture.last
-        @context.stub!(:user_name).and_return(@account[:user_name])
+        @user = @parsed_users_fixture.last
+        @context.stub!(:user_name).and_return(@user[:name])
         Dir.should_receive(:exists?).and_return(true)
       end
       
@@ -162,14 +162,14 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       
       it "should set user home variable to correct home path" do
         @strategy.send(:user_home_exists?)
-        @strategy.user_home_path.should == @account[:home_path]
+        @strategy.user_home_path.should == @user[:home_path]
       end
     end
     
     describe "when home directory does not exist for existing user" do
       before(:each) do
-        @account = @parsed_passwd_fixture.last
-        @context.stub!(:user_name).and_return(@account[:user_name])
+        @user = @parsed_users_fixture.last
+        @context.stub!(:user_name).and_return(@user[:name])
         Dir.should_receive(:exists?).and_return(false)
       end
       
@@ -179,7 +179,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       
       it "should set user home variable to correct home path" do
         @strategy.send(:user_home_exists?)
-        @strategy.user_home_path.should == @account[:home_path]
+        @strategy.user_home_path.should == @user[:home_path]
       end
     end
   end
@@ -201,8 +201,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   describe "\#sites_home_exists? (private)" do
     before(:each) do
-      @account = @parsed_passwd_fixture.last
-      @strategy.stub!(:user_home_path).and_return(@account[:home_path])
+      @user = @parsed_users_fixture.last
+      @strategy.stub!(:user_home_path).and_return(@user[:home_path])
     end
     
     it "should set sites home variable" do
@@ -238,8 +238,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   describe "\#app_root_exists? (private)" do
     before(:each) do
-      @account = @parsed_passwd_fixture.last
-      @strategy.stub!(:sites_home_path).and_return("#{@account[:home_path]}/sites")
+      @user = @parsed_users_fixture.last
+      @strategy.stub!(:sites_home_path).and_return("#{@user[:home_path]}/sites")
     end
     
     it "should set sites home variable" do

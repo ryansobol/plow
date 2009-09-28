@@ -17,23 +17,23 @@ class Plow
         
         def execute
           if user_exists?
-            say "System account (#{context.user_name}) already exists... skipping"
+            say "User (#{context.user_name}) already exists... skipping"
           else
-            say "Creating system account for #{context.user_name}..."
+            say "Creating user for #{context.user_name}..."
             create_user
           end
           
           if user_home_exists?
-            say "System account home (#{user_home_path}) already exists... skipping"
+            say "User home (#{user_home_path}) already exists... skipping"
           else
-            say "Creating system account home (#{user_home_path})..."
+            say "Creating user home (#{user_home_path})..."
             create_user_home
           end
           
           if sites_home_exists?
-            say "System account sites home (#{sites_home_path}) already exists... skipping"
+            say "Sites home (#{sites_home_path}) already exists... skipping"
           else
-            say "Creating system account sites home (#{sites_home_path})..."
+            say "Sites home (#{sites_home_path})..."
             create_sites_home
           end
           
@@ -70,19 +70,19 @@ class Plow
           context.say(message)
         end
         
-        def system_accounts(&block)
+        def users(&block)
           File.readlines(users_file_path).each do |user_line|
             user_line = user_line.chomp.split(':')
-            user_hash = {
-              :user_name  => user_line[0],
+            user = {
+              :name       => user_line[0],
               :password   => user_line[1],
-              :user_id    => user_line[2].to_i,
+              :id         => user_line[2].to_i,
               :group_id   => user_line[3].to_i,
-              :user_info  => user_line[4],
+              :info       => user_line[4],
               :home_path  => user_line[5],
               :shell_path => user_line[6]
             }
-            yield user_hash
+            yield user
           end
         end
         
@@ -96,9 +96,9 @@ class Plow
         ############################################################################################################
         
         def user_exists?
-          system_accounts do |account|
-            if account[:user_name] == context.user_name
-              unless account[:user_id] >= 1000 && account[:user_id] != 65534
+          users do |user|
+            if user[:name] == context.user_name
+              unless user[:id] >= 1000 && user[:id] != 65534
                 raise(Plow::ReservedSystemUserNameError, context.user_name)
               end
               return true
@@ -115,10 +115,10 @@ class Plow
         ############################################################################################################
         
         def user_home_exists?
-          system_accounts do |account|
-            if account[:user_name] == context.user_name
-              @user_home_path = account[:home_path]
-              return Dir.exists?(account[:home_path])
+          users do |user|
+            if user[:name] == context.user_name
+              @user_home_path = user[:home_path]
+              return Dir.exists?(user[:home_path])
             end
           end
           
