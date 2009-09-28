@@ -78,11 +78,11 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   ##################################################################################################
   
-  describe '#execute_lines (private)' do
+  describe '#shell (private)' do
     it "should invoke a system call for a single-line command String" do
       command = " echo * "
       @strategy.should_receive(:system).with(command.strip)
-      @strategy.send(:execute_lines, command)
+      @strategy.send(:shell, command)
     end
     
     it "should invoke a system call for a multi-line command String" do
@@ -96,7 +96,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
         command.strip!
         @strategy.should_receive(:system).with(command) unless command.blank?
       end
-      @strategy.send(:execute_lines, commands)
+      @strategy.send(:shell, commands)
     end
   end
   
@@ -132,7 +132,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   describe "\#create_user (private)" do
     it "should invoke a adduser as a system call" do
-      @strategy.should_receive(:execute_lines).with("adduser apple-steve")
+      @strategy.should_receive(:shell).with("adduser apple-steve")
       @strategy.send(:create_user)
     end
   end
@@ -189,7 +189,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   describe "\#create_user_home (private)" do
     it "should create a user home with the correct ownership" do
       @strategy.stub!(:user_home_path).and_return("/home/apple-steve")
-      @strategy.should_receive(:execute_lines).with(<<-COMMANDS)
+      @strategy.should_receive(:shell).with(<<-COMMANDS)
             mkdir /home/apple-steve
             chown apple-steve:apple-steve /home/apple-steve
       COMMANDS
@@ -226,7 +226,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   describe "\#create_sites_home (private)" do
     it "should create a sites home with the correct ownership" do
       @strategy.stub!(:sites_home_path).and_return("/home/apple-steve/sites")
-      @strategy.should_receive(:execute_lines).with(<<-COMMANDS)
+      @strategy.should_receive(:shell).with(<<-COMMANDS)
             mkdir /home/apple-steve/sites
             chown apple-steve:apple-steve /home/apple-steve/sites
       COMMANDS
@@ -263,7 +263,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   describe '#create_app_root (private)' do
     it "should create an application home correctly" do
       @strategy.stub!(:app_root_path).and_return('/home/apple-steve/sites/www.apple.com')
-      @strategy.should_receive(:execute_lines).with(<<-COMMANDS)
+      @strategy.should_receive(:shell).with(<<-COMMANDS)
             mkdir /home/apple-steve/sites/www.apple.com
             chown apple-steve:apple-steve /home/apple-steve/sites/www.apple.com
       COMMANDS
@@ -276,7 +276,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   describe '#create_app_public (private)' do
     it "should build an application's public files correctly" do
       @strategy.stub!(:app_public_path).and_return('/home/apple-steve/sites/www.apple.com/public')
-      @strategy.should_receive(:execute_lines).with(<<-COMMANDS)
+      @strategy.should_receive(:shell).with(<<-COMMANDS)
             mkdir /home/apple-steve/sites/www.apple.com/public
             touch /home/apple-steve/sites/www.apple.com/public/index.html
             chown -R apple-steve:apple-steve /home/apple-steve/sites/www.apple.com/public
@@ -290,7 +290,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   describe '#create_app_logs (private)' do
     it "should build an application's log files correctly" do
       @strategy.stub!(:app_log_path).and_return('/home/apple-steve/sites/www.apple.com/log')
-      @strategy.should_receive(:execute_lines).with(<<-COMMANDS)
+      @strategy.should_receive(:shell).with(<<-COMMANDS)
             mkdir /home/apple-steve/sites/www.apple.com/log
             mkdir /home/apple-steve/sites/www.apple.com/log/apache2
             chmod 750 /home/apple-steve/sites/www.apple.com/log/apache2

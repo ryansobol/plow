@@ -86,7 +86,7 @@ class Plow
           end
         end
         
-        def execute_lines(commands)
+        def shell(commands)
           commands.each_line do |command|
             command.strip!
             system(command) unless command.blank?
@@ -109,7 +109,7 @@ class Plow
         end
         
         def create_user
-          execute_lines("adduser #{context.user_name}")
+          shell "adduser #{context.user_name}"
         end
         
         ############################################################################################################
@@ -126,10 +126,10 @@ class Plow
         end
         
         def create_user_home
-          execute_lines(<<-LINES)
+          shell <<-RUN
             mkdir #{user_home_path}
             chown #{context.user_name}:#{context.user_name} #{user_home_path}
-          LINES
+          RUN
         end
         
         ############################################################################################################
@@ -140,10 +140,10 @@ class Plow
         end
         
         def create_sites_home
-          execute_lines(<<-LINES)
+          shell <<-RUN
             mkdir #{sites_home_path}
             chown #{context.user_name}:#{context.user_name} #{sites_home_path}
-          LINES
+          RUN
         end
         
         ############################################################################################################
@@ -154,26 +154,26 @@ class Plow
         end
         
         def create_app_root
-          execute_lines(<<-LINES)
+          shell <<-RUN
             mkdir #{app_root_path}
             chown #{context.user_name}:#{context.user_name} #{app_root_path}
-          LINES
+          RUN
         end
         
         ############################################################################################################
         
         def create_app_public
-          execute_lines(<<-LINES)
+          shell <<-RUN
             mkdir #{app_public_path}
             touch #{app_public_path}/index.html
             chown -R #{context.user_name}:#{context.user_name} #{app_public_path}
-          LINES
+          RUN
         end
         
         ############################################################################################################
         
         def create_app_logs
-          execute_lines(<<-LINES)
+          shell <<-RUN
             mkdir #{app_log_path}
             mkdir #{app_log_path}/apache2
             chmod 750 #{app_log_path}/apache2
@@ -184,7 +184,7 @@ class Plow
             chmod 640 #{app_log_path}/apache2/*.log
             chown -R #{context.user_name}:#{context.user_name} #{app_log_path}
             chown root -R #{app_log_path}/apache2
-          LINES
+          RUN
         end
         
         ############################################################################################################
