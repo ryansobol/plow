@@ -20,7 +20,7 @@ Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
   Description:
     1. Ensure both a system user account and user home exist
     2. Lay the foundation of a simple website home
-    3. Generate and install a VirtualHost apache2 configuration
+    3. Generate and install an apache2 VirtualHost configuration
 
   Example:
     plow apple-steve www.apple.com apple.com
