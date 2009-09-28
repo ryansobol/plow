@@ -46,6 +46,8 @@ MESSAGE
           abort "ERROR: #{reserved_user_name} is a reserved system user name"
         rescue Plow::SystemUserNameNotFoundError => not_found
           abort "ERROR: System user name #{not_found} cannot be found when it should exist"
+        rescue Plow::AppHomeAlreadyExistsError => already_exists
+          abort "ERROR: Application home path #{already_exists} already exists"
         end
         
       end

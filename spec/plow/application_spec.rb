@@ -165,5 +165,18 @@ MESSAGE
       expected_message = "ERROR: System user name #{@argv[0]} cannot be found when it should exist"
       lambda { Plow::Application.launch(*@argv) }.should raise_error(SystemExit, expected_message)
     end
+    
+    it "should render error message to the user for raised Plow::AppHomeAlreadyExistsError" do
+      app_home_path = "/home/#{@argv[0]}/sites/#{@argv[1]}"
+      expected_error = Plow::AppHomeAlreadyExistsError.new(app_home_path)
+      
+      Plow::Generator.should_receive(:new)
+        .with(*@argv)
+        .and_return(@generator)
+      @generator.should_receive(:run!).and_raise(expected_error)
+      
+      expected_message = "ERROR: Application home path #{app_home_path} already exists"
+      lambda { Plow::Application.launch(*@argv) }.should raise_error(SystemExit, expected_message)
+    end
   end
 end
