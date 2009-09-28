@@ -90,7 +90,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     
     it "should raise Plow::ReservedSystemUserNameError for a system account where user id == 65534" do
       @context.stub!(:user_name).and_return('nobody')
-      lambda { @strategy.send(:system_account_exists?) }.should raise_error(Plow::ReservedSystemUserNameError)
+      lambda { @strategy.send(:system_account_exists?) }.should raise_error(Plow::ReservedSystemUserNameError, @context.user_name)
     end
     
     it "should return false when no matching non-system account is found" do
@@ -122,7 +122,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     
     it "should raise Plow::SystemUserNameNotFoundError if no matching user name is found" do
       @context.stub!(:user_name).and_return('microsoft-steve')
-      lambda { @strategy.send(:system_account_home_exists?) }.should raise_error(Plow::SystemUserNameNotFoundError)
+      lambda { @strategy.send(:system_account_home_exists?) }.should raise_error(Plow::SystemUserNameNotFoundError, @context.user_name)
     end
     
     describe "when home directory exists for existing user" do

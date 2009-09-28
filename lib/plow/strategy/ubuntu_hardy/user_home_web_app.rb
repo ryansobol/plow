@@ -113,7 +113,7 @@ class Plow
             end
           end
           
-          raise Plow::SystemUserNameNotFoundError
+          raise(Plow::SystemUserNameNotFoundError, context.user_name)
         end
         
         def create_system_account_home

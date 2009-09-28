@@ -153,5 +153,17 @@ MESSAGE
       expected_message = "ERROR: #{@argv[0]} is a reserved system user name"
       lambda { Plow::Application.launch(*@argv) }.should raise_error(SystemExit, expected_message)
     end
+    
+    it "should render error message to the user for raised Plow::SystemUserNameNotFoundError" do
+      expected_error = Plow::SystemUserNameNotFoundError.new(@argv[0])
+      
+      Plow::Generator.should_receive(:new)
+        .with(*@argv)
+        .and_return(@generator)
+      @generator.should_receive(:run!).and_raise(expected_error)
+      
+      expected_message = "ERROR: System user name #{@argv[0]} cannot be found when it should exist"
+      lambda { Plow::Application.launch(*@argv) }.should raise_error(SystemExit, expected_message)
+    end
   end
 end
