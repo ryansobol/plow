@@ -402,11 +402,6 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       @strategy.stub!(:sites_home_path).and_return('/home/apple-steve/sites')
       @strategy.stub!(:app_root_path).and_return('/home/apple-steve/sites/www.apple.com')
       
-      @temp_file = Tempfile.new('execute')
-      @strategy.stub!(:vhost_file_path).and_return(@temp_file.path)
-      
-      @strategy.stub!(:system)
-      
       $stdout = StringIO.new
     end
     
@@ -436,8 +431,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
 --> creating /home/apple-steve/sites/www.apple.com
 --> creating /home/apple-steve/sites/www.apple.com/public
 --> creating /home/apple-steve/sites/www.apple.com/log
---> creating #{@temp_file.path}
---> installing #{@temp_file.path}
+--> creating /etc/apache2/sites-available/www.apple.com.conf
+--> installing /etc/apache2/sites-available/www.apple.com.conf
       OUTPUT
     end
     
@@ -465,8 +460,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
 --> creating /home/apple-steve/sites/www.apple.com
 --> creating /home/apple-steve/sites/www.apple.com/public
 --> creating /home/apple-steve/sites/www.apple.com/log
---> creating #{@temp_file.path}
---> installing #{@temp_file.path}
+--> creating /etc/apache2/sites-available/www.apple.com.conf
+--> installing /etc/apache2/sites-available/www.apple.com.conf
       OUTPUT
     end
     
@@ -494,8 +489,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
 --> creating /home/apple-steve/sites/www.apple.com
 --> creating /home/apple-steve/sites/www.apple.com/public
 --> creating /home/apple-steve/sites/www.apple.com/log
---> creating #{@temp_file.path}
---> installing #{@temp_file.path}
+--> creating /etc/apache2/sites-available/www.apple.com.conf
+--> installing /etc/apache2/sites-available/www.apple.com.conf
       OUTPUT
     end
     
@@ -523,8 +518,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
 --> creating /home/apple-steve/sites/www.apple.com
 --> creating /home/apple-steve/sites/www.apple.com/public
 --> creating /home/apple-steve/sites/www.apple.com/log
---> creating #{@temp_file.path}
---> installing #{@temp_file.path}
+--> creating /etc/apache2/sites-available/www.apple.com.conf
+--> installing /etc/apache2/sites-available/www.apple.com.conf
       OUTPUT
     end
     
@@ -561,7 +556,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       @strategy.should_not_receive(:create_vhost_config)
       @strategy.should_not_receive(:install_vhost_config)
       
-      lambda { @strategy.execute }.should raise_error(Plow::ConfigFileAlreadyExistsError, @temp_file.path)
+      lambda { @strategy.execute }.should raise_error(Plow::ConfigFileAlreadyExistsError, '/etc/apache2/sites-available/www.apple.com.conf')
       
       @strategy.app_public_path.should == '/home/apple-steve/sites/www.apple.com/public'
       @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
