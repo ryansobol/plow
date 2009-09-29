@@ -1,6 +1,8 @@
 # encoding: UTF-8
 require File.expand_path(File.dirname(__FILE__) + '/../../../spec_helper')
 
+require 'tempfile'
+
 describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   before(:each) do
     @context  = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
@@ -67,9 +69,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   describe "\#say (private)" do
     it "should proxy to Plow::Generator\#say" do
-      expected_message = "something amazing happened!"
-      @context.should_receive(:say).with(expected_message)
-      @strategy.send(:say, expected_message)
+      @context.should_receive(:say).with("something amazing happened!")
+      @strategy.send(:say, "something amazing happened!")
     end
   end
   
@@ -78,10 +79,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   describe "\#users (private)" do
     it "should read and parse a system accounts file (e.g. /etc/passwd)" do
       @strategy.stub!(:users_file_path).and_return(FIXTURES_PATH + '/passwd.txt')
-      
-      @strategy.send(:users) do |user|
-        user.should == @parsed_users_fixture.shift
-      end
+      @strategy.send(:users) { |user| user.should == @parsed_users_fixture.shift }
     end
   end
   
@@ -90,7 +88,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   describe '#shell (private)' do
     it "should invoke a system call for a single-line command String" do
       command = " echo * "
-      @strategy.should_receive(:system).with(command.strip)
+      @strategy.should_receive(:system).with('echo *')
       @strategy.send(:shell, command)
     end
     
@@ -101,10 +99,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
         ls -al
       COMMANDS
       
-      commands.each_line do |command|
-        command.strip!
-        @strategy.should_receive(:system).with(command) unless command.blank?
-      end
+      @strategy.should_receive(:system).with('echo *').ordered
+      @strategy.should_receive(:system).with('ls -al').ordered
       @strategy.send(:shell, commands)
     end
   end
@@ -118,12 +114,12 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     
     it "should raise Plow::ReservedSystemUserNameError for a system account where user id < 1000" do
       @context.stub!(:user_name).and_return('sshd')
-      lambda { @strategy.send(:user_exists?) }.should raise_error(Plow::ReservedSystemUserNameError, @context.user_name)
+      lambda { @strategy.send(:user_exists?) }.should raise_error(Plow::ReservedSystemUserNameError, 'sshd')
     end
     
     it "should raise Plow::ReservedSystemUserNameError for a system account where user id == 65534" do
       @context.stub!(:user_name).and_return('nobody')
-      lambda { @strategy.send(:user_exists?) }.should raise_error(Plow::ReservedSystemUserNameError, @context.user_name)
+      lambda { @strategy.send(:user_exists?) }.should raise_error(Plow::ReservedSystemUserNameError, 'nobody')
     end
     
     it "should return false when no matching non-system account is found" do
@@ -155,7 +151,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     
     it "should raise Plow::SystemUserNameNotFoundError if no matching user name is found" do
       @context.stub!(:user_name).and_return('microsoft-steve')
-      lambda { @strategy.send(:user_home_exists?) }.should raise_error(Plow::SystemUserNameNotFoundError, @context.user_name)
+      lambda { @strategy.send(:user_home_exists?) }.should raise_error(Plow::SystemUserNameNotFoundError, 'microsoft-steve')
     end
     
     describe "when home directory exists for existing user" do
@@ -171,7 +167,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       
       it "should set user home variable to correct home path" do
         @strategy.send(:user_home_exists?)
-        @strategy.user_home_path.should == @user[:home_path]
+        @strategy.user_home_path.should == '/home/apple-steve'
       end
     end
     
@@ -188,7 +184,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       
       it "should set user home variable to correct home path" do
         @strategy.send(:user_home_exists?)
-        @strategy.user_home_path.should == @user[:home_path]
+        @strategy.user_home_path.should == '/home/apple-steve'
       end
     end
   end
@@ -317,10 +313,64 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   ##################################################################################################
   
-  describe '#restart_apache2 (private)' do
-    it "should do so gracefully" do
-      @strategy.should_receive(:shell).with('apache2ctl graceful')
-      @strategy.send(:restart_apache2)
+  describe '#generate_vhost_config (private)' do
+    before(:each) do
+      @temp_file = Tempfile.new('generate_vhost_config')
+      @strategy.stub!(:vhost_file_path).and_return(@temp_file.path)
+      @strategy.stub!(:app_public_path).and_return('/home/apple-steve/sites/www.apple.com/public')
+      @strategy.stub!(:app_log_path).and_return('/home/apple-steve/sites/www.apple.com/log')
+    end
+    
+    it "should open create a vhost config file from template file without site aliases" do
+      @context.stub!(:site_aliases).and_return([])
+      @strategy.send(:generate_vhost_config)
+      
+      File.read(@temp_file.path).should == <<-CONFIG
+
+<VirtualHost *:80>
+  ServerAdmin webmaster
+  ServerName www.apple.com
+  
+  DirectoryIndex index.html
+  DocumentRoot /home/apple-steve/sites/www.apple.com/public
+  
+  LogLevel warn
+  ErrorLog  /home/apple-steve/sites/www.apple.com/log/apache2/error.log
+  CustomLog /home/apple-steve/sites/www.apple.com/log/apache2/access.log combined
+</VirtualHost>
+      CONFIG
+    end
+    
+    it "should open create a vhost config file from template file with site aliases" do
+      @strategy.send(:generate_vhost_config)
+      File.read(@temp_file.path).should == <<-CONFIG
+
+<VirtualHost *:80>
+  ServerAdmin webmaster
+  ServerName www.apple.com
+  
+  ServerAlias apple.com
+  
+  DirectoryIndex index.html
+  DocumentRoot /home/apple-steve/sites/www.apple.com/public
+  
+  LogLevel warn
+  ErrorLog  /home/apple-steve/sites/www.apple.com/log/apache2/error.log
+  CustomLog /home/apple-steve/sites/www.apple.com/log/apache2/access.log combined
+</VirtualHost>
+      CONFIG
+    end
+  end
+  
+  ##################################################################################################
+  
+  describe '#install_vhost_config (private)' do
+    it "should enable vhost and restart apache2" do
+      @strategy.should_receive(:shell).with(<<-COMMANDS)
+            a2ensite www.apple.com.conf
+            apache2ctl graceful
+      COMMANDS
+      @strategy.send(:install_vhost_config)
     end
   end
 end

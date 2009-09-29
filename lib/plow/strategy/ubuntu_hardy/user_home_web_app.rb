@@ -54,11 +54,11 @@ class Plow
           say "Creating the application log structure in #{app_log_path}..."
           create_app_logs
           
-          say "Installing apache2 vhost configuration file to #{vhost_file_path}..."
-          install_vhost_config
+          say "Generating apache2 vhost configuration file to #{vhost_file_path}..."
+          generate_vhost_config
           
-          say "Restarting apache2..."
-          restart_apache2
+          say "Installing apache2 vhost configuration..."
+          install_vhost_config
         end
         
         ############################################################################################################
@@ -188,26 +188,27 @@ class Plow
         
         ############################################################################################################
         
-        def install_vhost_config
-          template_context = {
-            :site_name       => context.site_name,
-            :site_aliases    => context.site_aliases,
-            :app_public_path => app_public_path,
-            :app_log_path    => app_log_path
-          }
-          
+        def generate_vhost_config
           File.open(vhost_file_path, 'wt') do |file|
+            template_context = {
+              :site_name       => context.site_name,
+              :site_aliases    => context.site_aliases,
+              :app_public_path => app_public_path,
+              :app_log_path    => app_log_path
+            }
+            
             config = context.evaluate_template(vhost_template_file_path, template_context)
             file.write(config)
           end
-          
-          shell "a2ensite #{vhost_file_name}"
         end
         
         ############################################################################################################
         
-        def restart_apache2
-          shell "apache2ctl graceful"
+        def install_vhost_config
+          shell <<-RUN
+            a2ensite #{vhost_file_name}
+            apache2ctl graceful
+          RUN
         end
       end
       
