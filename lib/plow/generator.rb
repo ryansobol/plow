@@ -41,6 +41,13 @@ class Plow
       puts "--> #{message}"
     end
     
+    def shell(commands)
+      commands.each_line do |command|
+        command.strip!
+        system(command) unless command.blank?
+      end
+    end
+    
     def evaluate_template(template_path, context)
       template = File.read(template_path)
       context_struct = Plow::BindingStruct.new(context)

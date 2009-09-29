@@ -117,6 +117,32 @@ describe Plow::Generator do
   
   ##################################################################################################
   
+  describe '#shell (private)' do
+    before(:each) do
+      @generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+    end
+
+    it "should invoke a system call for a single-line command String" do
+      command = " echo * "
+      @generator.should_receive(:system).with('echo *')
+      @generator.shell(command)
+    end
+    
+    it "should invoke a system call for a multi-line command String" do
+      commands = <<-COMMANDS
+        echo *
+        
+        ls -al
+      COMMANDS
+      
+      @generator.should_receive(:system).with('echo *').ordered
+      @generator.should_receive(:system).with('ls -al').ordered
+      @generator.shell(commands)
+    end
+  end
+  
+  ##################################################################################################
+  
   describe '#evaluate_template' do
     it "should accept a template path and a context Hash and evaluate them together" do
       template_path   = FIXTURES_PATH + '/vhost.conf'

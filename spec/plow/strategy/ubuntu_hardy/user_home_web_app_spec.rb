@@ -68,9 +68,18 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   ##################################################################################################
   
   describe '#say (private)' do
-    it "should proxy to Plow::Generator\#say" do
+    it 'should proxy to Plow::Generator#say' do
       @context.should_receive(:say).with("something amazing happened!")
       @strategy.send(:say, "something amazing happened!")
+    end
+  end
+  
+  ##################################################################################################
+  
+  describe '#shell (private)' do
+    it 'should proxy to Plow::Generator#shell' do
+      @context.should_receive(:shell).with("echo *")
+      @strategy.send(:shell, "echo *")
     end
   end
   
@@ -80,28 +89,6 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     it "should read and parse a system accounts file (e.g. /etc/passwd)" do
       @strategy.stub!(:users_file_path).and_return(FIXTURES_PATH + '/passwd.txt')
       @strategy.send(:users) { |user| user.should == @parsed_users_fixture.shift }
-    end
-  end
-  
-  ##################################################################################################
-  
-  describe '#shell (private)' do
-    it "should invoke a system call for a single-line command String" do
-      command = " echo * "
-      @strategy.should_receive(:system).with('echo *')
-      @strategy.send(:shell, command)
-    end
-    
-    it "should invoke a system call for a multi-line command String" do
-      commands = <<-COMMANDS
-        echo *
-        
-        ls -al
-      COMMANDS
-      
-      @strategy.should_receive(:system).with('echo *').ordered
-      @strategy.should_receive(:system).with('ls -al').ordered
-      @strategy.send(:shell, commands)
     end
   end
   

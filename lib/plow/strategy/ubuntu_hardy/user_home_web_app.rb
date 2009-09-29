@@ -73,6 +73,10 @@ class Plow
           context.say(message)
         end
         
+        def shell(commands)
+          context.shell(commands)
+        end
+        
         def users(&block)
           File.readlines(users_file_path).each do |user_line|
             user_line = user_line.chomp.split(':')
@@ -86,13 +90,6 @@ class Plow
               :shell_path => user_line[6]
             }
             yield user
-          end
-        end
-        
-        def shell(commands)
-          commands.each_line do |command|
-            command.strip!
-            system(command) unless command.blank?
           end
         end
         
