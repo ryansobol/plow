@@ -415,7 +415,20 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     end
     
     it "should run the default process" do
+      @strategy.should_receive(:create_user)
+      @strategy.should_not_receive(:create_user_home)
+      @strategy.should_receive(:create_sites_home)
+      @strategy.should_receive(:create_app_root)
+      @strategy.should_receive(:create_app_public)
+      @strategy.should_receive(:create_app_logs)
+      @strategy.should_receive(:create_vhost_config)
+      @strategy.should_receive(:install_vhost_config)
+      
       @strategy.execute
+      
+      @strategy.app_public_path.should == '/home/apple-steve/sites/www.apple.com/public'
+      @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
+      
       $stdout.string.should == <<-OUTPUT
 --> creating apple-steve user
 --> existing /home/apple-steve
@@ -431,7 +444,20 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     it "should run the existing user process" do
       @strategy.stub!(:user_exists?).and_return(true)
       
+      @strategy.should_not_receive(:create_user)
+      @strategy.should_not_receive(:create_user_home)
+      @strategy.should_receive(:create_sites_home)
+      @strategy.should_receive(:create_app_root)
+      @strategy.should_receive(:create_app_public)
+      @strategy.should_receive(:create_app_logs)
+      @strategy.should_receive(:create_vhost_config)
+      @strategy.should_receive(:install_vhost_config)
+      
       @strategy.execute
+      
+      @strategy.app_public_path.should == '/home/apple-steve/sites/www.apple.com/public'
+      @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
+      
       $stdout.string.should == <<-OUTPUT
 --> existing apple-steve user
 --> existing /home/apple-steve
@@ -447,7 +473,20 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     it "should run the missing user home process" do
       @strategy.stub!(:user_home_exists?).and_return(false)
       
+      @strategy.should_receive(:create_user)
+      @strategy.should_receive(:create_user_home)
+      @strategy.should_receive(:create_sites_home)
+      @strategy.should_receive(:create_app_root)
+      @strategy.should_receive(:create_app_public)
+      @strategy.should_receive(:create_app_logs)
+      @strategy.should_receive(:create_vhost_config)
+      @strategy.should_receive(:install_vhost_config)
+      
       @strategy.execute
+      
+      @strategy.app_public_path.should == '/home/apple-steve/sites/www.apple.com/public'
+      @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
+      
       $stdout.string.should == <<-OUTPUT
 --> creating apple-steve user
 --> creating /home/apple-steve
@@ -463,7 +502,20 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     it "should run the existing sites home process" do
       @strategy.stub!(:sites_home_exists?).and_return(true)
       
+      @strategy.should_receive(:create_user)
+      @strategy.should_not_receive(:create_user_home)
+      @strategy.should_not_receive(:create_sites_home)
+      @strategy.should_receive(:create_app_root)
+      @strategy.should_receive(:create_app_public)
+      @strategy.should_receive(:create_app_logs)
+      @strategy.should_receive(:create_vhost_config)
+      @strategy.should_receive(:install_vhost_config)
+      
       @strategy.execute
+      
+      @strategy.app_public_path.should == '/home/apple-steve/sites/www.apple.com/public'
+      @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
+      
       $stdout.string.should == <<-OUTPUT
 --> creating apple-steve user
 --> existing /home/apple-steve
@@ -479,7 +531,17 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     it "should run the existing app root process" do
       @strategy.stub!(:app_root_exists?).and_return(true)
       
+      @strategy.should_receive(:create_user)
+      @strategy.should_not_receive(:create_user_home)
+      @strategy.should_receive(:create_sites_home)
+      @strategy.should_not_receive(:create_app_root)
+      @strategy.should_not_receive(:create_app_public)
+      @strategy.should_not_receive(:create_app_logs)
+      @strategy.should_not_receive(:create_vhost_config)
+      @strategy.should_not_receive(:install_vhost_config)
+      
       lambda { @strategy.execute }.should raise_error(Plow::AppHomeAlreadyExistsError, '/home/apple-steve/sites/www.apple.com')
+      
       $stdout.string.should == <<-OUTPUT
 --> creating apple-steve user
 --> existing /home/apple-steve
@@ -490,7 +552,20 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     it "should run the existing vhost config process" do
       @strategy.stub!(:vhost_config_exists?).and_return(true)
       
+      @strategy.should_receive(:create_user)
+      @strategy.should_not_receive(:create_user_home)
+      @strategy.should_receive(:create_sites_home)
+      @strategy.should_receive(:create_app_root)
+      @strategy.should_receive(:create_app_public)
+      @strategy.should_receive(:create_app_logs)
+      @strategy.should_not_receive(:create_vhost_config)
+      @strategy.should_not_receive(:install_vhost_config)
+      
       lambda { @strategy.execute }.should raise_error(Plow::ConfigFileAlreadyExistsError, @temp_file.path)
+      
+      @strategy.app_public_path.should == '/home/apple-steve/sites/www.apple.com/public'
+      @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
+      
       $stdout.string.should == <<-OUTPUT
 --> creating apple-steve user
 --> existing /home/apple-steve
