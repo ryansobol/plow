@@ -178,5 +178,18 @@ MESSAGE
       expected_message = "ERROR: Application home path #{app_home_path} already exists"
       lambda { Plow::Application.launch(*@argv) }.should raise_error(SystemExit, expected_message)
     end
+    
+    it "should render error message to the user for raised Plow::AppHomeAlreadyExistsError" do
+      config_file_path = '/etc/apache2/sites_available/vhost.conf'
+      expected_error = Plow::ConfigFileAlreadyExistsError.new(config_file_path)
+      
+      Plow::Generator.should_receive(:new)
+        .with(*@argv)
+        .and_return(@generator)
+      @generator.should_receive(:run!).and_raise(expected_error)
+      
+      expected_message = "ERROR: Configuration file #{config_file_path} already exists"
+      lambda { Plow::Application.launch(*@argv) }.should raise_error(SystemExit, expected_message)
+    end
   end
 end

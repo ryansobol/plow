@@ -67,7 +67,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   ##################################################################################################
   
-  describe "\#say (private)" do
+  describe '#say (private)' do
     it "should proxy to Plow::Generator\#say" do
       @context.should_receive(:say).with("something amazing happened!")
       @strategy.send(:say, "something amazing happened!")
@@ -76,7 +76,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   ##################################################################################################
   
-  describe "\#users (private)" do
+  describe '#users (private)' do
     it "should read and parse a system accounts file (e.g. /etc/passwd)" do
       @strategy.stub!(:users_file_path).and_return(FIXTURES_PATH + '/passwd.txt')
       @strategy.send(:users) { |user| user.should == @parsed_users_fixture.shift }
@@ -107,7 +107,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   ##################################################################################################
   
-  describe "\#user_exists? (private)" do
+  describe '#user_exists? (private)' do
     before(:each) do
       @strategy.stub!(:users_file_path).and_return(FIXTURES_PATH + '/passwd.txt')
     end
@@ -135,7 +135,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   ##################################################################################################
   
-  describe "\#create_user (private)" do
+  describe '#create_user (private)' do
     it "should invoke a adduser as a system call" do
       @strategy.should_receive(:shell).with("adduser apple-steve")
       @strategy.send(:create_user)
@@ -144,7 +144,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   ##################################################################################################
   
-  describe "\#user_home_exists? (private)" do
+  describe '#user_home_exists? (private)' do
     before(:each) do
       @strategy.stub!(:users_file_path).and_return(FIXTURES_PATH + '/passwd.txt')
     end
@@ -191,7 +191,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   ##################################################################################################
   
-  describe "\#create_user_home (private)" do
+  describe '#create_user_home (private)' do
     it "should create a user home with the correct ownership" do
       @strategy.stub!(:user_home_path).and_return("/home/apple-steve")
       @strategy.should_receive(:shell).with(<<-COMMANDS)
@@ -204,7 +204,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   ##################################################################################################
   
-  describe "\#sites_home_exists? (private)" do
+  describe '#sites_home_exists? (private)' do
     before(:each) do
       @user = @parsed_users_fixture.last
       @strategy.stub!(:user_home_path).and_return(@user[:home_path])
@@ -228,7 +228,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   ##################################################################################################
   
-  describe "\#create_sites_home (private)" do
+  describe '#create_sites_home (private)' do
     it "should create a sites home with the correct ownership" do
       @strategy.stub!(:sites_home_path).and_return("/home/apple-steve/sites")
       @strategy.should_receive(:shell).with(<<-COMMANDS)
@@ -241,7 +241,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   ##################################################################################################
   
-  describe "\#app_root_exists? (private)" do
+  describe '#app_root_exists? (private)' do
     before(:each) do
       @user = @parsed_users_fixture.last
       @strategy.stub!(:sites_home_path).and_return("#{@user[:home_path]}/sites")
@@ -313,7 +313,21 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   ##################################################################################################
   
-  describe '#generate_vhost_config (private)' do
+  describe '#vhost_config_exists? (private)' do
+    it "should return true if the directory exists" do
+      Dir.should_receive(:exists?).and_return(true)
+      @strategy.send(:vhost_config_exists?).should be_true
+    end
+    
+    it "should return false if the directory does not exist" do
+      Dir.should_receive(:exists?).and_return(false)
+      @strategy.send(:vhost_config_exists?).should be_false
+    end
+  end
+  
+  ##################################################################################################
+  
+  describe '#create_vhost_config (private)' do
     before(:each) do
       @temp_file = Tempfile.new('generate_vhost_config')
       @strategy.stub!(:vhost_file_path).and_return(@temp_file.path)
@@ -321,9 +335,9 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       @strategy.stub!(:app_log_path).and_return('/home/apple-steve/sites/www.apple.com/log')
     end
     
-    it "should open create a vhost config file from template file without site aliases" do
+    it "should create a vhost config file from template file without site aliases" do
       @context.stub!(:site_aliases).and_return([])
-      @strategy.send(:generate_vhost_config)
+      @strategy.send(:create_vhost_config)
       
       File.read(@temp_file.path).should == <<-CONFIG
 
@@ -341,8 +355,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       CONFIG
     end
     
-    it "should open create a vhost config file from template file with site aliases" do
-      @strategy.send(:generate_vhost_config)
+    it "should create a vhost config file from template file with site aliases" do
+      @strategy.send(:create_vhost_config)
       File.read(@temp_file.path).should == <<-CONFIG
 
 <VirtualHost *:80>
@@ -372,5 +386,11 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       COMMANDS
       @strategy.send(:install_vhost_config)
     end
+  end
+  
+  ##################################################################################################
+  
+  describe '#execute' do
+    
   end
 end

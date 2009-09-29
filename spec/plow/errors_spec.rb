@@ -29,4 +29,8 @@ describe "Custom Application Errors" do
   it "Plow::AppHomeAlreadyExistsError should be a kind of StandardError" do
     Plow::AppHomeAlreadyExistsError.new.should be_a_kind_of(StandardError)
   end
+  
+  it "Plow::ConfigFileAlreadyExistsError should be a kind of StandardError" do
+    Plow::ConfigFileAlreadyExistsError.new.should be_a_kind_of(StandardError)
+  end
 end

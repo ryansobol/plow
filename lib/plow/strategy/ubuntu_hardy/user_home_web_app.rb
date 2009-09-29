@@ -54,8 +54,12 @@ class Plow
           say "Creating the application log structure in #{app_log_path}..."
           create_app_logs
           
-          say "Generating apache2 vhost configuration file to #{vhost_file_path}..."
-          generate_vhost_config
+          if vhost_config_exists?
+            raise(Plow::ConfigFileAlreadyExistsError, vhost_file_path)
+          else
+            say "Creating apache2 vhost configuration file in #{vhost_file_path}..."
+            create_vhost_config
+          end
           
           say "Installing apache2 vhost configuration..."
           install_vhost_config
@@ -188,7 +192,11 @@ class Plow
         
         ############################################################################################################
         
-        def generate_vhost_config
+        def vhost_config_exists?
+          Dir.exists?(vhost_file_path)
+        end
+        
+        def create_vhost_config
           File.open(vhost_file_path, 'wt') do |file|
             template_context = {
               :site_name       => context.site_name,

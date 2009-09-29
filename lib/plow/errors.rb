@@ -21,4 +21,7 @@ class Plow
   
   class AppHomeAlreadyExistsError < StandardError
   end
+  
+  class ConfigFileAlreadyExistsError < StandardError
+  end
 end
