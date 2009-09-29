@@ -391,6 +391,114 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   ##################################################################################################
   
   describe '#execute' do
+    before(:each) do
+      @strategy.stub!(:user_exists?).and_return(false)
+      @strategy.stub!(:user_home_exists?).and_return(true)
+      @strategy.stub!(:sites_home_exists?).and_return(false)
+      @strategy.stub!(:app_root_exists?).and_return(false)
+      @strategy.stub!(:vhost_config_exists?).and_return(false)
+      
+      @strategy.stub!(:user_home_path).and_return('/home/apple-steve')
+      @strategy.stub!(:sites_home_path).and_return('/home/apple-steve/sites')
+      @strategy.stub!(:app_root_path).and_return('/home/apple-steve/sites/www.apple.com')
+      
+      @temp_file = Tempfile.new('execute')
+      @strategy.stub!(:vhost_file_path).and_return(@temp_file.path)
+      
+      @strategy.stub!(:system)
+      
+      $stdout = StringIO.new
+    end
     
+    after(:each) do
+      $stdout = STDOUT
+    end
+    
+    it "should run the default process" do
+      @strategy.execute
+      $stdout.string.should == <<-OUTPUT
+--> creating apple-steve user
+--> existing /home/apple-steve
+--> creating /home/apple-steve/sites
+--> creating /home/apple-steve/sites/www.apple.com
+--> creating /home/apple-steve/sites/www.apple.com/public
+--> creating /home/apple-steve/sites/www.apple.com/log
+--> creating #{@temp_file.path}
+--> installing #{@temp_file.path}
+      OUTPUT
+    end
+    
+    it "should run the existing user process" do
+      @strategy.stub!(:user_exists?).and_return(true)
+      
+      @strategy.execute
+      $stdout.string.should == <<-OUTPUT
+--> existing apple-steve user
+--> existing /home/apple-steve
+--> creating /home/apple-steve/sites
+--> creating /home/apple-steve/sites/www.apple.com
+--> creating /home/apple-steve/sites/www.apple.com/public
+--> creating /home/apple-steve/sites/www.apple.com/log
+--> creating #{@temp_file.path}
+--> installing #{@temp_file.path}
+      OUTPUT
+    end
+    
+    it "should run the missing user home process" do
+      @strategy.stub!(:user_home_exists?).and_return(false)
+      
+      @strategy.execute
+      $stdout.string.should == <<-OUTPUT
+--> creating apple-steve user
+--> creating /home/apple-steve
+--> creating /home/apple-steve/sites
+--> creating /home/apple-steve/sites/www.apple.com
+--> creating /home/apple-steve/sites/www.apple.com/public
+--> creating /home/apple-steve/sites/www.apple.com/log
+--> creating #{@temp_file.path}
+--> installing #{@temp_file.path}
+      OUTPUT
+    end
+    
+    it "should run the existing sites home process" do
+      @strategy.stub!(:sites_home_exists?).and_return(true)
+      
+      @strategy.execute
+      $stdout.string.should == <<-OUTPUT
+--> creating apple-steve user
+--> existing /home/apple-steve
+--> existing /home/apple-steve/sites
+--> creating /home/apple-steve/sites/www.apple.com
+--> creating /home/apple-steve/sites/www.apple.com/public
+--> creating /home/apple-steve/sites/www.apple.com/log
+--> creating #{@temp_file.path}
+--> installing #{@temp_file.path}
+      OUTPUT
+    end
+    
+    it "should run the existing app root process" do
+      @strategy.stub!(:app_root_exists?).and_return(true)
+      
+      lambda { @strategy.execute }.should raise_error(Plow::AppHomeAlreadyExistsError, '/home/apple-steve/sites/www.apple.com')
+      $stdout.string.should == <<-OUTPUT
+--> creating apple-steve user
+--> existing /home/apple-steve
+--> creating /home/apple-steve/sites
+      OUTPUT
+    end
+    
+    it "should run the existing vhost config process" do
+      @strategy.stub!(:vhost_config_exists?).and_return(true)
+      
+      lambda { @strategy.execute }.should raise_error(Plow::ConfigFileAlreadyExistsError, @temp_file.path)
+      $stdout.string.should == <<-OUTPUT
+--> creating apple-steve user
+--> existing /home/apple-steve
+--> creating /home/apple-steve/sites
+--> creating /home/apple-steve/sites/www.apple.com
+--> creating /home/apple-steve/sites/www.apple.com/public
+--> creating /home/apple-steve/sites/www.apple.com/log
+      OUTPUT
+    end
   end
 end

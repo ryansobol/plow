@@ -19,49 +19,49 @@ class Plow
         
         def execute
           if user_exists?
-            say "User (#{context.user_name}) already exists... skipping"
+            say "existing #{context.user_name} user"
           else
-            say "Creating user for #{context.user_name}..."
+            say "creating #{context.user_name} user"
             create_user
           end
           
           if user_home_exists?
-            say "User home (#{user_home_path}) already exists... skipping"
+            say "existing #{user_home_path}"
           else
-            say "Creating user home (#{user_home_path})..."
+            say "creating #{user_home_path}"
             create_user_home
           end
           
           if sites_home_exists?
-            say "Sites home (#{sites_home_path}) already exists... skipping"
+            say "existing #{sites_home_path}"
           else
-            say "Sites home (#{sites_home_path})..."
+            say "creating #{sites_home_path}"
             create_sites_home
           end
           
           if app_root_exists?
             raise(Plow::AppHomeAlreadyExistsError, app_root_path)
           else
-            say "Creating the application home in #{app_root_path}"
+            say "creating #{app_root_path}"
             create_app_root
           end
           
           @app_public_path = "#{app_root_path}/public"
-          say "Building the application public structure in #{@app_public_path}..."
+          say "creating #{@app_public_path}"
           create_app_public
           
           @app_log_path = "#{app_root_path}/log"
-          say "Creating the application log structure in #{app_log_path}..."
+          say "creating #{app_log_path}"
           create_app_logs
           
           if vhost_config_exists?
             raise(Plow::ConfigFileAlreadyExistsError, vhost_file_path)
           else
-            say "Creating apache2 vhost configuration file in #{vhost_file_path}..."
+            say "creating #{vhost_file_path}"
             create_vhost_config
           end
           
-          say "Installing apache2 vhost configuration..."
+          say "installing #{vhost_file_path}"
           install_vhost_config
         end
         
