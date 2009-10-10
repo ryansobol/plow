@@ -1,4 +1,4 @@
-http://www.motherearthnews.com/uploadedImages/articles/issues/1974-05-01/027-076-01-folllowing-plow.gif
+link://following-the-plow.gif
 
 Image courtesy of {Mother Earth News}[http://www.motherearthnews.com/Modern-Homesteading/1974-05-01/Walking-Plow.aspx]
 
@@ -30,11 +30,9 @@ See TODO for details.
  
 * Fork the project.
 * Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
+* Add tests for it. This is important so I don't break it in a future version unintentionally.
 * Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but
-   bump version in a commit by itself I can ignore when I pull)
+  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
 
 == Copyright
