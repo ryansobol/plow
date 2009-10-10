@@ -1,0 +1,15 @@
+== Goals for 1.0.0
+
+Since there are numerous existing software packages that aim to accomplish the very same thing, let me clear about my intentions:
+
+* provided me a sandbox for:
+  * creating a command-line centric, ruby 1.9.1 compatible package for Linux Ubuntu Hardy 8.04.3 LTS operating system used for my own personal network of servers
+  * understanding and managing the security implications of web server of virtual hosts
+  * understanding the dependence of ruby 1.9.1 to rubygems while completely de-coupling this library from it
+  * handling load-time and run-time errors gracefully for the user
+  * decoupling the executable files from and the library source code
+  * decoupling the argument parsing and error handling from the system administrative tasks
+  * learning how to create a class to encapsulate a Binding object of cloned data stored in instance variables a Binding object.  that way, ERB can mangle instance variables evaluated within a template file all it wants and the data saved in memory of the program is unaffected
+  * continuing to work with RSpec, which is slowly gaining ground as my favorite library for test covering ruby code
+  * incorporating deployments with jeweler and github.  the combination is extremely powerful and seems alot more practical than maintaining my own rubygem server.  
+  * inviting others to review my code and submitting patches!  long live the open-source community!

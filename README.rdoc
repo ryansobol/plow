@@ -1,48 +1,28 @@
+http://www.motherearthnews.com/uploadedImages/articles/issues/1974-05-01/027-076-01-folllowing-plow.gif
+
 = plow
 
 Description goes here.
 
-== Intentions
+== Usage
 
-Since there are numerous existing software packages that aim to accomplish the very same thing, let me clear about my intentions:
+Usage goes here.
 
-* provided me a sandbox for:
-  * creating a command-line centric, ruby 1.9.1 compatible package for Linux Ubuntu Hardy 8.04.3 LTS operating system used for my own personal network of servers
-  * understanding and managing the security implications of web server of virtual hosts
-  * understanding the dependence of ruby 1.9.1 to rubygems while completely de-coupling this library from it
-  * handling load-time and run-time errors gracefully for the user
-  * decoupling the executable files from and the library source code
-  * decoupling the argument parsing and error handling from the system administrative tasks
-  * learning how to create a class to encapsulate a Binding object of cloned data stored in instance variables a Binding object.  that way, ERB can mangle instance variables evaluated within a template file all it wants and the data saved in memory of the program is unaffected
-  * continuing to work with RSpec, which is slowly gaining ground as my favorite library for test covering ruby code
-  * incorporating deployments with jeweler and github.  the combination is extremely powerful and seems alot more practical than maintaining my own rubygem server.  
-  * inviting others to review my code and submitting patches!  long live the open-source community!
-  
-== Improvements
+== Examples
 
-The obvious potential improvements are ported the package to additional operating systems and web servers.  This would require minimal, but completely worth-while structure changes Plow::Generator class.
-  
-  * Move all system administrative logic to model classes and redesign the class around the builder pattern to allow to construct user-determined classes dynamically at run-time
-  * Move all data validations to the same model classes or to new classes entirely, depending on the needs at the time
-  * More specific data validations
-  * Handing of more complex web application structures
-  * automatic deployment of web applications from github
-  * better argument parsing and including option flags as needed
-  
-== A Brief Note About Security
+Examples go here.
 
-Any and all processes invoking this library must be owned, aka executed, by the root user.  Root ownership is required by this package to automate system administrative tasks, including but not limited to:
+== What's new?
 
-* Creating and/or modifying operating system user accounts that are _typically controlled by the root user_
-* Generating and installing virtual host configuration files for web servers that are _typically owned by the root user_
+See HISTORY for details.
 
-By installing this package, you are acknowledging the risks inherit of the above implications.  If this package, including the library source code and it's non-compiled executables, is owned by any non-root user, then anyone who has or gains access to that non-root account could modify the code in this package, without your knowledge.  The next time you execute the program, as the root user, you could now be unwittingly comprising your own system by running malicious code injected into this package.
+== Security
 
-If you wish to install this package as a rubygem with a user account granted root privileges via sudo, then please install this package by running the following command:
+See SECURITY for details.
 
-    sudo gem install ryansobol-plow --source=http://gems.github.com
-    
-LET ME BE CRYSTAL CLEAR.  DO NOT INSTALL THIS PACKAGE TO ANY NON-ROOT USER'S GEM REPOSITORY.  YOU'VE BEEN WARNED.
+== Road-map
+
+See TODO for details.
 
 == Note on Patches/Pull Requests
  
