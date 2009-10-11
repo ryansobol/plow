@@ -1,15 +1,39 @@
-== Goals for 1.0.0
+== 1.0.0 released on Oct. ??th 2009
 
-Since there are numerous existing software packages that aim to accomplish the very same thing, let me clear about my intentions:
-
-* provided me a sandbox for:
-  * creating a command-line centric, ruby 1.9.1 compatible package for Linux Ubuntu Hardy 8.04.3 LTS operating system used for my own personal network of servers
-  * understanding and managing the security implications of web server of virtual hosts
-  * understanding the dependence of ruby 1.9.1 to rubygems while completely de-coupling this library from it
-  * handling load-time and run-time errors gracefully for the user
-  * decoupling the executable files from and the library source code
-  * decoupling the argument parsing and error handling from the system administrative tasks
-  * learning how to create a class to encapsulate a Binding object of cloned data stored in instance variables a Binding object.  that way, ERB can mangle instance variables evaluated within a template file all it wants and the data saved in memory of the program is unaffected
-  * continuing to work with RSpec, which is slowly gaining ground as my favorite library for test covering ruby code
-  * incorporating deployments with jeweler and github.  the combination is extremely powerful and seems alot more practical than maintaining my own rubygem server.  
+  * bin/plow and bin/plow1.9
+    * Two ruby 1.9.1 compatible command-line executables.
+    * Combined with Plow::Application, the entire application logic is decoupled from the plow generator library.
+  * lib/plow.rb
+    * Handles load-time errors gracefully for the user
+    * Specifies library-wide load order
+    * Maintains the library version in memory
+  * lib/plow/application.rb
+    * decoupled argument parsing from the generator
+    * displays usage for the command-line executables
+    * handles run-time errors gracefully for the user
+    * starts the generator
+    * Combined with the executables, the entire application logic is decoupled from the plow generator library.
+  * lib/plow/generator.rb
+    * main controller
+    * maintains the shared state data including a strategy object
+    * passes execution to the strategy object
+    * provides shared logic for outputting messages to the user
+    * provides shared logic for executing shell commands
+    * provides shared logic for evaluating ERB template files
+  * lib/plow/binding_struct.rb
+    * helper object that converts a Hash object into instances variables, which then is used as the binding object for ERB
+  * lib/plow/core_ext/object.rb
+    * dynamically adds a #blank? method to all objects (copied directly from the active_support library)
+  * lib/plow/errors.rb
+    * defines a handful of run-time error classes
+  * lib/plow/strategy/ubuntu_hardy/user_home_web_app.rb
+    * userhome-based strategy for generating a system-wide web-site structure for the Linux Ubuntu Hardy 8.04.3 LTS operating system
+      * understanding and managing the security implications of web server of virtual hosts
+  * lib/plow/strategy/ubuntu_hardy/templates/apache2-vhost.conf
+    * a simple apache2 virtual host ERB template file for the Linux Ubuntu Hardy 8.04.3 LTS operating system
+  * lib/plow/strategy/ubuntu_hardy/templates/README.txt
+    * a README file that explains the generated web-site directory structure and files
+  * Rakefile
+    * incorporating deployments with jeweler and gemcutter.  the combination is extremely powerful and seems alot more practical than maintaining my own rubygem server.  
+    
   * inviting others to review my code and submitting patches!  long live the open-source community!
