@@ -412,14 +412,14 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
       
       $stdout.string.should == <<-OUTPUT
---> creating apple-steve user
---> existing /home/apple-steve
---> creating /home/apple-steve/sites
---> creating /home/apple-steve/sites/www.apple.com
---> creating /home/apple-steve/sites/www.apple.com/public
---> creating /home/apple-steve/sites/www.apple.com/log
---> creating /etc/apache2/sites-available/www.apple.com.conf
---> installing /etc/apache2/sites-available/www.apple.com.conf
+==> creating apple-steve user
+==> existing /home/apple-steve
+==> creating /home/apple-steve/sites
+==> creating /home/apple-steve/sites/www.apple.com
+==> creating /home/apple-steve/sites/www.apple.com/public
+==> creating /home/apple-steve/sites/www.apple.com/log
+==> creating /etc/apache2/sites-available/www.apple.com.conf
+==> installing /etc/apache2/sites-available/www.apple.com.conf
       OUTPUT
     end
     
@@ -441,14 +441,14 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
       
       $stdout.string.should == <<-OUTPUT
---> existing apple-steve user
---> existing /home/apple-steve
---> creating /home/apple-steve/sites
---> creating /home/apple-steve/sites/www.apple.com
---> creating /home/apple-steve/sites/www.apple.com/public
---> creating /home/apple-steve/sites/www.apple.com/log
---> creating /etc/apache2/sites-available/www.apple.com.conf
---> installing /etc/apache2/sites-available/www.apple.com.conf
+==> existing apple-steve user
+==> existing /home/apple-steve
+==> creating /home/apple-steve/sites
+==> creating /home/apple-steve/sites/www.apple.com
+==> creating /home/apple-steve/sites/www.apple.com/public
+==> creating /home/apple-steve/sites/www.apple.com/log
+==> creating /etc/apache2/sites-available/www.apple.com.conf
+==> installing /etc/apache2/sites-available/www.apple.com.conf
       OUTPUT
     end
     
@@ -470,14 +470,14 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
       
       $stdout.string.should == <<-OUTPUT
---> creating apple-steve user
---> creating /home/apple-steve
---> creating /home/apple-steve/sites
---> creating /home/apple-steve/sites/www.apple.com
---> creating /home/apple-steve/sites/www.apple.com/public
---> creating /home/apple-steve/sites/www.apple.com/log
---> creating /etc/apache2/sites-available/www.apple.com.conf
---> installing /etc/apache2/sites-available/www.apple.com.conf
+==> creating apple-steve user
+==> creating /home/apple-steve
+==> creating /home/apple-steve/sites
+==> creating /home/apple-steve/sites/www.apple.com
+==> creating /home/apple-steve/sites/www.apple.com/public
+==> creating /home/apple-steve/sites/www.apple.com/log
+==> creating /etc/apache2/sites-available/www.apple.com.conf
+==> installing /etc/apache2/sites-available/www.apple.com.conf
       OUTPUT
     end
     
@@ -499,14 +499,14 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
       
       $stdout.string.should == <<-OUTPUT
---> creating apple-steve user
---> existing /home/apple-steve
---> existing /home/apple-steve/sites
---> creating /home/apple-steve/sites/www.apple.com
---> creating /home/apple-steve/sites/www.apple.com/public
---> creating /home/apple-steve/sites/www.apple.com/log
---> creating /etc/apache2/sites-available/www.apple.com.conf
---> installing /etc/apache2/sites-available/www.apple.com.conf
+==> creating apple-steve user
+==> existing /home/apple-steve
+==> existing /home/apple-steve/sites
+==> creating /home/apple-steve/sites/www.apple.com
+==> creating /home/apple-steve/sites/www.apple.com/public
+==> creating /home/apple-steve/sites/www.apple.com/log
+==> creating /etc/apache2/sites-available/www.apple.com.conf
+==> installing /etc/apache2/sites-available/www.apple.com.conf
       OUTPUT
     end
     
@@ -525,9 +525,9 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       lambda { @strategy.execute }.should raise_error(Plow::AppHomeAlreadyExistsError, '/home/apple-steve/sites/www.apple.com')
       
       $stdout.string.should == <<-OUTPUT
---> creating apple-steve user
---> existing /home/apple-steve
---> creating /home/apple-steve/sites
+==> creating apple-steve user
+==> existing /home/apple-steve
+==> creating /home/apple-steve/sites
       OUTPUT
     end
     
@@ -549,12 +549,12 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
       
       $stdout.string.should == <<-OUTPUT
---> creating apple-steve user
---> existing /home/apple-steve
---> creating /home/apple-steve/sites
---> creating /home/apple-steve/sites/www.apple.com
---> creating /home/apple-steve/sites/www.apple.com/public
---> creating /home/apple-steve/sites/www.apple.com/log
+==> creating apple-steve user
+==> existing /home/apple-steve
+==> creating /home/apple-steve/sites
+==> creating /home/apple-steve/sites/www.apple.com
+==> creating /home/apple-steve/sites/www.apple.com/public
+==> creating /home/apple-steve/sites/www.apple.com/log
       OUTPUT
     end
   end

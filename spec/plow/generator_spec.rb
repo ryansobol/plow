@@ -111,7 +111,7 @@ describe Plow::Generator do
     it "should output message to the user" do
       message = "Something great happened!"
       @generator.say(message)
-      $stdout.string.should == "--> #{message}\n"
+      $stdout.string.should == "==> #{message}\n"
     end
   end
   

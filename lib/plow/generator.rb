@@ -38,7 +38,7 @@ class Plow
     end
     
     def say(message)
-      puts "--> #{message}"
+      puts "==> #{message}"
     end
     
     def shell(commands)
