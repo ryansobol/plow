@@ -4,7 +4,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe "Plow" do
   describe "version synchronizing" do
     before(:each) do
-      @expected = "0.0.0"
+      @expected = "0.1.0"
     end
     
     it "should be correct for Plow::VERSION" do
@@ -12,7 +12,8 @@ describe "Plow" do
     end
     
     it "should be correct for the VERSION rubygem file" do
-      File.read(File.expand_path(File.join(File.dirname(__FILE__), '..', 'VERSION'))).should == @expected
+      actual = File.read(File.expand_path(File.join(File.dirname(__FILE__), '..', 'VERSION'))).chomp
+      actual.should == @expected
     end
   end
 end
