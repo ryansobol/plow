@@ -37,8 +37,11 @@ task :default => :spec
 
 begin
   require 'yard'
-  YARD::Rake::YardocTask.new
-rescue LoadError
+  YARD::Rake::YardocTask.new do |t|
+    t.options = ['--markup', 'markdown', '-', 'LICENSE', 'HISTORY', 'SECURITY']
+    t.after = lambda { `cp -R docs/images/ doc/images/` }
+  end
+rescue LoadError => e
   task :yardoc do
     abort "YARD is not available. In order to run yardoc, you must: sudo gem install yard"
   end

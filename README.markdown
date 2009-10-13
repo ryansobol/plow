@@ -1,41 +1,57 @@
-http://img.skitch.com/20091010-jd9m46i9g5u4fyyprkfe36p4q9.gif
+![Following the Plow](images/following-the-plow.gif)
 
-Image courtesy of {Mother Earth News}[http://www.motherearthnews.com/Modern-Homesteading/1974-05-01/Walking-Plow.aspx]
+Image courtesy of [Mother Earth News](http://www.motherearthnews.com/Modern-Homesteading/1974-05-01/Walking-Plow.aspx)
 
-= plow
+PLOW Release 1.0.0 (October ??th 2009)
+======================================
+
+Copyright &copy; 2009 Ryan Sobol. Licensed under the [MIT license](LICENSE.html). 
+
+**Homepage**:   [http://github.com/ryansobol/plow](http://github.com/ryansobol/plow)  
+
+
+SYNOPSIS
+--------
 
 Description goes here.
 
-== Features
+FEATURES
+--------
 
 * uses ruby 1.9.1
 * Implemented with BDD using RSpec
 * understanding the dependence of ruby 1.9.1
 * rubygems compatible while also completely decoupled from it
 
-== Requirements
+REQUIREMENTS
+------------
 
 * ruby 1.9.1
 * rubygems 1.3.5 (optional)
 * rspec 1.2.8 (optional - for testing only)
 
-== Installing
+INSTALLING
+----------
 
     sudo gem1.9 install plow
 
-== Usage
+USAGE
+-----
 
 Usage goes here.
 
-== Examples
+EXAMPLES
+--------
 
 Examples go here.
 
-== What's new?
+WHAT'S NEW?
+-----------
 
 See HISTORY for details.
 
-== Motivation
+MOTIVATION
+----------
 
 There exists numerous software products for controlling and/or managing a unix-based operating systems and web servers.  So, why did I decide to write yet another?  Simply, I created plow for two main reasons:
 
@@ -43,15 +59,23 @@ There exists numerous software products for controlling and/or managing a unix-b
 
 2. To prove to myself, without a shadow of a doubt, that I have the skill to design, develop, and deploy a ruby application on my own.
 
-== Security
+SECURITY
+--------
 
 See SECURITY for details.
 
-== Road-map
+ROAD-MAP
+--------
 
 See TODO for details.
 
-== Note on Patches/Pull Requests
+REPORTING ISSUES
+----------------
+
+Please see the [Issue Tracker](http://github.com/ryansobol/plow/issues)
+
+CONTRIBUTING
+------------
  
 * Fork the project.
 * Make your feature addition or bug fix.
@@ -59,7 +83,3 @@ See TODO for details.
 * Commit, do not mess with rakefile, version, or history.
   (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
-
-== Copyright
-
-Copyright (c) 2009 Ryan Sobol. See LICENSE for details.
