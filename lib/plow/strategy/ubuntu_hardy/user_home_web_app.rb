@@ -91,10 +91,16 @@ class Plow
         
         private
         
+        ##
+        # Proxy method to +Plow::Generator#say+
+        # @param [String] message A user output message
         def say(message)
           context.say(message)
         end
         
+        ##
+        # Proxy method to +Plow::Generator#shell+
+        # @param [String] commands Shell commands with multi-line support.
         def shell(commands)
           context.shell(commands)
         end
