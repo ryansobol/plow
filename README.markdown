@@ -1,11 +1,11 @@
-![Following the Plow](images/following-the-plow.gif)
+![Following the Plow](http://img.skitch.com/20091010-jd9m46i9g5u4fyyprkfe36p4q9.gif)
 
 Image courtesy of [Mother Earth News](http://www.motherearthnews.com/Modern-Homesteading/1974-05-01/Walking-Plow.aspx)
 
 PLOW Release 1.0.0 (October ??th 2009)
 ======================================
 
-Copyright &copy; 2009 Ryan Sobol. Licensed under the [MIT license](LICENSE.html). 
+Copyright &copy; 2009 Ryan Sobol. Licensed under the MIT license.  Please see the {file:LICENSE} for more information.
 
 **Homepage**:   [http://github.com/ryansobol/plow](http://github.com/ryansobol/plow)  
 

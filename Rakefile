@@ -39,7 +39,6 @@ begin
   require 'yard'
   YARD::Rake::YardocTask.new do |t|
     t.options = ['--markup', 'markdown', '-', 'LICENSE', 'HISTORY', 'SECURITY']
-    t.after = lambda { `cp -R docs/images/ doc/images/` }
   end
 rescue LoadError => e
   task :yardoc do
