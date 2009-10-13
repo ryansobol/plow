@@ -19,7 +19,7 @@ class Plow
   class SystemUserNameNotFoundError < StandardError
   end
   
-  class AppHomeAlreadyExistsError < StandardError
+  class AppRootAlreadyExistsError < StandardError
   end
   
   class ConfigFileAlreadyExistsError < StandardError

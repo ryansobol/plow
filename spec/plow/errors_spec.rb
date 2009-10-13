@@ -26,8 +26,8 @@ describe "Custom Application Errors" do
     Plow::SystemUserNameNotFoundError.new.should be_a_kind_of(StandardError)
   end
   
-  it "Plow::AppHomeAlreadyExistsError should be a kind of StandardError" do
-    Plow::AppHomeAlreadyExistsError.new.should be_a_kind_of(StandardError)
+  it "Plow::AppRootAlreadyExistsError should be a kind of StandardError" do
+    Plow::AppRootAlreadyExistsError.new.should be_a_kind_of(StandardError)
   end
   
   it "Plow::ConfigFileAlreadyExistsError should be a kind of StandardError" do

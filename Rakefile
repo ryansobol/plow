@@ -20,15 +20,16 @@ rescue LoadError
 end
 
 require 'spec/rake/spectask'
-Spec::Rake::SpecTask.new(:spec) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList['spec/**/*_spec.rb']
+Spec::Rake::SpecTask.new(:spec) do |task|
+  task.libs << 'lib' << 'spec'
+  task.spec_files = FileList['spec/**/*_spec.rb']
+  task.spec_opts  = %w{ -O spec/spec.opts }
 end
 
-Spec::Rake::SpecTask.new(:rcov) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov = true
+Spec::Rake::SpecTask.new(:rcov) do |task|
+  task.libs << 'lib' << 'spec'
+  task.pattern = 'spec/**/*_spec.rb'
+  task.rcov = true
 end
 
 task :spec => :check_dependencies
@@ -37,8 +38,8 @@ task :default => :spec
 
 begin
   require 'yard'
-  YARD::Rake::YardocTask.new do |t|
-    t.options = ['--markup', 'markdown', '-', 'LICENSE', 'HISTORY', 'SECURITY']
+  YARD::Rake::YardocTask.new do |task|
+    task.options = %w{ --markup markdown --private - LICENSE HISTORY SECURITY }
   end
 rescue LoadError => e
   task :yardoc do

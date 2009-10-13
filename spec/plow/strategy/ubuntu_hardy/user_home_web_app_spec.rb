@@ -522,7 +522,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       @strategy.should_not_receive(:create_vhost_config)
       @strategy.should_not_receive(:install_vhost_config)
       
-      lambda { @strategy.execute }.should raise_error(Plow::AppHomeAlreadyExistsError, '/home/apple-steve/sites/www.apple.com')
+      lambda { @strategy.execute }.should raise_error(Plow::AppRootAlreadyExistsError, '/home/apple-steve/sites/www.apple.com')
       
       $stdout.string.should == <<-OUTPUT
 ==> creating apple-steve user
