@@ -7,8 +7,8 @@ Any and all processes invoking this library must be owned, aka executed, by the 
 
 By installing this package, you are acknowledging the risks inherit of the above implications.  If this package, including the library source code and it's non-compiled executables, is owned by any non-root user, then anyone who has or gains access to that non-root account could modify the code in this package, without your knowledge.  The next time you execute the program, as the root user, you could now be unwittingly comprising your own system by running malicious code injected into this package.
 
-If you wish to install this package as a rubygem with a user account granted root privileges via sudo, then please install this package by running the following command:
+If you wish to install this package as a RubyGem with a user account granted root privileges via sudo, then please install this package by running the following command:
 
-    sudo gem install ryansobol-plow --source=http://gems.github.com
-    
+    sudo gem install plow
+
 LET ME BE CRYSTAL CLEAR.  DO NOT INSTALL THIS PACKAGE TO ANY NON-ROOT USER'S GEM REPOSITORY.  YOU'VE BEEN WARNED.
