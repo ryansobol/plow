@@ -10,8 +10,9 @@ begin
     gem.email       = "code@ryansobol.com"
     gem.homepage    = "http://github.com/ryansobol/plow"
     gem.authors     = ["Ryan Sobol"]
-    gem.add_development_dependency "rspec"
-    gem.add_development_dependency "yard"
+    gem.add_development_dependency "rspec", "= 1.2.8"
+    gem.add_development_dependency "yard", "= 0.2.3.5"
+    gem.add_development_dependency "bluecloth", "= 2.0.5"  # hidden yard dependency for markdown support
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
@@ -29,7 +30,7 @@ end
 Spec::Rake::SpecTask.new(:rcov) do |task|
   task.libs << 'lib' << 'spec'
   task.pattern = 'spec/**/*_spec.rb'
-  task.rcov = true
+  task.rcov    = true
 end
 
 task :spec => :check_dependencies
