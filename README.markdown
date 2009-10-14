@@ -23,23 +23,25 @@ Please see {file:HISTORY} for the historical overview of the project.
 SYNOPSIS
 --------
 
-Plows the fertile soil of your filesystem into neatly organized plots of website templates.
-
-1. Ensure both a system user account and user home exist
-2. Lay the foundation of a simple website home
-3. Generate and install an apache2 VirtualHost configuration
+Plows the fertile soil of your filesystem into neatly organized plots of web-application templates
 
 FEATURES
 --------
 
-* list some cool features here
+1. Sharpens it's blade by ensuring that both a Linux system user account and it's home path exist
+2. Penetrates the soil by forming the web-application root path within the user home
+3. Seeds the web-application with an index page and web server log files
+4. Fertilizes the web-application by installing a virtual host configuration into the web server
 
 REQUIREMENTS
 ------------
 
+**Supported operating system + web server combinations**
+
+* Linux Ubuntu 8.04.3 LTS (Hardy Heron) + Apache 2.2.8
+
 **Required dependencies**
 
-* Linux Ubuntu 8.04.3 LTS - Hardy Heron
 * Ruby 1.9.1
 
 **Optional automated specification dependencies**
@@ -102,9 +104,7 @@ EXAMPLES
 MOTIVATION
 ----------
 
-There exists numerous software products for controlling and/or managing a unix-based operating systems and web servers.  So, why did I decide to write yet another?  With plow, my object is:
-
-**To contribute free, open-source, and complete software for the benefit human-kind**
+There exists numerous software products for controlling and/or managing a unix-based operating systems and web servers.  So, why did I decide to write yet another?  With Plow, I needed to prove to myself that I have the necessary proficiency **to contribute free, open-source, and complete software for the benefit human-kind**.
 
 The terms "free" and "open-source" are common enough to be implicitly understood, or at least, [easily googled](http://www.google.com/searchq=free+open-source).  But what of the term "complete software"?  For me, complete software means four exclusive characteristics:
 
@@ -118,7 +118,9 @@ I have tirelessly worked to achieve a high standard in all four characteristics.
 REPORTING ISSUES
 ----------------
 
-You found a bug or a problem when using plow?  Great!  Please use the [Issue Tracker](http://github.com/ryansobol/plow/issues) to shed light on your issue.  Thank you for taking the time to help improve plow!
+Is Plow not behaving like you expect it should?  Please forgive me!  Would you take a moment to shed light on my negligence over at the [Issue Tracker](http://github.com/ryansobol/plow/issues)?  
+
+Thank you, in advance, for taking the time to help improve Plow.
 
 CONTRIBUTING
 ------------

@@ -16,15 +16,16 @@ Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
     SITE_ALIAS      (Optional) List of alias names of the website (e.g. apple.com)
 
   Summary:
-    Plows the fertile soil of your filesystem into neatly organized plots of website templates.
+    Plows the fertile soil of your filesystem into neatly organized plots of web-application templates
 
   Description:
-    1. Ensure both a system user account and user home exist
-    2. Lay the foundation of a simple website home
-    3. Generate and install an apache2 VirtualHost configuration
+    1. Sharpens it's blade by ensuring that both a Linux system user account and it's home path exist
+    2. Penetrates the soil by forming the web-application root path within the user home
+    3. Seeds the web-application with an index page and web server log files
+    4. Fertilizes the web-application by installing a virtual host configuration into the web server
 
   Example:
-    plow apple-steve www.apple.com apple.com
+    plow steve www.apple.com apple.com
 MESSAGE
       $stderr = StringIO.new
     end
