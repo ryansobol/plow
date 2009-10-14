@@ -32,7 +32,7 @@ Plows the fertile soil of your filesystem into neatly organized plots of website
 FEATURES
 --------
 
-* RubyGems compatible while also simultaneously completely decoupled
+* list some cool features here
 
 REQUIREMENTS
 ------------
@@ -54,9 +54,13 @@ REQUIREMENTS
 INSTALLING
 ----------
 
-    sudo gem1.9 install plow
+Plow is distributed though the RubyGems ecosystem.  Assuming you've already installed RubyGems, installing Plow is simple:
 
-See {file:SECURITY} for details.
+    sudo gem install plow
+
+LET ME BE CRYSTAL CLEAR.  DO NOT INSTALL THIS PACKAGE TO ANY NON-ROOT USER'S GEM REPOSITORY.  YOU'VE BEEN WARNED.  Please see {file:SECURITY} for a detailed explanation of this advisory.
+
+Note that Plow is RubyGems **compatible** while also simultaneously **decoupled** from it.  Feel free to install Plow manually or use any Ruby package management system of your choice.
 
 USAGE
 -----
@@ -71,16 +75,14 @@ USAGE
 EXAMPLES
 --------
 
-Running the following command
-
-    $ plow apple-steve www.apple.com apple.com
-
-will produce
-
-    $ tree sites/
-    sites/
+    $ plow steve www.apple.com apple.com
+    
+    ... plow interation ...
+    
+    $ tree /home/steve/sites/
+    /home/steve/sites/
     |-- README
-    `-- example.ryansobol.com
+    `-- www.apple.com
         |-- log
         |   `-- apache2
         |       |-- access.log
@@ -90,12 +92,12 @@ will produce
     
     4 directories, 4 files
     
-    $ ls -hal sites/example.ryansobol.com/log/apache2/
+    $ ls -hal /home/steve/sites/www.apple.com/log/apache2/
     total 196K
-    drwxr-x--- 2 root GROUP 4.0K Sep  5 03:11 .
-    drwxr-xr-x 3 USER GROUP 4.0K Sep  5 03:09 ..
-    -rw-r----- 1 root GROUP 136K Sep  9 11:10 access.log
-    -rw-r----- 1 root GROUP  48K Sep  9 09:06 error.log
+    drwxr-x--- 2 root  steve 4.0K Sep  5 03:11 .
+    drwxr-xr-x 3 steve steve 4.0K Sep  5 03:09 ..
+    -rw-r----- 1 root  steve 136K Sep  9 11:10 access.log
+    -rw-r----- 1 root  steve  48K Sep  9 09:06 error.log
 
 MOTIVATION
 ----------
