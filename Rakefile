@@ -6,7 +6,12 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name        = "plow"
     gem.summary     = "Plows the fertile soil of your filesystem into neatly organized plots of website templates."
-    gem.description = "Plows the fertile soil of your filesystem into neatly organized plots of website templates."
+    gem.description = <<-DESCRIPTION
+1. Sharpens it's blade by ensuring that both a Linux system user account and it's home path exist
+2. Penetrates the soil by forming the web-application root path within the user home
+3. Seeds the web-application with an index page and web server log files
+4. Fertilizes the web-application by installing a virtual host configuration into the web server
+DESCRIPTION
     gem.email       = "code@ryansobol.com"
     gem.homepage    = "http://github.com/ryansobol/plow"
     gem.authors     = ["Ryan Sobol"]
