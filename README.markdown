@@ -74,8 +74,8 @@ USAGE
       SITE_NAME       Name of the website (e.g. www.apple.com)
       SITE_ALIAS      (Optional) List of alias names of the website (e.g. apple.com)
 
-EXAMPLES
---------
+EXAMPLE
+-------
 
     $ plow steve www.apple.com apple.com
     
@@ -125,12 +125,16 @@ Thank you, in advance, for taking the time to help improve Plow.
 CONTRIBUTING
 ------------
 
-* Fork the project.
-* Please take a moment to get a feel of the coding style, documentation, and specifications.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a future version unintentionally.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
+Is Plow not behaving like you need?  Open-source to the rescue!  There is a plethora of documentation to bring you up to speed.  The API documentation is generated, once the dependencies are met (please see the REQUIREMENTS section), by running the follow:
 
-Please see {file:ROAD-MAP} for information on how to most meaningfully contribute to this project.
+    $ rake yardoc
+
+Patches are always welcome and appreciated!  To contribute your work back to the source, the process is straight-forward:
+
+* Fork the project -- may I suggest [Github](http://www.github.com)?
+* Make your feature addition or bug fix with specifications -- it's important that I don't break your hard work in a future version unintentionally.
+* Please do not casually alter files in the project root. (e.g. HISTORY, LICENSE, Rakefile, README.markdown, ROAD-MAP, SECURITY, VERSION, etc.)
+* Commit your changes and publish the change-set.
+* Send me a pull request.  All specs must pass!
+
+Take a moment to get a feel for the style of coding, specifications, and in-line documentation.  I apologize in advance for setting the standards so high.  Please see {file:ROAD-MAP} to learn how to flow with the project.
