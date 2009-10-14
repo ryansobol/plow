@@ -14,7 +14,7 @@ WHAT'S NEW?
 
 **v0.1.0**
 
-* Canonical 'plow' namespace reserved on [Gemcutter](http://gemcutter.org/gems/plow)
+* Canonical 'plow' namespace reserved on [Gemcutter](http://gemcutter.org/gems/plow) and [Rubyforge](http://rubyforge.org/projects/plow/)
 
 I'm currently working at towards assembling a "complete software" package for you.  Please stay tuned for the official launch of version 1.0.0.  :D
 
