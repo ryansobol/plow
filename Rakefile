@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name        = "plow"
-    gem.summary     = "Plows the fertile soil of your filesystem into neatly organized plots of website templates"
-    gem.description = "Plows the fertile soil of your filesystem into neatly organized plots of website templates"
+    gem.summary     = "Plows the fertile soil of your filesystem into neatly organized plots of website templates."
+    gem.description = "Plows the fertile soil of your filesystem into neatly organized plots of website templates."
     gem.email       = "code@ryansobol.com"
     gem.homepage    = "http://github.com/ryansobol/plow"
     gem.authors     = ["Ryan Sobol"]

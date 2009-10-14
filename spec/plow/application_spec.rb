@@ -16,7 +16,7 @@ Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
     SITE_ALIAS      (Optional) List of alias names of the website (e.g. apple.com)
 
   Summary:
-    Plows the fertile soil of your filesystem into neatly organized plots of website templates
+    Plows the fertile soil of your filesystem into neatly organized plots of website templates.
 
   Description:
     1. Ensure both a system user account and user home exist
