@@ -6,8 +6,8 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name              = "plow"
     gem.rubyforge_project = "plow"
-    gem.summary           = "Plows the fertile soil of your filesystem into neatly organized plots of web-application templates"
-    gem.description       = "Plows the fertile soil of your filesystem into neatly organized plots of web-application templates"
+    gem.summary           = "Plows the fertile soil of your filesystem into neatly organized plots of web-site templates"
+    gem.description       = "Plows the fertile soil of your filesystem into neatly organized plots of web-site templates"
     gem.email             = "code@ryansobol.com"
     gem.homepage          = "http://github.com/ryansobol/plow"
     gem.authors           = ["Ryan Sobol"]

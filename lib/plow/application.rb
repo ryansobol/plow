@@ -15,13 +15,13 @@ Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
     SITE_ALIAS      (Optional) List of alias names of the website (e.g. apple.com)
 
   Summary:
-    Plows the fertile soil of your filesystem into neatly organized plots of web-application templates
+    Plows the fertile soil of your filesystem into neatly organized plots of web-site templates
 
   Description:
     1. Sharpens it's blade by ensuring that both a Linux system user account and it's home path exist
-    2. Penetrates the soil by forming the web-application root path within the user home
-    3. Seeds the web-application with an index page and web server log files
-    4. Fertilizes the web-application by installing a virtual host configuration into the web server
+    2. Penetrates the soil by forming the web-site root path within the user home
+    3. Seeds the web-site with an index page and web server log files
+    4. Fertilizes the web-site by installing a virtual host configuration into the web server
 
   Example:
     plow steve www.apple.com apple.com

@@ -7,7 +7,10 @@ PLOW Release 0.1.0 (October 13th 2009)
 
 Copyright &copy; 2009 Ryan Sobol. Licensed under the MIT license.  Please see the {file:LICENSE} for more information.
 
-**Homepage**:   [http://github.com/ryansobol/plow](http://github.com/ryansobol/plow)  
+**Homepage**:       [http://github.com/ryansobol/plow](http://github.com/ryansobol/plow)  
+
+**Documentation**:  [http://rdoc.info/projects/ryansobol/plow](http://rdoc.info/projects/ryansobol/plow)  
+**Code Metrics**: [http://devver.net/caliper/project?repo=git%3A%2F%2Fgithub.com%2Fryansobol%2Fplow.git](http://devver.net/caliper/project?repo=git%3A%2F%2Fgithub.com%2Fryansobol%2Fplow.git)  
 
 WHAT'S NEW?
 -----------
@@ -23,15 +26,15 @@ Please see {file:HISTORY} for the historical overview of the project.
 SYNOPSIS
 --------
 
-Plows the fertile soil of your filesystem into neatly organized plots of web-application templates
+Plows the fertile soil of your filesystem into neatly organized plots of web-site templates
 
 FEATURES
 --------
 
 1. Sharpens it's blade by ensuring that both a Linux system user account and it's home path exist
-2. Penetrates the soil by forming the web-application root path within the user home
-3. Seeds the web-application with an index page and web server log files
-4. Fertilizes the web-application by installing a virtual host configuration into the web server
+2. Penetrates the soil by forming the web-site root path within the user home
+3. Seeds the web-site with an index page and web server log files
+4. Fertilizes the web-site by installing a virtual host configuration into the web server
 
 REQUIREMENTS
 ------------
