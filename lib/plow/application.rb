@@ -11,8 +11,8 @@ Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
 
   Arguments:
     USER_NAME       Name of a Linux system account user
-    SITE_NAME       Name of the website (e.g. www.apple.com)
-    SITE_ALIAS      (Optional) List of alias names of the website (e.g. apple.com)
+    SITE_NAME       Name of the web-site (e.g. www.apple.com)
+    SITE_ALIAS      (Optional) List of alias names of the web-site (e.g. apple.com)
 
   Summary:
     Plows the fertile soil of your filesystem into neatly organized plots of web-site templates
@@ -38,9 +38,9 @@ MESSAGE
         rescue Plow::InvalidSystemUserNameError => invalid
           abort "ERROR: #{invalid} is an invalid system user name"
         rescue Plow::InvalidWebSiteNameError => invalid
-          abort "ERROR: #{invalid} is an invalid website name"
+          abort "ERROR: #{invalid} is an invalid web-site name"
         rescue Plow::InvalidWebSiteAliasError => invalid
-          abort "ERROR: #{invalid} is an invalid website alias"
+          abort "ERROR: #{invalid} is an invalid web-site alias"
         rescue Plow::NonRootProcessOwnerError
           abort "ERROR: This process must be owned or executed by root"
         rescue Plow::ReservedSystemUserNameError => reserved

@@ -74,8 +74,8 @@ USAGE
     
     Arguments:
       USER_NAME       Name of a Linux system account user
-      SITE_NAME       Name of the website (e.g. www.apple.com)
-      SITE_ALIAS      (Optional) List of alias names of the website (e.g. apple.com)
+      SITE_NAME       Name of the web-site (e.g. www.apple.com)
+      SITE_ALIAS      (Optional) List of alias names of the web-site (e.g. apple.com)
 
 EXAMPLE
 -------

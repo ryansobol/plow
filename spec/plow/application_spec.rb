@@ -12,8 +12,8 @@ Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
 
   Arguments:
     USER_NAME       Name of a Linux system account user
-    SITE_NAME       Name of the website (e.g. www.apple.com)
-    SITE_ALIAS      (Optional) List of alias names of the website (e.g. apple.com)
+    SITE_NAME       Name of the web-site (e.g. www.apple.com)
+    SITE_ALIAS      (Optional) List of alias names of the web-site (e.g. apple.com)
 
   Summary:
     Plows the fertile soil of your filesystem into neatly organized plots of web-site templates
@@ -107,7 +107,7 @@ MESSAGE
       expected_error = Plow::InvalidWebSiteNameError.new(@bad_argv[1])
       Plow::Generator.should_receive(:new).and_raise(expected_error)
       
-      expected_message = "ERROR: #{@bad_argv[1]} is an invalid website name"
+      expected_message = "ERROR: #{@bad_argv[1]} is an invalid web-site name"
       lambda { Plow::Application.launch(*@bad_argv) }.should raise_error(SystemExit, expected_message)
     end
     
@@ -115,7 +115,7 @@ MESSAGE
       expected_error = Plow::InvalidWebSiteAliasError.new(@bad_argv[2])
       Plow::Generator.should_receive(:new).and_raise(expected_error)
       
-      expected_message = "ERROR: #{@bad_argv[2]} is an invalid website alias"
+      expected_message = "ERROR: #{@bad_argv[2]} is an invalid web-site alias"
       lambda { Plow::Application.launch(*@bad_argv) }.should raise_error(SystemExit, expected_message)
     end
   end
