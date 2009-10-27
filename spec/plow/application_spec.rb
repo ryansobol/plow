@@ -23,7 +23,7 @@ describe Plow::Application do
 Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
 
   Arguments:
-    USER_NAME       Name of a Linux system account user
+    USER_NAME       Name of a Linux system account user (e.g. steve)
     SITE_NAME       Name of the web-site (e.g. www.apple.com)
     SITE_ALIAS      (Optional) List of alias names of the web-site (e.g. apple.com)
 

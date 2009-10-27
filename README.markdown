@@ -73,9 +73,18 @@ USAGE
     Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
     
     Arguments:
-      USER_NAME       Name of a Linux system account user
+      USER_NAME       Name of a Linux system account user (e.g. steve)
       SITE_NAME       Name of the web-site (e.g. www.apple.com)
       SITE_ALIAS      (Optional) List of alias names of the web-site (e.g. apple.com)
+
+Plow is bundled with two executables named `plow` and `plow1.9`.  They are nearly identical, but with the following exception:
+
+* `plow` executes using the shell environment's `ruby` binary.  (e.g. `#!/usr/bin/env ruby`)
+* `plow1.9` executes using the shell environment's `ruby1.9` binary.  (e.g. `#!/usr/bin/env ruby1.9`)
+
+**Note:** If your Ruby 1.9 binary is something other than `ruby1.9` (i.e. like `ruby19`) then you'll need to create a shell alias similar to the following:
+
+    alias ruby1.9="`which ruby19`"
 
 EXAMPLE
 -------
