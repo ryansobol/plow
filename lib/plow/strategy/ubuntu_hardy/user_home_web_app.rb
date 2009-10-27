@@ -92,21 +92,21 @@ class Plow
         private
         
         ##
-        # Proxy method to +Plow::Generator#say+
+        # Proxy method to `Plow::Generator#say`
         # @param [String] message A user output message
         def say(message)
           context.say(message)
         end
         
         ##
-        # Proxy method to +Plow::Generator#shell+
+        # Proxy method to `Plow::Generator#shell`
         # @param [String] commands Shell commands with multi-line support.
         def shell(commands)
           context.shell(commands)
         end
         
         ##
-        # Reads the file at +users_file_path+ and yields each user iteratively.
+        # Reads the file at `users_file_path` and yields each user iteratively.
         #
         #
         # @yield [Hash] Each user account
@@ -141,8 +141,8 @@ class Plow
         ##
         # Determines if the context.user_name already exists or not
         # 
-        # @return [Boolean] +true+ if found otherwise +false+
-        # @raise [Plow::ReservedSystemUserNameError] Raised if the +context.user_name+ is a reserved
+        # @return [Boolean] `true` if found otherwise `false`
+        # @raise [Plow::ReservedSystemUserNameError] Raised if the `context.user_name` is a reserved
         #   system user name
         def user_exists?
           users do |user|
@@ -158,7 +158,7 @@ class Plow
         end
         
         ##
-        # Creates a system user account for +context.user_name+
+        # Creates a system user account for `context.user_name`
         def create_user
           shell "adduser #{context.user_name}"
         end
@@ -166,10 +166,10 @@ class Plow
         ############################################################################################################
         
         ##
-        # Determines if a home path for the +context.user_name+ already exists
+        # Determines if a home path for the `context.user_name` already exists
         #
-        # @return [Boolean] +true+ if the path already exists, otherwise +false+
-        # @raise [Plow::SystemUserNameNotFoundError] Raised if the +context.user_name+ is not found 
+        # @return [Boolean] `true` if the path already exists, otherwise `false`
+        # @raise [Plow::SystemUserNameNotFoundError] Raised if the `context.user_name` is not found 
         #   even after it has been created
         def user_home_exists?
           users do |user|
@@ -183,7 +183,7 @@ class Plow
         end
         
         ##
-        # Creates a +user_home_path+
+        # Creates a `user_home_path`
         def create_user_home
           shell <<-RUN
             mkdir #{user_home_path}
@@ -194,16 +194,16 @@ class Plow
         ############################################################################################################
         
         ##
-        # Determines if the +sites_home_path+ already exists.  As a side-effect, also correctly
-        #   sets the +@sites_home_path+ variable.
-        # @return [Boolean] +true+ if the path already exists, otherwise +false+
+        # Determines if the `sites_home_path` already exists.  As a side-effect, also correctly
+        #   sets the `@sites_home_path` variable.
+        # @return [Boolean] `true` if the path already exists, otherwise `false`
         def sites_home_exists?
           @sites_home_path = "#{user_home_path}/sites"
           Dir.exists?(sites_home_path)
         end
         
         ##
-        # Creates the +site_home_path+
+        # Creates the `site_home_path`
         def create_sites_home
           shell <<-RUN
             mkdir #{sites_home_path}
@@ -214,16 +214,16 @@ class Plow
         ############################################################################################################
         
         ##
-        # Determines if the +app_root_path+ already exists.  As a side-effect, also correctly
-        #   sets the +@app_root_path+ variable.
-        # @return [Boolean] +true+ if the path exists, otherwise +false+
+        # Determines if the `app_root_path` already exists.  As a side-effect, also correctly
+        #   sets the `@app_root_path` variable.
+        # @return [Boolean] `true` if the path exists, otherwise `false`
         def app_root_exists?
           @app_root_path = "#{sites_home_path}/#{context.site_name}"
           Dir.exists?(app_root_path)
         end
         
         ##
-        # Creates the +app_root_path+
+        # Creates the `app_root_path`
         def create_app_root
           shell <<-RUN
             mkdir #{app_root_path}
@@ -234,7 +234,7 @@ class Plow
         ############################################################################################################
         
         ##
-        # Creates the app public structure at +app_public_path+
+        # Creates the app public structure at `app_public_path`
         def create_app_public
           shell <<-RUN
             mkdir #{app_public_path}
@@ -246,7 +246,7 @@ class Plow
         ############################################################################################################
         
         ##
-        # Creates the app log structure at +app_log_path+
+        # Creates the app log structure at `app_log_path`
         def create_app_logs
           shell <<-RUN
             mkdir #{app_log_path}
@@ -266,13 +266,13 @@ class Plow
         
         ##
         # Determines if the apache2 vhost config file already exists
-        # @return [Boolean] +true+ if the file exists, otherwise +false+
+        # @return [Boolean] `true` if the file exists, otherwise `false`
         def vhost_config_exists?
           Dir.exists?(vhost_file_path)
         end
         
         ##
-        # Creates an apache2 vhost config file from a template file to a +vhost_file_path+
+        # Creates an apache2 vhost config file from a template file to a `vhost_file_path`
         def create_vhost_config
           File.open(vhost_file_path, 'wt') do |file|
             template_context = {
