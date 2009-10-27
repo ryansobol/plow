@@ -11,7 +11,7 @@ begin
     gem.email             = "code@ryansobol.com"
     gem.homepage          = "http://github.com/ryansobol/plow"
     gem.authors           = ["Ryan Sobol"]
-    gem.add_development_dependency "rspec", "= 1.2.8"
+    gem.add_development_dependency "rspec", "= 1.2.9"
     gem.add_development_dependency "yard", "= 0.2.3.5"
     gem.add_development_dependency "bluecloth", "= 2.0.5"  # hidden yard dependency for markdown support
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
@@ -19,7 +19,7 @@ begin
   Jeweler::GemcutterTasks.new
   
   Jeweler::RubyforgeTasks.new do |task|
-    task.doc_task = "yardoc"
+    task.doc_task = false
   end
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
@@ -29,7 +29,6 @@ require 'spec/rake/spectask'
 Spec::Rake::SpecTask.new(:spec) do |task|
   task.libs << 'lib' << 'spec'
   task.spec_files = FileList['spec/**/*_spec.rb']
-  task.spec_opts  = %w{ -O spec/spec.opts }
 end
 
 Spec::Rake::SpecTask.new(:rcov) do |task|
