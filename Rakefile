@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'rake'
 
+###################################################################################################
+
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
@@ -16,36 +18,44 @@ begin
     gem.add_development_dependency "bluecloth", "= 2.0.5"  # hidden yard dependency for markdown support
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
+  
   Jeweler::GemcutterTasks.new
   
   Jeweler::RubyforgeTasks.new do |task|
-    task.doc_task = false
+    task.doc_task = false # rubyforge's days are numbered...
   end
+  
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
 
-require 'spec/rake/spectask'
-Spec::Rake::SpecTask.new(:spec) do |task|
-  task.libs << 'lib' << 'spec'
-  task.spec_files = FileList['spec/**/*_spec.rb']
+###################################################################################################
+
+begin
+  require 'spec/rake/spectask'
+  Spec::Rake::SpecTask.new(:spec)
+  
+  Spec::Rake::SpecTask.new(:rcov) do |task|
+    task.rcov = true # creates a 'clobber_rcov' task as well
+  end
+rescue LoadError
+  # error message handled by Jeweler's dependency checker
 end
 
-Spec::Rake::SpecTask.new(:rcov) do |task|
-  task.libs << 'lib' << 'spec'
-  task.pattern = 'spec/**/*_spec.rb'
-  task.rcov    = true
-end
-
-task :spec => :check_dependencies
-
-task :default => :spec
+###################################################################################################
 
 begin
   require 'yard'
-  YARD::Rake::YardocTask.new
-rescue LoadError => e
-  task :yardoc do
-    abort "YARD is not available. In order to run yardoc, you must: sudo gem install yard"
-  end
+  YARD::Rake::YardocTask.new(:yardoc)
+rescue LoadError
+  # error message handled by Jeweler's dependency checker
+end
+
+###################################################################################################
+
+task :default => :spec
+
+# perform a library dependency check (via Jeweler) before the following tasks
+[:spec, :rcov, :clobber_rcov, :yardoc].each do |name|
+  task name => :check_dependencies
 end

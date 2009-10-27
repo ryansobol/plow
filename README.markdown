@@ -49,7 +49,7 @@ REQUIREMENTS
 
 **Optional automated specification dependencies**
 
-* RSpec 1.2.8
+* RSpec 1.2.9
 
 **Optional generated API documentation dependencies**
 
