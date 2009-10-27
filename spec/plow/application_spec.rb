@@ -3,6 +3,18 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Plow::Application do
   
+  before(:each) do
+    @expected_version_stamp = "Plow v0.1.0. Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license."
+  end
+  
+  ##################################################################################################
+  
+  describe ".version_stamp" do
+    it "should create a version stamp as a String" do
+      Plow::Application.send(:version_stamp).should == @expected_version_stamp
+    end
+  end
+  
   ##################################################################################################
   
   describe ".launch when failing" do
@@ -27,11 +39,18 @@ Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
   Example:
     plow steve www.apple.com apple.com
 MESSAGE
+      $stdout = StringIO.new
       $stderr = StringIO.new
     end
     
     after(:each) do
+      $stdout = STDOUT
       $stderr = STDERR
+    end
+    
+    it "should output the version stamp" do
+      lambda { Plow::Application.launch }.should raise_error
+      $stdout.string.should == @expected_version_stamp + "\n"
     end
     
     it "should abort with usage message with 0 arguments" do
@@ -46,8 +65,30 @@ MESSAGE
   ##################################################################################################
 
   describe ".launch when passing" do
+    before(:each) do
+      $stdout = StringIO.new
+    end
+    
+    after(:each) do
+      $stdout = STDOUT
+    end
+    
+    it "should output the version stamp" do
+      argv      = ['steve', 'www.apple.com']
+      generator = mock('generator')
+      
+      Plow::Generator.should_receive(:new)
+        .with(*argv)
+        .and_return(generator)
+      generator.should_receive(:run!)
+      
+      Plow::Application.launch(*argv)
+      
+      $stdout.string.should == @expected_version_stamp + "\n"
+    end
+    
     it "should start the generator with 2 arguments" do
-      argv      = ['apple-steve', 'www.apple.com']
+      argv      = ['steve', 'www.apple.com']
       generator = mock('generator')
       
       Plow::Generator.should_receive(:new)
@@ -88,10 +129,12 @@ MESSAGE
   describe "when handling errors from Plow::Generator.new" do
     before(:each) do
       @bad_argv = ['bad user name', 'bad site name', 'bad site alias']
+      $stdout   = StringIO.new
       $stderr   = StringIO.new
     end
     
     after(:each) do
+      $stdout = STDOUT
       $stderr = STDERR
     end
     
@@ -122,12 +165,14 @@ MESSAGE
   
   describe "when handing errors from Plow::Generator.run!" do
     before(:each) do
-      $stderr   = StringIO.new
-      @argv      = ['apple-steve', 'www.apple.com', 'apple.com']
+      $stdout    = StringIO.new
+      $stderr    = StringIO.new
+      @argv      = ['steve', 'www.apple.com', 'apple.com']
       @generator = mock('generator')
     end
     
     after(:each) do
+      $stdout = STDOUT
       $stderr = STDERR
     end
     

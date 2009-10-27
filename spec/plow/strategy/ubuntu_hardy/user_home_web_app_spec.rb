@@ -5,7 +5,7 @@ require 'tempfile'
 
 describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   before(:each) do
-    @context  = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+    @context  = Plow::Generator.new('steve', 'www.apple.com', 'apple.com')
     @strategy = Plow::Strategy::UbuntuHardy::UserHomeWebApp.new(@context)      
     
     @parsed_users_fixture = [ 
@@ -35,7 +35,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       { name: "Debian-exim",   password: "x", id: 105,    group_id: 109,   info: "",                                   home_path: "/var/spool/exim4",   shell_path: "/bin/false" }, 
       { name: "sadmin",        password: "x", id: 1000,   group_id: 1000,  info: ",,,",                                home_path: "/home/sadmin",       shell_path: "/bin/bash" }, 
       { name: "mysql",         password: "x", id: 106,    group_id: 111,   info: "MySQL Server,,,",                    home_path: "/var/lib/mysql",     shell_path: "/bin/false" }, 
-      { name: "apple-steve",   password: "x", id: 1001,   group_id: 1001,  info: ",,,",                                home_path: "/home/apple-steve",  shell_path: "/bin/bash" }
+      { name: "steve",         password: "x", id: 1001,   group_id: 1001,  info: ",,,",                                home_path: "/home/steve",        shell_path: "/bin/bash" }
     ]
     
   end
@@ -115,7 +115,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     end
     
     it "should return true when a matching non-system account is found" do
-      @context.stub!(:user_name).and_return('apple-steve')
+      @context.stub!(:user_name).and_return('steve')
       @strategy.send(:user_exists?).should be_true
     end
   end
@@ -124,7 +124,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   describe '#create_user (private)' do
     it "should invoke a adduser as a system call" do
-      @strategy.should_receive(:shell).with("adduser apple-steve")
+      @strategy.should_receive(:shell).with("adduser steve")
       @strategy.send(:create_user)
     end
   end
@@ -154,7 +154,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       
       it "should set user home variable to correct home path" do
         @strategy.send(:user_home_exists?)
-        @strategy.user_home_path.should == '/home/apple-steve'
+        @strategy.user_home_path.should == '/home/steve'
       end
     end
     
@@ -171,7 +171,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       
       it "should set user home variable to correct home path" do
         @strategy.send(:user_home_exists?)
-        @strategy.user_home_path.should == '/home/apple-steve'
+        @strategy.user_home_path.should == '/home/steve'
       end
     end
   end
@@ -180,10 +180,10 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   describe '#create_user_home (private)' do
     it "should create a user home with the correct ownership" do
-      @strategy.stub!(:user_home_path).and_return("/home/apple-steve")
+      @strategy.stub!(:user_home_path).and_return("/home/steve")
       @strategy.should_receive(:shell).with(<<-COMMANDS)
-            mkdir /home/apple-steve
-            chown apple-steve:apple-steve /home/apple-steve
+            mkdir /home/steve
+            chown steve:steve /home/steve
       COMMANDS
       @strategy.send(:create_user_home)
     end
@@ -199,7 +199,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     
     it "should set sites home variable" do
       @strategy.send(:sites_home_exists?)
-      @strategy.sites_home_path.should == "/home/apple-steve/sites"
+      @strategy.sites_home_path.should == "/home/steve/sites"
     end
     
     it "should return true if the directory exists" do
@@ -217,10 +217,10 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   describe '#create_sites_home (private)' do
     it "should create a sites home with the correct ownership" do
-      @strategy.stub!(:sites_home_path).and_return("/home/apple-steve/sites")
+      @strategy.stub!(:sites_home_path).and_return("/home/steve/sites")
       @strategy.should_receive(:shell).with(<<-COMMANDS)
-            mkdir /home/apple-steve/sites
-            chown apple-steve:apple-steve /home/apple-steve/sites
+            mkdir /home/steve/sites
+            chown steve:steve /home/steve/sites
       COMMANDS
       @strategy.send(:create_sites_home)
     end
@@ -236,7 +236,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     
     it "should set sites home variable" do
       @strategy.send(:app_root_exists?)
-      @strategy.app_root_path.should == "/home/apple-steve/sites/www.apple.com"
+      @strategy.app_root_path.should == "/home/steve/sites/www.apple.com"
     end
     
     it "should return true if the directory exists" do
@@ -254,10 +254,10 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   describe '#create_app_root (private)' do
     it "should create an application home correctly" do
-      @strategy.stub!(:app_root_path).and_return('/home/apple-steve/sites/www.apple.com')
+      @strategy.stub!(:app_root_path).and_return('/home/steve/sites/www.apple.com')
       @strategy.should_receive(:shell).with(<<-COMMANDS)
-            mkdir /home/apple-steve/sites/www.apple.com
-            chown apple-steve:apple-steve /home/apple-steve/sites/www.apple.com
+            mkdir /home/steve/sites/www.apple.com
+            chown steve:steve /home/steve/sites/www.apple.com
       COMMANDS
       @strategy.send(:create_app_root)
     end
@@ -267,11 +267,11 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   describe '#create_app_public (private)' do
     it "should build an application's public files correctly" do
-      @strategy.stub!(:app_public_path).and_return('/home/apple-steve/sites/www.apple.com/public')
+      @strategy.stub!(:app_public_path).and_return('/home/steve/sites/www.apple.com/public')
       @strategy.should_receive(:shell).with(<<-COMMANDS)
-            mkdir /home/apple-steve/sites/www.apple.com/public
-            touch /home/apple-steve/sites/www.apple.com/public/index.html
-            chown -R apple-steve:apple-steve /home/apple-steve/sites/www.apple.com/public
+            mkdir /home/steve/sites/www.apple.com/public
+            touch /home/steve/sites/www.apple.com/public/index.html
+            chown -R steve:steve /home/steve/sites/www.apple.com/public
       COMMANDS
       @strategy.send(:create_app_public)
     end
@@ -281,18 +281,18 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   
   describe '#create_app_logs (private)' do
     it "should build an application's log files correctly" do
-      @strategy.stub!(:app_log_path).and_return('/home/apple-steve/sites/www.apple.com/log')
+      @strategy.stub!(:app_log_path).and_return('/home/steve/sites/www.apple.com/log')
       @strategy.should_receive(:shell).with(<<-COMMANDS)
-            mkdir /home/apple-steve/sites/www.apple.com/log
-            mkdir /home/apple-steve/sites/www.apple.com/log/apache2
-            chmod 750 /home/apple-steve/sites/www.apple.com/log/apache2
+            mkdir /home/steve/sites/www.apple.com/log
+            mkdir /home/steve/sites/www.apple.com/log/apache2
+            chmod 750 /home/steve/sites/www.apple.com/log/apache2
             
-            touch /home/apple-steve/sites/www.apple.com/log/apache2/access.log
-            touch /home/apple-steve/sites/www.apple.com/log/apache2/error.log
+            touch /home/steve/sites/www.apple.com/log/apache2/access.log
+            touch /home/steve/sites/www.apple.com/log/apache2/error.log
             
-            chmod 640 /home/apple-steve/sites/www.apple.com/log/apache2/*.log
-            chown -R apple-steve:apple-steve /home/apple-steve/sites/www.apple.com/log
-            chown root -R /home/apple-steve/sites/www.apple.com/log/apache2
+            chmod 640 /home/steve/sites/www.apple.com/log/apache2/*.log
+            chown -R steve:steve /home/steve/sites/www.apple.com/log
+            chown root -R /home/steve/sites/www.apple.com/log/apache2
       COMMANDS
       @strategy.send(:create_app_logs)
     end
@@ -318,8 +318,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     before(:each) do
       @temp_file = Tempfile.new('generate_vhost_config')
       @strategy.stub!(:vhost_file_path).and_return(@temp_file.path)
-      @strategy.stub!(:app_public_path).and_return('/home/apple-steve/sites/www.apple.com/public')
-      @strategy.stub!(:app_log_path).and_return('/home/apple-steve/sites/www.apple.com/log')
+      @strategy.stub!(:app_public_path).and_return('/home/steve/sites/www.apple.com/public')
+      @strategy.stub!(:app_log_path).and_return('/home/steve/sites/www.apple.com/log')
     end
     
     it "should create a vhost config file from template file without site aliases" do
@@ -333,11 +333,11 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   ServerName www.apple.com
   
   DirectoryIndex index.html
-  DocumentRoot /home/apple-steve/sites/www.apple.com/public
+  DocumentRoot /home/steve/sites/www.apple.com/public
   
   LogLevel warn
-  ErrorLog  /home/apple-steve/sites/www.apple.com/log/apache2/error.log
-  CustomLog /home/apple-steve/sites/www.apple.com/log/apache2/access.log combined
+  ErrorLog  /home/steve/sites/www.apple.com/log/apache2/error.log
+  CustomLog /home/steve/sites/www.apple.com/log/apache2/access.log combined
 </VirtualHost>
       CONFIG
     end
@@ -353,11 +353,11 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   ServerAlias apple.com
   
   DirectoryIndex index.html
-  DocumentRoot /home/apple-steve/sites/www.apple.com/public
+  DocumentRoot /home/steve/sites/www.apple.com/public
   
   LogLevel warn
-  ErrorLog  /home/apple-steve/sites/www.apple.com/log/apache2/error.log
-  CustomLog /home/apple-steve/sites/www.apple.com/log/apache2/access.log combined
+  ErrorLog  /home/steve/sites/www.apple.com/log/apache2/error.log
+  CustomLog /home/steve/sites/www.apple.com/log/apache2/access.log combined
 </VirtualHost>
       CONFIG
     end
@@ -385,9 +385,9 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       @strategy.stub!(:app_root_exists?).and_return(false)
       @strategy.stub!(:vhost_config_exists?).and_return(false)
       
-      @strategy.stub!(:user_home_path).and_return('/home/apple-steve')
-      @strategy.stub!(:sites_home_path).and_return('/home/apple-steve/sites')
-      @strategy.stub!(:app_root_path).and_return('/home/apple-steve/sites/www.apple.com')
+      @strategy.stub!(:user_home_path).and_return('/home/steve')
+      @strategy.stub!(:sites_home_path).and_return('/home/steve/sites')
+      @strategy.stub!(:app_root_path).and_return('/home/steve/sites/www.apple.com')
       
       $stdout = StringIO.new
     end
@@ -408,16 +408,16 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       
       @strategy.execute
       
-      @strategy.app_public_path.should == '/home/apple-steve/sites/www.apple.com/public'
-      @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
+      @strategy.app_public_path.should == '/home/steve/sites/www.apple.com/public'
+      @strategy.app_log_path.should == '/home/steve/sites/www.apple.com/log'
       
       $stdout.string.should == <<-OUTPUT
-==> creating apple-steve user
-==> existing /home/apple-steve
-==> creating /home/apple-steve/sites
-==> creating /home/apple-steve/sites/www.apple.com
-==> creating /home/apple-steve/sites/www.apple.com/public
-==> creating /home/apple-steve/sites/www.apple.com/log
+==> creating steve user
+==> existing /home/steve
+==> creating /home/steve/sites
+==> creating /home/steve/sites/www.apple.com
+==> creating /home/steve/sites/www.apple.com/public
+==> creating /home/steve/sites/www.apple.com/log
 ==> creating /etc/apache2/sites-available/www.apple.com.conf
 ==> installing /etc/apache2/sites-available/www.apple.com.conf
       OUTPUT
@@ -437,16 +437,16 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       
       @strategy.execute
       
-      @strategy.app_public_path.should == '/home/apple-steve/sites/www.apple.com/public'
-      @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
+      @strategy.app_public_path.should == '/home/steve/sites/www.apple.com/public'
+      @strategy.app_log_path.should == '/home/steve/sites/www.apple.com/log'
       
       $stdout.string.should == <<-OUTPUT
-==> existing apple-steve user
-==> existing /home/apple-steve
-==> creating /home/apple-steve/sites
-==> creating /home/apple-steve/sites/www.apple.com
-==> creating /home/apple-steve/sites/www.apple.com/public
-==> creating /home/apple-steve/sites/www.apple.com/log
+==> existing steve user
+==> existing /home/steve
+==> creating /home/steve/sites
+==> creating /home/steve/sites/www.apple.com
+==> creating /home/steve/sites/www.apple.com/public
+==> creating /home/steve/sites/www.apple.com/log
 ==> creating /etc/apache2/sites-available/www.apple.com.conf
 ==> installing /etc/apache2/sites-available/www.apple.com.conf
       OUTPUT
@@ -466,16 +466,16 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       
       @strategy.execute
       
-      @strategy.app_public_path.should == '/home/apple-steve/sites/www.apple.com/public'
-      @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
+      @strategy.app_public_path.should == '/home/steve/sites/www.apple.com/public'
+      @strategy.app_log_path.should == '/home/steve/sites/www.apple.com/log'
       
       $stdout.string.should == <<-OUTPUT
-==> creating apple-steve user
-==> creating /home/apple-steve
-==> creating /home/apple-steve/sites
-==> creating /home/apple-steve/sites/www.apple.com
-==> creating /home/apple-steve/sites/www.apple.com/public
-==> creating /home/apple-steve/sites/www.apple.com/log
+==> creating steve user
+==> creating /home/steve
+==> creating /home/steve/sites
+==> creating /home/steve/sites/www.apple.com
+==> creating /home/steve/sites/www.apple.com/public
+==> creating /home/steve/sites/www.apple.com/log
 ==> creating /etc/apache2/sites-available/www.apple.com.conf
 ==> installing /etc/apache2/sites-available/www.apple.com.conf
       OUTPUT
@@ -495,16 +495,16 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       
       @strategy.execute
       
-      @strategy.app_public_path.should == '/home/apple-steve/sites/www.apple.com/public'
-      @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
+      @strategy.app_public_path.should == '/home/steve/sites/www.apple.com/public'
+      @strategy.app_log_path.should == '/home/steve/sites/www.apple.com/log'
       
       $stdout.string.should == <<-OUTPUT
-==> creating apple-steve user
-==> existing /home/apple-steve
-==> existing /home/apple-steve/sites
-==> creating /home/apple-steve/sites/www.apple.com
-==> creating /home/apple-steve/sites/www.apple.com/public
-==> creating /home/apple-steve/sites/www.apple.com/log
+==> creating steve user
+==> existing /home/steve
+==> existing /home/steve/sites
+==> creating /home/steve/sites/www.apple.com
+==> creating /home/steve/sites/www.apple.com/public
+==> creating /home/steve/sites/www.apple.com/log
 ==> creating /etc/apache2/sites-available/www.apple.com.conf
 ==> installing /etc/apache2/sites-available/www.apple.com.conf
       OUTPUT
@@ -522,12 +522,12 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       @strategy.should_not_receive(:create_vhost_config)
       @strategy.should_not_receive(:install_vhost_config)
       
-      lambda { @strategy.execute }.should raise_error(Plow::AppRootAlreadyExistsError, '/home/apple-steve/sites/www.apple.com')
+      lambda { @strategy.execute }.should raise_error(Plow::AppRootAlreadyExistsError, '/home/steve/sites/www.apple.com')
       
       $stdout.string.should == <<-OUTPUT
-==> creating apple-steve user
-==> existing /home/apple-steve
-==> creating /home/apple-steve/sites
+==> creating steve user
+==> existing /home/steve
+==> creating /home/steve/sites
       OUTPUT
     end
     
@@ -545,16 +545,16 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
       
       lambda { @strategy.execute }.should raise_error(Plow::ConfigFileAlreadyExistsError, '/etc/apache2/sites-available/www.apple.com.conf')
       
-      @strategy.app_public_path.should == '/home/apple-steve/sites/www.apple.com/public'
-      @strategy.app_log_path.should == '/home/apple-steve/sites/www.apple.com/log'
+      @strategy.app_public_path.should == '/home/steve/sites/www.apple.com/public'
+      @strategy.app_log_path.should == '/home/steve/sites/www.apple.com/log'
       
       $stdout.string.should == <<-OUTPUT
-==> creating apple-steve user
-==> existing /home/apple-steve
-==> creating /home/apple-steve/sites
-==> creating /home/apple-steve/sites/www.apple.com
-==> creating /home/apple-steve/sites/www.apple.com/public
-==> creating /home/apple-steve/sites/www.apple.com/log
+==> creating steve user
+==> existing /home/steve
+==> creating /home/steve/sites
+==> creating /home/steve/sites/www.apple.com
+==> creating /home/steve/sites/www.apple.com/public
+==> creating /home/steve/sites/www.apple.com/log
       OUTPUT
     end
   end

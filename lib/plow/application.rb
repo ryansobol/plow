@@ -5,6 +5,8 @@ class Plow
   class Application
     class << self
       def launch(*arguments)
+        puts version_stamp
+        
         if arguments.length < 2
           abort <<-MESSAGE
 Usage: plow USER_NAME SITE_NAME [SITE_ALIAS ...]
@@ -52,7 +54,12 @@ MESSAGE
         rescue Plow::ConfigFileAlreadyExistsError => already_exists
           abort "ERROR: Configuration file #{already_exists} already exists"
         end
-        
+      end
+      
+      private
+      
+      def version_stamp
+        "Plow v#{Plow::VERSION}. Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license."
       end
     end
   end

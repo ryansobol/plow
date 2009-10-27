@@ -35,11 +35,11 @@ describe Plow::Generator do
   
   describe ".new when passing with two good arguments" do
     before(:each) do
-      @generator = Plow::Generator.new('apple-steve', 'www.apple.com')
+      @generator = Plow::Generator.new('steve', 'www.apple.com')
     end
     
     it "should set user_name" do
-      @generator.user_name.should == 'apple-steve'
+      @generator.user_name.should == 'steve'
     end
     
     it "should set site_name" do
@@ -59,11 +59,11 @@ describe Plow::Generator do
   
   describe ".new when passing with three good arguments" do
     before(:each) do
-      @generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+      @generator = Plow::Generator.new('steve', 'www.apple.com', 'apple.com')
     end
     
     it "should set user_name" do
-      @generator.user_name.should == 'apple-steve'
+      @generator.user_name.should == 'steve'
     end
     
     it "should set site_name" do
@@ -84,13 +84,13 @@ describe Plow::Generator do
   describe ".run!" do
     it "should raise Plow::NonRootProcessOwnerError when process is owned by non-root user" do
       Process.stub!(:uid).and_return(1)
-      generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+      generator = Plow::Generator.new('steve', 'www.apple.com', 'apple.com')
       lambda { generator.run! }.should raise_error(Plow::NonRootProcessOwnerError)
     end
     
     it "should execute the strategy when process is owned by root user" do
       Process.stub!(:uid).and_return(0)
-      generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+      generator = Plow::Generator.new('steve', 'www.apple.com', 'apple.com')
       generator.strategy.should_receive(:execute)
       generator.run!
     end
@@ -101,7 +101,7 @@ describe Plow::Generator do
   describe '#say' do
     before(:each) do
       $stdout    = StringIO.new
-      @generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+      @generator = Plow::Generator.new('steve', 'www.apple.com', 'apple.com')
     end
     
     after(:each) do
@@ -119,7 +119,7 @@ describe Plow::Generator do
   
   describe '#shell (private)' do
     before(:each) do
-      @generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+      @generator = Plow::Generator.new('steve', 'www.apple.com', 'apple.com')
     end
 
     it "should invoke a system call for a single-line command String" do
@@ -153,7 +153,7 @@ describe Plow::Generator do
 </VirtualHost>
       OUTPUT
       
-      generator = Plow::Generator.new('apple-steve', 'www.apple.com', 'apple.com')
+      generator = Plow::Generator.new('steve', 'www.apple.com', 'apple.com')
       generator.evaluate_template(template_path, context_hash).should == expected_output
     end
   end
