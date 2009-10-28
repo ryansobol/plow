@@ -47,12 +47,9 @@ REQUIREMENTS
 
 * Ruby 1.9.1
 
-**Optional automated specification dependencies**
-
+**Optional development dependencies**
+* Jeweler 1.3.0
 * RSpec 1.2.9
-
-**Optional generated API documentation dependencies**
-
 * YARD 0.2.3.5
 * BlueCloth 2.0.5
 

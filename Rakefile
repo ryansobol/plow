@@ -1,11 +1,38 @@
 require 'rubygems'
 require 'rake'
 
+class Plow
+  class Dependencies
+    RUBY = '= 1.9.1'
+    
+    DEVELOPMENT = {
+      :jeweler   => '= 1.3.0',
+      :rspec     => '= 1.2.9',
+      :yard      => '= 0.2.3.5',
+      :bluecloth => '= 2.0.5'     # hidden yard dependency for markdown support
+    }
+    
+    ##
+    # Returns a String with the appropriate error message
+    #
+    # @param error LoadError The error object
+    # @return String The developer error message
+    def self.error_message_for(error)
+      error.message.match(/no such file to load -- (?<gem_name>\w*)/) do |match_data|
+        name = match_data[:gem_name].to_sym
+        name = :rspec if name == :spec # thanx for bucking the pattern, rspec! :(
+        return "#{name} is not available.  Install it with: gem install #{name} --version '#{DEVELOPMENT[name]}'"
+      end
+    end
+  end
+end
+
 ###################################################################################################
 
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
+    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
     gem.name              = "plow"
     gem.rubyforge_project = "plow"
     gem.summary           = "Plows the fertile soil of your filesystem into neatly organized plots of web-site templates"
@@ -13,10 +40,12 @@ begin
     gem.email             = "code@ryansobol.com"
     gem.homepage          = "http://github.com/ryansobol/plow"
     gem.authors           = ["Ryan Sobol"]
-    gem.add_development_dependency "rspec", "= 1.2.9"
-    gem.add_development_dependency "yard", "= 0.2.3.5"
-    gem.add_development_dependency "bluecloth", "= 2.0.5"  # hidden yard dependency for markdown support
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    
+    gem.required_ruby_version = Plow::Dependencies::RUBY
+    
+    Plow::Dependencies::DEVELOPMENT.each_pair do |gem_name, version|
+      gem.add_development_dependency(gem_name.to_s, version)
+    end
   end
   
   Jeweler::GemcutterTasks.new
@@ -24,38 +53,26 @@ begin
   Jeweler::RubyforgeTasks.new do |task|
     task.doc_task = false # rubyforge's days are numbered...
   end
-  
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
+rescue LoadError => e
+  puts Plow::Dependencies.error_message_for(e)
 end
 
 ###################################################################################################
 
 begin
   require 'spec/rake/spectask'
-  Spec::Rake::SpecTask.new(:spec)
-  
-  Spec::Rake::SpecTask.new(:rcov) do |task|
-    task.rcov = true # creates a 'clobber_rcov' task as well
-  end
-rescue LoadError
-  # error message handled by Jeweler's dependency checker
+  Spec::Rake::SpecTask.new(:spec)  
+  task :default => :spec
+rescue LoadError => e
+  puts Plow::Dependencies.error_message_for(e)
 end
 
 ###################################################################################################
 
 begin
   require 'yard'
+  require 'bluecloth'
   YARD::Rake::YardocTask.new(:yardoc)
-rescue LoadError
-  # error message handled by Jeweler's dependency checker
-end
-
-###################################################################################################
-
-task :default => :spec
-
-# perform a library dependency check (via Jeweler) before the following tasks
-[:spec, :rcov, :clobber_rcov, :yardoc].each do |name|
-  task name => :check_dependencies
+rescue LoadError => e
+  puts Plow::Dependencies.error_message_for(e)
 end
