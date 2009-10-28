@@ -32,9 +32,10 @@ end
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    # The gem object is a kind of Gem::Specification 
+    # For additional settings, see http://www.rubygems.org/read/chapter/20
     gem.name              = "plow"
-    gem.rubyforge_project = "plow"
+    gem.rubyforge_project = "plow" # rubyforge's days are numbered...
     gem.summary           = "Plows the fertile soil of your filesystem into neatly organized plots of web-site templates"
     gem.description       = "Plows the fertile soil of your filesystem into neatly organized plots of web-site templates"
     gem.email             = "code@ryansobol.com"
