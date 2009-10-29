@@ -8,8 +8,7 @@ class Plow
     
     unless RUBY_VERSION >= REQUIRED_RUBY_VERSION
       abort <<-ERROR
-    Incompatible ruby version error in #{__FILE__} near line #{__LINE__}
-    This library requires at least ruby #{REQUIRED_RUBY_VERSION} but you're using ruby v#{RUBY_VERSION}
+    This library requires at least Ruby #{REQUIRED_RUBY_VERSION}, but you're using #{RUBY_VERSION}.
     Please see http://www.ruby-lang.org/
       ERROR
     end
@@ -32,24 +31,23 @@ class Plow
     #
     # @param error LoadError The error object
     # @return String The developer error message
-    def self.generate_development_error_message_for(error)
+    def self.warn_for(error)
       error.message.match(/no such file to load -- (\w*)/) do |match_data|
         file_name = match_data[1].to_sym
-        gem_name  = (DEVELOPMENT.has_key?(file_name) ? file_name : FILE_NAME_TO_GEM_NAME[file_name])
+        gem_name  = (DEVELOPMENT_GEMS.has_key?(file_name) ? file_name : FILE_NAME_TO_GEM_NAME[file_name])
         
         @@development_error_messages << "#{gem_name} --version '#{DEVELOPMENT_GEMS[gem_name]}'"
       end
     end
     
-    def self.display_development_error_message
-      return if @@development_error_messages.empty?
-      message = ["\nThe following gems could not be found. Without them, some available Rake tasks are missing:"]
-      message += @@development_error_messages
-      puts message.join("\n")
-    end
-    
-    def self.warn_about_development_dependency_errors_at_exit
-      at_exit { display_development_error_message }
+    def self.warn_at_exit(description = 'The following dependencies could not be found:')
+      at_exit do
+        unless @@development_error_messages.empty?
+          message = [description.chomp]
+          message += @@development_error_messages
+          puts "\n" + message.join("\n")
+        end
+      end
     end
   end
 end

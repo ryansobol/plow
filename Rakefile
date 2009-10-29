@@ -2,7 +2,7 @@
 
 begin
   require 'lib/plow/dependencies'
-  Plow::Dependencies.warn_about_development_dependency_errors_at_exit
+  Plow::Dependencies.warn_at_exit("The following gems could not be found. Without them, some available Rake tasks are missing:")
 rescue LoadError => e
   abort(e.message)
 end
@@ -24,8 +24,8 @@ begin
     
     gem.required_ruby_version = Plow::Dependencies::REQUIRED_RUBY_VERSION
     
-    Plow::Dependencies::DEVELOPMENT_GEMS.each_pair do |gem_name, version|
-      gem.add_development_dependency(gem_name.to_s, version)
+    Plow::Dependencies::DEVELOPMENT_GEMS.each_pair do |name, version|
+      gem.add_development_dependency(name.to_s, version)
     end
   end
   
@@ -35,7 +35,7 @@ begin
     task.doc_task = false # rubyforge's days are numbered...
   end
 rescue LoadError => e
-  Plow::Dependencies.generate_development_error_message_for(e)
+  Plow::Dependencies.warn_for(e)
 end
 
 ###################################################################################################
@@ -45,7 +45,7 @@ begin
   Spec::Rake::SpecTask.new(:spec)  
   task :default => :spec
 rescue LoadError => e
-  Plow::Dependencies.generate_development_error_message_for(e)
+  Plow::Dependencies.warn_for(e)
 end
 
 ###################################################################################################
@@ -55,5 +55,5 @@ begin
   require 'bluecloth' # hidden yard dependency for markdown support
   YARD::Rake::YardocTask.new(:yardoc)
 rescue LoadError => e
-  Plow::Dependencies.generate_development_error_message_for(e)
+  Plow::Dependencies.warn_for(e)
 end
