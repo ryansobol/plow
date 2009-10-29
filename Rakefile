@@ -1,30 +1,10 @@
-require 'rubygems'
-require 'rake'
+# encoding: UTF-8
 
-class Plow
-  class Dependencies
-    RUBY = '= 1.9.1'
-    
-    DEVELOPMENT = {
-      :jeweler   => '= 1.3.0',
-      :rspec     => '= 1.2.9',
-      :yard      => '= 0.2.3.5',
-      :bluecloth => '= 2.0.5'     # hidden yard dependency for markdown support
-    }
-    
-    ##
-    # Returns a String with the appropriate error message
-    #
-    # @param error LoadError The error object
-    # @return String The developer error message
-    def self.error_message_for(error)
-      error.message.match(/no such file to load -- (?<gem_name>\w*)/) do |match_data|
-        name = match_data[:gem_name].to_sym
-        name = :rspec if name == :spec # thanx for bucking the pattern, rspec! :(
-        return "#{name} is not available.  Install it with: gem install #{name} --version '#{DEVELOPMENT[name]}'"
-      end
-    end
-  end
+begin
+  require 'lib/plow/dependencies'
+  Plow::Dependencies.warn_about_development_dependency_errors_at_exit
+rescue LoadError => e
+  abort(e.message)
 end
 
 ###################################################################################################
@@ -42,9 +22,9 @@ begin
     gem.homepage          = "http://github.com/ryansobol/plow"
     gem.authors           = ["Ryan Sobol"]
     
-    gem.required_ruby_version = Plow::Dependencies::RUBY
+    gem.required_ruby_version = Plow::Dependencies::REQUIRED_RUBY_VERSION
     
-    Plow::Dependencies::DEVELOPMENT.each_pair do |gem_name, version|
+    Plow::Dependencies::DEVELOPMENT_GEMS.each_pair do |gem_name, version|
       gem.add_development_dependency(gem_name.to_s, version)
     end
   end
@@ -55,7 +35,7 @@ begin
     task.doc_task = false # rubyforge's days are numbered...
   end
 rescue LoadError => e
-  puts Plow::Dependencies.error_message_for(e)
+  Plow::Dependencies.generate_development_error_message_for(e)
 end
 
 ###################################################################################################
@@ -65,15 +45,15 @@ begin
   Spec::Rake::SpecTask.new(:spec)  
   task :default => :spec
 rescue LoadError => e
-  puts Plow::Dependencies.error_message_for(e)
+  Plow::Dependencies.generate_development_error_message_for(e)
 end
 
 ###################################################################################################
 
 begin
   require 'yard'
-  require 'bluecloth'
+  require 'bluecloth' # hidden yard dependency for markdown support
   YARD::Rake::YardocTask.new(:yardoc)
 rescue LoadError => e
-  puts Plow::Dependencies.error_message_for(e)
+  Plow::Dependencies.generate_development_error_message_for(e)
 end
