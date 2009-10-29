@@ -2,8 +2,32 @@
 require 'plow/generator'
 
 class Plow
+  # With a single public method (i.e. `launch`), `Plow::Application` is the main class of and the 
+  # point of execution for the library.
+  #
+  # @see Plow::Application.launch
   class Application
     class << self
+      # The starting point of executation for the Plow library.  The procedure for launching the 
+      # `Plow::Application` is as follows:
+      #
+      # 1. Output a version stamp.
+      # 2. Ensure at least 2 arguments are provided, aborting with a usage message if not.
+      # 3. Parse user provided arguments.
+      # 4. Start a new `Plow::Generator` while handling any library specific exceptions raised.
+      #
+      # @return [Number] Success will return 0, while failure will most likely return a number > 0.
+      # @overload launch(user_name, site_name)
+      #   Only the user_name and site_name are provided by the user.
+      #   @param [String] user_name Name of a Linux system account user (e.g. steve)
+      #   @param [String] site_name Name of the web-site (e.g. www.apple.com)
+      # @overload launch(user_name, site_name, *site_aliases)
+      #   In addition to the user_name and site_aliases, an array of n site_aliases are also 
+      #   provided by the user.
+      #   @param [String] user_name Name of a Linux system account user (e.g. steve)
+      #   @param [String] site_name Name of the web-site (e.g. www.apple.com)
+      #   @param [Array] *site_aliases (Optional) List of alias names of the web-site 
+      #   (e.g. apple.com)
       def launch(*arguments)
         puts version_stamp
         
@@ -58,8 +82,14 @@ MESSAGE
       
       private
       
+      # Similar to a time stamp, this will return a version stamp of the Plow library containing
+      # the version number along with the copyright and license details.
+      #
+      # @return [String] Version stamp
+      # @example Sample version stamp
+      #   Plow 1.0.0. Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license.
       def version_stamp
-        "Plow v#{Plow::VERSION}. Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license."
+        "Plow #{Plow::VERSION}. Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license."
       end
     end
   end

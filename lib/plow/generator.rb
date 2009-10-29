@@ -1,5 +1,4 @@
 # encoding: UTF-8
-
 require 'erb'
 
 require 'plow/binding_struct'
