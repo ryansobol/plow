@@ -1,7 +1,6 @@
 # encoding: UTF-8
 
 class Plow
-  ##
   # In order to load without a syntax error, this file needs to be compatible with ruby >= 1.8.6
   class Dependencies
     REQUIRED_RUBY_VERSION = '1.9.1'
@@ -13,11 +12,12 @@ class Plow
       ERROR
     end
     
+    # bluecloth is a hidden yard dependency for markdown support
     DEVELOPMENT_GEMS = {
       :jeweler   => '1.3.0',
       :rspec     => '1.2.9',
       :yard      => '0.2.3.5',
-      :bluecloth => '2.0.5'     # hidden yard dependency for markdown support
+      :bluecloth => '2.0.5'
     }
     
     FILE_NAME_TO_GEM_NAME = {
@@ -26,7 +26,6 @@ class Plow
     
     @@development_error_messages = []
     
-    ##
     # Returns a String with the appropriate error message
     #
     # @param error LoadError The error object

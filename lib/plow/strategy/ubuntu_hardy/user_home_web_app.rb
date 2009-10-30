@@ -4,14 +4,12 @@ class Plow
   class Strategy
     class UbuntuHardy
       
-      ##
       # Plowing strategy, compatible with the Linux Ubuntu Hardy Heron distribution, for generating
       # a web-site within a user home directory.
       class UserHomeWebApp
         attr_reader :context, :users_file_path, :vhost_file_name, :vhost_file_path, :vhost_template_file_path
         attr_reader :user_home_path, :sites_home_path, :app_root_path, :app_public_path, :app_log_path
         
-        ##
         # @param [Plow::Generator] context A context reference to the generator controller. (i.e. Strategy pattern)
         #
         # @example
@@ -31,7 +29,6 @@ class Plow
           @vhost_template_file_path = "#{File.dirname(__FILE__)}/templates/apache2-vhost.conf"
         end
         
-        ##
         # Begins executing this strategy.  In addition to the following exceptions, this method may
         #   also raise exceptions found in private methods of this class.
         #
@@ -91,21 +88,18 @@ class Plow
         
         private
         
-        ##
         # Proxy method to `Plow::Generator#say`
         # @param [String] message A user output message
         def say(message)
           context.say(message)
         end
         
-        ##
         # Proxy method to `Plow::Generator#shell`
         # @param [String] commands Shell commands with multi-line support.
         def shell(commands)
           context.shell(commands)
         end
         
-        ##
         # Reads the file at `users_file_path` and yields each user iteratively.
         #
         #
@@ -138,7 +132,6 @@ class Plow
         
         ############################################################################################################
         
-        ##
         # Determines if the context.user_name already exists or not
         # 
         # @return [Boolean] `true` if found otherwise `false`
@@ -157,7 +150,6 @@ class Plow
           return false
         end
         
-        ##
         # Creates a system user account for `context.user_name`
         def create_user
           shell "adduser #{context.user_name}"
@@ -165,7 +157,6 @@ class Plow
         
         ############################################################################################################
         
-        ##
         # Determines if a home path for the `context.user_name` already exists
         #
         # @return [Boolean] `true` if the path already exists, otherwise `false`
@@ -182,7 +173,6 @@ class Plow
           raise(Plow::SystemUserNameNotFoundError, context.user_name)
         end
         
-        ##
         # Creates a `user_home_path`
         def create_user_home
           shell <<-RUN
@@ -193,7 +183,6 @@ class Plow
         
         ############################################################################################################
         
-        ##
         # Determines if the `sites_home_path` already exists.  As a side-effect, also correctly
         #   sets the `@sites_home_path` variable.
         # @return [Boolean] `true` if the path already exists, otherwise `false`
@@ -202,7 +191,6 @@ class Plow
           Dir.exists?(sites_home_path)
         end
         
-        ##
         # Creates the `site_home_path`
         def create_sites_home
           shell <<-RUN
@@ -213,7 +201,6 @@ class Plow
         
         ############################################################################################################
         
-        ##
         # Determines if the `app_root_path` already exists.  As a side-effect, also correctly
         #   sets the `@app_root_path` variable.
         # @return [Boolean] `true` if the path exists, otherwise `false`
@@ -222,7 +209,6 @@ class Plow
           Dir.exists?(app_root_path)
         end
         
-        ##
         # Creates the `app_root_path`
         def create_app_root
           shell <<-RUN
@@ -233,7 +219,6 @@ class Plow
         
         ############################################################################################################
         
-        ##
         # Creates the app public structure at `app_public_path`
         def create_app_public
           shell <<-RUN
@@ -245,7 +230,6 @@ class Plow
         
         ############################################################################################################
         
-        ##
         # Creates the app log structure at `app_log_path`
         def create_app_logs
           shell <<-RUN
@@ -264,14 +248,12 @@ class Plow
         
         ############################################################################################################
         
-        ##
         # Determines if the apache2 vhost config file already exists
         # @return [Boolean] `true` if the file exists, otherwise `false`
         def vhost_config_exists?
           Dir.exists?(vhost_file_path)
         end
         
-        ##
         # Creates an apache2 vhost config file from a template file to a `vhost_file_path`
         def create_vhost_config
           File.open(vhost_file_path, 'wt') do |file|
@@ -289,7 +271,6 @@ class Plow
         
         ############################################################################################################
         
-        ##
         # Installs the apache2 vhost config file by enabling the site and restarting the web server
         def install_vhost_config
           shell <<-RUN
