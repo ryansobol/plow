@@ -2,8 +2,11 @@
 require 'plow/generator'
 
 class Plow
-  # With a single public method (i.e. `launch`), `Plow::Application` is the main class of and the 
-  # point of execution for the library.
+  # It's probably no surprise that `Plow::Application` is an **application** class.
+  #
+  # With a single public method, `.launch`, it has the distinct honor of being the point of
+  # execution for the library.  As described further in the documentation, it designed to
+  # accept and parse raw command-line arguments (i.e. the `ARGV` constant).
   #
   # @see Plow::Application.launch
   class Application
@@ -12,18 +15,21 @@ class Plow
       # `Plow::Application` is as follows:
       #
       # 1. Output a version stamp.
-      # 2. Ensure at least 2 arguments are provided, aborting with a usage message if not.
-      # 3. Parse user provided arguments.
+      # 2. Ensure at least 2 arguments are provided or aborting execution with a usage message.
+      # 3. Parse the user-supplied arguments.
       # 4. Start a new `Plow::Generator` while handling any library specific exceptions raised.
       #
-      # @return [Number] Success will return 0, while failure will most likely return a number > 0.
-      # @overload launch(user_name, site_name, *site_aliases)
-      #   In addition to the user_name and site_aliases, an array of n site_aliases are also 
-      #   provided by the user.
-      #   @param [String] user_name Name of a Linux system account user (e.g. steve)
-      #   @param [String] site_name Name of the web-site (e.g. www.apple.com)
-      #   @param [splat] *site_aliases (Optional) List of alias names of the web-site 
-      #   (e.g. apple.com)
+      # @example A simple executable file (assume a working Ruby $LOAD_PATH)
+      #   #!/usr/bin/env ruby1.9
+      #   require 'plow'
+      #   Plow::Application.launch(*ARGV)
+      #
+      # @param [Array] *arguments A splatted `Array` of user-specified, command-line arguments.
+      #   At least 2 arguments must be provided.
+      # @return [Number] Success returns 0, while failure results in any raised `Exception`. :(
+      # @raise [SystemExit] Raised when a critical, library-specific exception is rescued and
+      #   executation must be terminiated.
+      # @see http://www.ruby-doc.org/ruby-1.9/classes/SystemExit.html
       def launch(*arguments)
         puts version_stamp
         

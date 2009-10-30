@@ -12,12 +12,12 @@ class Plow
   # `ERB` object for evaluation within a template.
   #
   # @example Sample template file at /path/to/a/template/file.txt'
-  #   My hero is &lt;%= @first_name %&gt; &lt;%= @last_name %&gt;.
+  #   &lt;%= @first_name %&gt; &lt;%= @last_name %&gt; invented the Universe.
   #
   # @example Evaluating an `ERB` template file with a `BindingStruct` context
   #   template = ERB.new(File.read('/path/to/a/template/file.txt'))
   #   context  = Plow::BindingStruct.new({ first_name: 'Carl', last_name: 'Sagan' })
-  #   result   = template.result(context.get_binding)  #=> My hero is Carl Sagan.
+  #   result   = template.result(context.get_binding)  #=> Carl Sagan invented the Universe.
   #
   # @see http://www.ruby-doc.org/ruby-1.9/classes/Binding.html
   # @see http://www.ruby-doc.org/ruby-1.9/classes/ERB.html

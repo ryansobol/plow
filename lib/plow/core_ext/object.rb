@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-# Carefully adding methods the the base `Object` class.
+# Mindfully expanding the base `Object` class with sensible methods
 class Object
   # An object is blank if it‘s false, empty, or a whitespace string. 
   # For example, "", " ", nil, [], and {} are blank.
