@@ -17,16 +17,12 @@ class Plow
       # 4. Start a new `Plow::Generator` while handling any library specific exceptions raised.
       #
       # @return [Number] Success will return 0, while failure will most likely return a number > 0.
-      # @overload launch(user_name, site_name)
-      #   Only the user_name and site_name are provided by the user.
-      #   @param [String] user_name Name of a Linux system account user (e.g. steve)
-      #   @param [String] site_name Name of the web-site (e.g. www.apple.com)
       # @overload launch(user_name, site_name, *site_aliases)
       #   In addition to the user_name and site_aliases, an array of n site_aliases are also 
       #   provided by the user.
       #   @param [String] user_name Name of a Linux system account user (e.g. steve)
       #   @param [String] site_name Name of the web-site (e.g. www.apple.com)
-      #   @param [Array] *site_aliases (Optional) List of alias names of the web-site 
+      #   @param [splat] *site_aliases (Optional) List of alias names of the web-site 
       #   (e.g. apple.com)
       def launch(*arguments)
         puts version_stamp
