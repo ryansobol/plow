@@ -3,5 +3,6 @@
 --private
 -
 LICENSE
-HISTORY
-SECURITY
+doc/HISTORY
+doc/SECURITY
+doc/ROAD-MAP
