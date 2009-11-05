@@ -1,6 +1,6 @@
 # encoding: UTF-8
 require 'lib/plow/dependencies'
-Plow::Dependencies.warn_at_exit("The following gems could not be found. Without them, some available Rake tasks are missing:")
+Plow::Dependencies.warn_at_exit
   
 ###################################################################################################
 
@@ -30,7 +30,7 @@ begin
     task.doc_task = false # rubyforge's days are numbered...
   end
 rescue LoadError => e
-  Plow::Dependencies.warn_for(e)
+  Plow::Dependencies.create_warning_for(e)
 end
 
 ###################################################################################################
@@ -40,7 +40,7 @@ begin
   Spec::Rake::SpecTask.new(:spec)  
   task :default => :spec
 rescue LoadError => e
-  Plow::Dependencies.warn_for(e)
+  Plow::Dependencies.create_warning_for(e)
 end
 
 ###################################################################################################
@@ -50,5 +50,5 @@ begin
   require 'bluecloth' # hidden yard dependency for markdown support
   YARD::Rake::YardocTask.new(:yardoc)
 rescue LoadError => e
-  Plow::Dependencies.warn_for(e)
+  Plow::Dependencies.create_warning_for(e)
 end

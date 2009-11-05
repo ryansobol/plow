@@ -4,8 +4,10 @@ class Plow
   # In order to load without a syntax error, this file needs to be compatible with ruby >= 1.8.6
   # Dependencies are a snapshot in time
   class Dependencies
+    # for now, starting with 1.9.1 but would like to ensure compatibility for >= 1.9.1
     REQUIRED_RUBY_VERSION = '1.9.1'
     
+    # parse-time guard
     unless RUBY_VERSION >= REQUIRED_RUBY_VERSION
       abort <<-ERROR
 This library requires at least Ruby #{REQUIRED_RUBY_VERSION}, but you're using #{RUBY_VERSION}.
@@ -26,33 +28,45 @@ Please see http://www.ruby-lang.org/
       :spec => :rspec
     }
     
-    @@development_error_messages = []
+    @@warnings_cache = []
     
-    # Returns a String with the appropriate error message
+    # Empties the warnings cache
+    def self.destroy_warnings
+      @@warnings_cache = []
+    end
+    
+    # Creates and caches a warning from a `LoadError` exception.  Warnings are only created for known development gem dependencies.
     #
     # @param error LoadError The error object
-    # @return String The developer error message
-    def self.warn_for(error)
+    # @raise RuntimeError something
+    def self.create_warning_for(error)
       error.message.match(/no such file to load -- (\w*)/) do |match_data|
         file_name = match_data[1].to_sym
-        gem_name  = (DEVELOPMENT_GEMS.has_key?(file_name) ? file_name : FILE_NAME_TO_GEM_NAME[file_name])
+        gem_name  = if DEVELOPMENT_GEMS.has_key?(file_name)
+          file_name
+        elsif FILE_NAME_TO_GEM_NAME.has_key?(file_name)
+          FILE_NAME_TO_GEM_NAME[file_name]
+        else
+          raise "Cannot create a dependency warning for unknown development gem -- #{file_name}"
+        end
         
-        @@development_error_messages << "#{gem_name} --version '#{DEVELOPMENT_GEMS[gem_name]}'"
+        @@warnings_cache << "#{gem_name} --version '#{DEVELOPMENT_GEMS[gem_name]}'"
       end
     end
     
-    # Attaches a `Proc` to `Kernel#at_exit`.
-    #
-    # @param [String] description A message to be prefixed to the warning errors
-    # @see http://www.ruby-doc.org/ruby-1.9/classes/Kernel.html#M002637
-    def self.warn_at_exit(description = 'The following dependencies could not be found:')
-      at_exit do
-        unless @@development_error_messages.empty?
-          message = [description.chomp]
-          message += @@development_error_messages
-          puts "\n" + message.join("\n")
-        end
+    # Displays a warning message to the user on the standard output channel
+    def self.render_warnings
+      unless @@warnings_cache.empty?
+        message = []
+        message << "The following development gem dependencies could not be found. Without them, some available development features are missing:"
+        message += @@warnings_cache
+        puts "\n" + message.join("\n")
       end
+    end
+    
+    # Renders a warning message at exit
+    def self.warn_at_exit
+      at_exit { render_warnings }
     end
   end
 end
