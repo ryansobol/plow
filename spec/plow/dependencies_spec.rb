@@ -165,7 +165,7 @@ bluecloth --version '2.0.5'
   ##################################################################################################
   
   describe '.warn_at_exit' do
-    it "I'm not aware of a technique to test Kernel#at_exit" do
+    it 'should ensure Kernel#at_exit is invoked with a block' do
       Plow::Dependencies.should_receive(:at_exit)
       # TODO how to specify that #at_exit receives a block?
       # maybe i can intercept the block, execute it and test the output?
