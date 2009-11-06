@@ -35,6 +35,50 @@ describe Plow::Dependencies do
   
   ##################################################################################################
   
+  describe '.check_ruby_version (private)' do
+    before(:each) do
+      $stderr = StringIO.new
+    end
+    
+    after(:each) do
+      $stderr = STDERR
+    end
+    
+    def expected_message(version)
+      @expected_message = <<-ERROR
+This library requires Ruby 1.9.1, but you're using #{version}.
+Please visit http://www.ruby-lang.org/ for installation instructions.
+      ERROR
+    end
+    
+    it "should abort for ruby 1.8.6" do
+      version = '1.8.6'
+      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should raise_error(SystemExit, expected_message(version))
+    end
+    
+    it "should abort for ruby 1.8.7" do
+      version = '1.8.7'
+      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should raise_error(SystemExit, expected_message(version))
+    end
+    
+    it "should abort for ruby 1.9.0" do
+      version = '1.9.0'
+      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should raise_error(SystemExit, expected_message(version))
+    end
+    
+    it "should not abort for ruby 1.9.1" do
+      version = '1.9.1'
+      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should_not raise_error(SystemExit, expected_message(version))
+    end
+    
+    it "should abort for ruby 1.9.2" do
+      version = '1.9.2'
+      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should raise_error(SystemExit, expected_message(version))
+    end
+  end
+  
+  ##################################################################################################
+  
   describe '.destroy_warnings' do
     it "should empty the warnings cache" do
       Plow::Dependencies.class_variable_get(:@@warnings_cache).should be_empty
@@ -110,6 +154,12 @@ yard --version '0.2.3.5'
 bluecloth --version '2.0.5'
       MESSAGE
     end
+    
+    it "should not display a warning message to the user if there are no warnings in the cache" do
+      Plow::Dependencies.destroy_warnings
+      Plow::Dependencies.render_warnings
+      $stdout.string.should == ''
+    end
   end
   
   ##################################################################################################
@@ -117,7 +167,8 @@ bluecloth --version '2.0.5'
   describe '.warn_at_exit' do
     it "I'm not aware of a technique to test Kernel#at_exit" do
       Plow::Dependencies.should_receive(:at_exit)
-      # how to specify that #at_exit receives a block?
+      # TODO how to specify that #at_exit receives a block?
+      # maybe i can intercept the block, execute it and test the output?
       Plow::Dependencies.warn_at_exit
     end
   end
