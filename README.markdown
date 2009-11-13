@@ -48,6 +48,7 @@ REQUIREMENTS
 * Ruby 1.9.1
 
 **Optional development dependencies**
+
 * Rake 0.8.7 (bundled with Ruby 1.9.1)
 * Jeweler 1.3.0
 * RSpec 1.2.9
