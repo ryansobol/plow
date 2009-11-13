@@ -2,7 +2,7 @@
 
 class Plow
   # `BindingStruct` is an **adapter** between the friendly declarative-style of `Hash` key/value
-  # pairs and the built-in,  `ERB` (i.e. embedded ruby) class, which takes an optional `Binding`
+  # pairs and the built-in, `ERB` (i.e. embedded ruby) class, which takes an optional `Binding`
   # object for the scope of template evaluation.  
   #
   # This class is very similar to Ruby's built-in `OpenStruct` class.  It differs internally as

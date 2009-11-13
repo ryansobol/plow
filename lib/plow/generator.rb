@@ -67,7 +67,7 @@ class Plow
     # @param [String] template_path A Unix path to a template file
     # @param [Hash] context Key/value pairs, where the key is a template file instance variable, and a value is the value to be substituted during evaluation
     def evaluate_template(template_path, context)
-      template = File.read(template_path)
+      template       = File.read(template_path)
       context_struct = Plow::BindingStruct.new(context)
       ERB.new(template).result(context_struct.get_binding)
     end
