@@ -1,7 +1,7 @@
 # encoding: UTF-8
-require 'lib/plow/dependencies'
+require 'lib/plow'
 Plow::Dependencies.warn_at_exit
-  
+
 ###################################################################################################
 
 begin
@@ -50,7 +50,9 @@ end
 begin
   require 'yard'
   require 'bluecloth' # hidden yard dependency for markdown support
-  YARD::Rake::YardocTask.new(:yardoc)
+  YARD::Rake::YardocTask.new(:yard) do |t|
+    t.options += ['--title', "Plow #{Plow::VERSION} Documentation"]
+  end
 rescue LoadError => e
   Plow::Dependencies.create_warning_for(e)
 end

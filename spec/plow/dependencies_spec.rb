@@ -14,7 +14,7 @@ describe Plow::Dependencies do
       expected = {
         :jeweler   => '1.3.0',
         :rspec     => '1.2.9',
-        :yard      => '0.2.3.5',
+        :yard      => '0.4.0',
         :bluecloth => '2.0.5'
       }
 
@@ -117,7 +117,7 @@ Please visit http://www.ruby-lang.org/ for installation instructions.
       expected = [
         "jeweler --version '1.3.0'", 
         "rspec --version '1.2.9'", 
-        "yard --version '0.2.3.5'", 
+        "yard --version '0.4.0'", 
         "bluecloth --version '2.0.5'"
       ]
       Plow::Dependencies.class_variable_get(:@@warnings_cache).should == expected
@@ -150,7 +150,7 @@ Please visit http://www.ruby-lang.org/ for installation instructions.
 The following development gem dependencies could not be found. Without them, some available development features are missing:
 jeweler --version '1.3.0'
 rspec --version '1.2.9'
-yard --version '0.2.3.5'
+yard --version '0.4.0'
 bluecloth --version '2.0.5'
       MESSAGE
     end

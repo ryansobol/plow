@@ -12,7 +12,7 @@ class Plow
   # `ERB` object for evaluation within a template.
   #
   # @example Sample template file at /path/to/a/template/file.txt'
-  #   &lt;%= @first_name %&gt; &lt;%= @last_name %&gt; invented the Universe.
+  #   <%= @first_name %> <%= @last_name %> invented the Universe.
   #
   # @example Evaluating an `ERB` template file with a `BindingStruct` context
   #   template = ERB.new(File.read('/path/to/a/template/file.txt'))

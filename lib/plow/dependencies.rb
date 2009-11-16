@@ -44,7 +44,7 @@ class Plow
     DEVELOPMENT_GEMS = {
       :jeweler   => '1.3.0',
       :rspec     => '1.2.9',
-      :yard      => '0.2.3.5',
+      :yard      => '0.4.0',
       :bluecloth => '2.0.5'
     }
     
@@ -86,7 +86,7 @@ class Plow
     #   The following development gem dependencies could not be found. Without them, some available development features are missing:
     #   jeweler --version '1.3.0'
     #   rspec --version '1.2.9'
-    #   yard --version '0.2.3.5'
+    #   yard --version '0.4.0'
     #   bluecloth --version '2.0.5'
     def self.render_warnings
       unless @@warnings_cache.empty?
