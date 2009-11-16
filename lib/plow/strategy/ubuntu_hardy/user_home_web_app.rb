@@ -3,7 +3,6 @@
 class Plow
   class Strategy
     class UbuntuHardy
-      
       # Plowing strategy, compatible with the Linux Ubuntu Hardy Heron distribution, for generating
       # a web-site within a user home directory.
       class UserHomeWebApp
