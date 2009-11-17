@@ -36,8 +36,7 @@ class Plow
           @vhost_template_file_path = "#{File.dirname(__FILE__)}/templates/apache2-vhost.conf"
         end
         
-        # Begins executing this strategy.  In addition to the following exceptions, this method may
-        #   also raise exceptions found in private methods of this class.
+        # Begins executing this strategy.  In addition to the following exceptions, this method may also raise exceptions found in private methods of this class.
         #
         # @raise [Plow::AppRootAlreadyExistsError] Raised if the web-app root path directory
         #   aleady exists
