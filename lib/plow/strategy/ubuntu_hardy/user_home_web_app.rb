@@ -3,13 +3,21 @@
 class Plow
   class Strategy
     class UbuntuHardy
-      # Plowing strategy, compatible with the Linux Ubuntu Hardy Heron distribution, for generating
-      # a web-site within a user home directory.
+      # `Plow::Strategy::UbuntuHardy::UserHomeWebApp` is a **strategy** class and implements a generator algorithm that is  compatible for and tested with Apache 2.2.8 running on Linux Ubuntu 8.04.3 LTS (Hardy Heron).
+      #
+      # Expecting to share some of the algorthm across strategy classes so I'm waiting to break this file into separate classes then.
+      #
+      # @see Plow::Strategy::UbuntuHardy::UserHomeWebApp#execute
+      # @see Plow::Generator
       class UserHomeWebApp
         attr_reader :context, :users_file_path, :vhost_file_name, :vhost_file_path, :vhost_template_file_path
         attr_reader :user_home_path, :sites_home_path, :app_root_path, :app_public_path, :app_log_path
         
-        # @param [Plow::Generator] context A context reference to the generator controller. (i.e. Strategy pattern)
+        # Instantiates a new `Plow::Strategy::UbuntuHardy::UserHomeWebApp` object from the context of a `Plow::Generator` instance.
+        #
+        # 
+        #
+        # @param [Plow::Generator] context A reference to the generator context.
         #
         # @example
         #   class Plow
@@ -89,12 +97,14 @@ class Plow
         
         # Proxy method to `Plow::Generator#say`
         # @param [String] message A user output message
+        # @see Plow::Generator#say
         def say(message)
           context.say(message)
         end
         
         # Proxy method to `Plow::Generator#shell`
         # @param [String] commands Shell commands with multi-line support.
+        # @see Plow::Generator#shell
         def shell(commands)
           context.shell(commands)
         end
@@ -160,7 +170,7 @@ class Plow
         #
         # @return [Boolean] `true` if the path already exists, otherwise `false`
         # @raise [Plow::SystemUserNameNotFoundError] Raised if the `context.user_name` is not found 
-        #   even after it has been created
+        #   though it is expected to exist
         def user_home_exists?
           users do |user|
             if user[:name] == context.user_name
