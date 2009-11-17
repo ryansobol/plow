@@ -21,7 +21,7 @@ WHAT'S NEW?
 
 I'm currently working at towards assembling a "complete software" package for you.  Please stay tuned for the official launch of version 1.0.0.  :D
 
-Please see {file:HISTORY} for the historical overview of the project.
+Please see {file:doc/HISTORY} for the historical overview of the project.
 
 SYNOPSIS
 --------
@@ -62,7 +62,7 @@ Plow is distributed though the RubyGems ecosystem.  Assuming you've already inst
 
     sudo gem install plow
 
-LET ME BE CRYSTAL CLEAR.  DO NOT INSTALL THIS PACKAGE TO ANY NON-ROOT USER'S GEM REPOSITORY.  YOU'VE BEEN WARNED.  Please see {file:SECURITY} for a detailed explanation of this advisory.
+LET ME BE CRYSTAL CLEAR.  DO NOT INSTALL THIS PACKAGE TO ANY NON-ROOT USER'S GEM REPOSITORY.  YOU'VE BEEN WARNED.  Please see {file:doc/SECURITY} for a detailed explanation of this advisory.
 
 Note that Plow is RubyGems **compatible** while also simultaneously **decoupled** from it.  Feel free to install Plow manually or use any Ruby package management system of your choice.
 
@@ -144,7 +144,7 @@ Patches are always welcome and appreciated!  To contribute your work back to the
 
 * Fork the project -- may I suggest [Github](http://www.github.com)?
 * Make your feature addition or bug fix with specifications -- it's important that I don't break your hard work in a future version unintentionally.
-* Please do not casually alter files in the project root. (e.g. HISTORY, LICENSE, Rakefile, README.markdown, ROAD-MAP, SECURITY, VERSION, etc.)
+* Please do not casually alter files in the project root. (e.g. LICENSE, Rakefile, README.markdown, VERSION, etc.)
 * Commit your changes and publish the change-set.
 * Send me a pull request.  All specs must pass!
 
