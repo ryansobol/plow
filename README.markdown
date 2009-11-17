@@ -9,7 +9,7 @@ Copyright &copy; 2009 Ryan Sobol. Licensed under the MIT license.  Please see th
 
 **Homepage**:       [http://github.com/ryansobol/plow](http://github.com/ryansobol/plow)  
 
-**Documentation**:  [http://rdoc.info/projects/ryansobol/plow](http://rdoc.info/projects/ryansobol/plow)  
+**Documentation**:  [http://yardoc.org/docs/ryansobol-plow](http://yardoc.org/docs/ryansobol-plow)  
 **Code Metrics**: [http://devver.net/caliper/project?repo=git%3A%2F%2Fgithub.com%2Fryansobol%2Fplow.git](http://devver.net/caliper/project?repo=git%3A%2F%2Fgithub.com%2Fryansobol%2Fplow.git)  
 
 WHAT'S NEW?
