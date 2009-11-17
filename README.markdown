@@ -5,7 +5,7 @@ Image courtesy of [Mother Earth News](http://www.motherearthnews.com/Modern-Home
 PLOW Release 0.1.0 (October 13th 2009)
 ======================================
 
-Copyright &copy; 2009 Ryan Sobol. Licensed under the MIT license.  Please see the {file:doc/LICENSE} for more information.
+Copyright &copy; 2009 Ryan Sobol. Licensed under the MIT license.  Please see the {file:LICENSE} for more information.
 
 **Homepage**:       [http://github.com/ryansobol/plow](http://github.com/ryansobol/plow)  
 
