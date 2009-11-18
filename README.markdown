@@ -7,10 +7,11 @@ PLOW Release 0.1.0 (October 13th 2009)
 
 Copyright &copy; 2009 Ryan Sobol. Licensed under the MIT license.  Please see the {file:LICENSE} for more information.
 
-**Homepage**:       [http://github.com/ryansobol/plow](http://github.com/ryansobol/plow)  
-
-**Documentation**:  [http://yardoc.org/docs/ryansobol-plow](http://yardoc.org/docs/ryansobol-plow)  
+**Source Code**: [http://github.com/ryansobol/plow](http://github.com/ryansobol/plow)  
+**Documentation**: [http://yardoc.org/docs/ryansobol-plow](http://yardoc.org/docs/ryansobol-plow)  
 **Code Metrics**: [http://devver.net/caliper/project?repo=git%3A%2F%2Fgithub.com%2Fryansobol%2Fplow.git](http://devver.net/caliper/project?repo=git%3A%2F%2Fgithub.com%2Fryansobol%2Fplow.git)  
+**Bug Tracker**: [http://github.com/ryansobol/plow/issues](http://github.com/ryansobol/plow/issues)  
+**Wiki**: [http://wiki.github.com/ryansobol/plow](http://wiki.github.com/ryansobol/plow)  
 
 WHAT'S NEW?
 -----------
@@ -52,7 +53,7 @@ REQUIREMENTS
 * Rake 0.8.7 (bundled with Ruby 1.9.1)
 * Jeweler 1.3.0
 * RSpec 1.2.9
-* YARD 0.2.3.5
+* YARD 0.4.0
 * BlueCloth 2.0.5
 
 INSTALLING
@@ -138,7 +139,7 @@ CONTRIBUTING
 
 Is Plow not behaving like you need?  Open-source to the rescue!  There is a plethora of documentation to bring you up to speed.  The API documentation is generated, once the dependencies are met (please see the REQUIREMENTS section), by running the follow:
 
-    $ rake yardoc
+    $ rake yard
 
 Patches are always welcome and appreciated!  To contribute your work back to the source, the process is straight-forward:
 

@@ -3,7 +3,9 @@
 class Plow
   class Strategy
     class UbuntuHardy
-      # `Plow::Strategy::UbuntuHardy::UserHomeWebApp` is a **strategy** class and implements a generator algorithm that is  compatible for and tested with Apache 2.2.8 running on Linux Ubuntu 8.04.3 LTS (Hardy Heron).
+      # `Plow::Strategy::UbuntuHardy::UserHomeWebApp` is a **strategy** class that implements a generator algorithm used by `Plow::Generator`.
+      #
+      # This class is instantiated at run-time when it is determines appropiate by it's **context** class, `Plow::Generator`.  The algorithm implementation is compatible for and tested with Apache 2.2.8 running on Linux Ubuntu 8.04.3 LTS (Hardy Heron).  For a description of the algorithm, please see the `#execute` instance method.
       #
       # Expecting to share some of the algorthm across strategy classes so I'm waiting to break this file into separate classes then.
       #
@@ -14,8 +16,6 @@ class Plow
         attr_reader :user_home_path, :sites_home_path, :app_root_path, :app_public_path, :app_log_path
         
         # Instantiates a new `Plow::Strategy::UbuntuHardy::UserHomeWebApp` object from the context of a `Plow::Generator` instance.
-        #
-        # 
         #
         # @param [Plow::Generator] context A reference to the generator context.
         #
@@ -37,6 +37,19 @@ class Plow
         end
         
         # Begins executing this strategy.  In addition to the following exceptions, this method may also raise exceptions found in private methods of this class.
+        #
+        # The generator algorithm works as follows:
+        #
+        # 1. Check for a user, create one if it does not exist
+        # 2. Check for a user home directory, create it if one does not exist
+        # 3. Check for a sites directory, create it if one does not exist
+        # 4. Create an application root directory, but raise an exception if one already exists
+        # 5. Create an application public directory
+        # 6. Create an application log directory
+        # 7. Create an virtual host configuration file, but raise an exception if one already exists
+        # 8. Install the new virtual host configuration file into the web server
+        #
+        # In addition to the below exceptions, this method may pass-up a raised exception from within any of the private instance methods.
         #
         # @raise [Plow::AppRootAlreadyExistsError] Raised if the web-app root path directory
         #   aleady exists
