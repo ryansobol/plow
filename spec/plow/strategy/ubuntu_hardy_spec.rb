@@ -3,10 +3,10 @@ require 'spec_helper'
 
 require 'tempfile'
 
-describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
+describe Plow::Strategy::UbuntuHardy do
   before(:each) do
     @context  = Plow::Generator.new('steve', 'www.apple.com', 'apple.com')
-    @strategy = Plow::Strategy::UbuntuHardy::UserHomeWebApp.new(@context)      
+    @strategy = Plow::Strategy::UbuntuHardy.new(@context)      
     
     @parsed_users_fixture = [ 
       { name: "root",          password: "x", id: 0,      group_id: 0,     info: "root",                               home_path: "/root",              shell_path: "/bin/bash" }, 
@@ -60,7 +60,7 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     end
     
     it "should set virtual host configuration template file path" do
-      expected = File.expand_path(File.dirname(__FILE__) + '/../../../../lib/plow/strategy/ubuntu_hardy/templates/apache2-vhost.conf')
+      expected = File.expand_path(File.dirname(__FILE__) + '/../../../lib/plow/strategy/ubuntu_hardy/templates/apache2-vhost.conf')
       @strategy.vhost_template_file_path.should == expected
     end
   end
@@ -182,8 +182,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     it "should create a user home with the correct ownership" do
       @strategy.stub!(:user_home_path).and_return("/home/steve")
       @strategy.should_receive(:shell).with(<<-COMMANDS)
-            mkdir /home/steve
-            chown steve:steve /home/steve
+          mkdir /home/steve
+          chown steve:steve /home/steve
       COMMANDS
       @strategy.send(:create_user_home)
     end
@@ -219,8 +219,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     it "should create a sites home with the correct ownership" do
       @strategy.stub!(:sites_home_path).and_return("/home/steve/sites")
       @strategy.should_receive(:shell).with(<<-COMMANDS)
-            mkdir /home/steve/sites
-            chown steve:steve /home/steve/sites
+          mkdir /home/steve/sites
+          chown steve:steve /home/steve/sites
       COMMANDS
       @strategy.send(:create_sites_home)
     end
@@ -256,8 +256,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     it "should create an application home correctly" do
       @strategy.stub!(:app_root_path).and_return('/home/steve/sites/www.apple.com')
       @strategy.should_receive(:shell).with(<<-COMMANDS)
-            mkdir /home/steve/sites/www.apple.com
-            chown steve:steve /home/steve/sites/www.apple.com
+          mkdir /home/steve/sites/www.apple.com
+          chown steve:steve /home/steve/sites/www.apple.com
       COMMANDS
       @strategy.send(:create_app_root)
     end
@@ -269,9 +269,9 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     it "should build an application's public files correctly" do
       @strategy.stub!(:app_public_path).and_return('/home/steve/sites/www.apple.com/public')
       @strategy.should_receive(:shell).with(<<-COMMANDS)
-            mkdir /home/steve/sites/www.apple.com/public
-            touch /home/steve/sites/www.apple.com/public/index.html
-            chown -R steve:steve /home/steve/sites/www.apple.com/public
+          mkdir /home/steve/sites/www.apple.com/public
+          touch /home/steve/sites/www.apple.com/public/index.html
+          chown -R steve:steve /home/steve/sites/www.apple.com/public
       COMMANDS
       @strategy.send(:create_app_public)
     end
@@ -283,16 +283,16 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
     it "should build an application's log files correctly" do
       @strategy.stub!(:app_log_path).and_return('/home/steve/sites/www.apple.com/log')
       @strategy.should_receive(:shell).with(<<-COMMANDS)
-            mkdir /home/steve/sites/www.apple.com/log
-            mkdir /home/steve/sites/www.apple.com/log/apache2
-            chmod 750 /home/steve/sites/www.apple.com/log/apache2
-            
-            touch /home/steve/sites/www.apple.com/log/apache2/access.log
-            touch /home/steve/sites/www.apple.com/log/apache2/error.log
-            
-            chmod 640 /home/steve/sites/www.apple.com/log/apache2/*.log
-            chown -R steve:steve /home/steve/sites/www.apple.com/log
-            chown root -R /home/steve/sites/www.apple.com/log/apache2
+          mkdir /home/steve/sites/www.apple.com/log
+          mkdir /home/steve/sites/www.apple.com/log/apache2
+          chmod 750 /home/steve/sites/www.apple.com/log/apache2
+          
+          touch /home/steve/sites/www.apple.com/log/apache2/access.log
+          touch /home/steve/sites/www.apple.com/log/apache2/error.log
+          
+          chmod 640 /home/steve/sites/www.apple.com/log/apache2/*.log
+          chown -R steve:steve /home/steve/sites/www.apple.com/log
+          chown root -R /home/steve/sites/www.apple.com/log/apache2
       COMMANDS
       @strategy.send(:create_app_logs)
     end
@@ -368,8 +368,8 @@ describe Plow::Strategy::UbuntuHardy::UserHomeWebApp do
   describe '#install_vhost_config (private)' do
     it "should enable vhost and restart apache2" do
       @strategy.should_receive(:shell).with(<<-COMMANDS)
-            a2ensite www.apple.com.conf
-            apache2ctl graceful
+          a2ensite www.apple.com.conf
+          apache2ctl graceful
       COMMANDS
       @strategy.send(:install_vhost_config)
     end

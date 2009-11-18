@@ -50,8 +50,8 @@ describe Plow::Generator do
       @generator.site_aliases.should == []
     end
     
-    it "should set strategy to an instance of Plow::Strategy::UbuntuHardy::UserHomeWebApp" do
-      @generator.strategy.should be_an_instance_of(Plow::Strategy::UbuntuHardy::UserHomeWebApp)
+    it "should set strategy to an instance of Plow::Strategy::UbuntuHardy" do
+      @generator.strategy.should be_an_instance_of(Plow::Strategy::UbuntuHardy)
     end
   end
   
@@ -74,8 +74,8 @@ describe Plow::Generator do
       @generator.site_aliases.should == ['apple.com']
     end
     
-    it "should set strategy to an instance of Plow::Strategy::UbuntuHardy::UserHomeWebApp" do
-      @generator.strategy.should be_an_instance_of(Plow::Strategy::UbuntuHardy::UserHomeWebApp)
+    it "should set strategy to an instance of Plow::Strategy::UbuntuHardy" do
+      @generator.strategy.should be_an_instance_of(Plow::Strategy::UbuntuHardy)
     end
   end
   

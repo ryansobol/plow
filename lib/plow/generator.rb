@@ -1,7 +1,7 @@
 # encoding: UTF-8
 require 'erb'
 require 'plow/binding_struct'
-require 'plow/strategy/ubuntu_hardy/user_home_web_app'
+require 'plow/strategy/ubuntu_hardy'
 
 class Plow
   # `Plow::Generator` is a **context** class.
@@ -15,7 +15,7 @@ class Plow
   # Currently, there is a single strategy implementation, which is compatible for and tested with
   # Apache 2.2.8 running on Linux Ubuntu 8.04.3 LTS (Hardy Heron).
   #
-  # @see Plow::Strategy::UbuntuHardy::UserHomeWebApp
+  # @see Plow::Strategy::UbuntuHardy
   class Generator
     attr_reader :user_name, :site_name, :site_aliases
     attr_reader :strategy
@@ -44,7 +44,7 @@ class Plow
     # @raise [Plow::InvalidWebSiteNameError] Raised when a `site_name` is blank or includes an space character
     # @raise [Plow::InvalidWebSiteAliasError] Raised when any `site_alias` is blank or includes an space character
     #
-    # @see Plow::Strategy::UbuntuHardy::UserHomeWebApp
+    # @see Plow::Strategy::UbuntuHardy
     def initialize(user_name, site_name, *site_aliases)
       if user_name.blank? || user_name.include?(' ')
         raise(Plow::InvalidSystemUserNameError, user_name)
@@ -64,7 +64,7 @@ class Plow
       @site_name    = site_name
       @site_aliases = site_aliases
       
-      @strategy = Plow::Strategy::UbuntuHardy::UserHomeWebApp.new(self)
+      @strategy = Plow::Strategy::UbuntuHardy.new(self)
     end
     
     # Executes the pre-choosen strategy.
