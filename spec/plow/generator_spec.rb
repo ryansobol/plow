@@ -91,7 +91,7 @@ describe Plow::Generator do
     it "should execute the strategy when process is owned by root user" do
       Process.stub!(:uid).and_return(0)
       generator = Plow::Generator.new('steve', 'www.apple.com', 'apple.com')
-      generator.strategy.should_receive(:execute)
+      generator.strategy.should_receive(:execute!)
       generator.run!
     end
   end

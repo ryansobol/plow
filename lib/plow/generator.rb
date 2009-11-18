@@ -12,8 +12,7 @@ class Plow
   # read-only data accessors for user-supplied input as well as convience methods that communicate
   # messages to the user and execute commands on the system.
   #
-  # Currently, there is a single strategy implementation, which is compatible for and tested with
-  # Apache 2.2.8 running on Linux Ubuntu 8.04.3 LTS (Hardy Heron).
+  # Currently, there is a single strategy implementation.
   #
   # @see Plow::Strategy::UbuntuHardy
   class Generator
@@ -76,7 +75,7 @@ class Plow
     # @raise [Plow::NonRootProcessOwnerError] Raised when the process is owned by a non-root user
     def run!
       raise Plow::NonRootProcessOwnerError unless Process.uid == 0
-      strategy.execute
+      strategy.execute!
     end
     
     # Renders a message, via the standard output channel, to the user.

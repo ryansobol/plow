@@ -122,10 +122,10 @@ describe Plow::Strategy::UbuntuHardy do
   
   ##################################################################################################
   
-  describe '#create_user (private)' do
+  describe '#create_user! (private)' do
     it "should invoke a adduser as a system call" do
       @strategy.should_receive(:shell).with("adduser steve")
-      @strategy.send(:create_user)
+      @strategy.send(:create_user!)
     end
   end
   
@@ -178,14 +178,14 @@ describe Plow::Strategy::UbuntuHardy do
   
   ##################################################################################################
   
-  describe '#create_user_home (private)' do
+  describe '#create_user_home! (private)' do
     it "should create a user home with the correct ownership" do
       @strategy.stub!(:user_home_path).and_return("/home/steve")
       @strategy.should_receive(:shell).with(<<-COMMANDS)
           mkdir /home/steve
           chown steve:steve /home/steve
       COMMANDS
-      @strategy.send(:create_user_home)
+      @strategy.send(:create_user_home!)
     end
   end
   
@@ -215,14 +215,14 @@ describe Plow::Strategy::UbuntuHardy do
   
   ##################################################################################################
   
-  describe '#create_sites_home (private)' do
+  describe '#create_sites_home! (private)' do
     it "should create a sites home with the correct ownership" do
       @strategy.stub!(:sites_home_path).and_return("/home/steve/sites")
       @strategy.should_receive(:shell).with(<<-COMMANDS)
           mkdir /home/steve/sites
           chown steve:steve /home/steve/sites
       COMMANDS
-      @strategy.send(:create_sites_home)
+      @strategy.send(:create_sites_home!)
     end
   end
   
@@ -252,20 +252,20 @@ describe Plow::Strategy::UbuntuHardy do
   
   ##################################################################################################
   
-  describe '#create_app_root (private)' do
+  describe '#create_app_root! (private)' do
     it "should create an application home correctly" do
       @strategy.stub!(:app_root_path).and_return('/home/steve/sites/www.apple.com')
       @strategy.should_receive(:shell).with(<<-COMMANDS)
           mkdir /home/steve/sites/www.apple.com
           chown steve:steve /home/steve/sites/www.apple.com
       COMMANDS
-      @strategy.send(:create_app_root)
+      @strategy.send(:create_app_root!)
     end
   end
   
   ##################################################################################################
   
-  describe '#create_app_public (private)' do
+  describe '#create_app_public! (private)' do
     it "should build an application's public files correctly" do
       @strategy.stub!(:app_public_path).and_return('/home/steve/sites/www.apple.com/public')
       @strategy.should_receive(:shell).with(<<-COMMANDS)
@@ -273,13 +273,13 @@ describe Plow::Strategy::UbuntuHardy do
           touch /home/steve/sites/www.apple.com/public/index.html
           chown -R steve:steve /home/steve/sites/www.apple.com/public
       COMMANDS
-      @strategy.send(:create_app_public)
+      @strategy.send(:create_app_public!)
     end
   end
   
   ##################################################################################################
   
-  describe '#create_app_logs (private)' do
+  describe '#create_app_logs! (private)' do
     it "should build an application's log files correctly" do
       @strategy.stub!(:app_log_path).and_return('/home/steve/sites/www.apple.com/log')
       @strategy.should_receive(:shell).with(<<-COMMANDS)
@@ -294,7 +294,7 @@ describe Plow::Strategy::UbuntuHardy do
           chown -R steve:steve /home/steve/sites/www.apple.com/log
           chown root -R /home/steve/sites/www.apple.com/log/apache2
       COMMANDS
-      @strategy.send(:create_app_logs)
+      @strategy.send(:create_app_logs!)
     end
   end
   
@@ -314,7 +314,7 @@ describe Plow::Strategy::UbuntuHardy do
   
   ##################################################################################################
   
-  describe '#create_vhost_config (private)' do
+  describe '#create_vhost_config! (private)' do
     before(:each) do
       @temp_file = Tempfile.new('generate_vhost_config')
       @strategy.stub!(:vhost_file_path).and_return(@temp_file.path)
@@ -324,7 +324,7 @@ describe Plow::Strategy::UbuntuHardy do
     
     it "should create a vhost config file from template file without site aliases" do
       @context.stub!(:site_aliases).and_return([])
-      @strategy.send(:create_vhost_config)
+      @strategy.send(:create_vhost_config!)
       
       File.read(@temp_file.path).should == <<-CONFIG
 
@@ -343,7 +343,7 @@ describe Plow::Strategy::UbuntuHardy do
     end
     
     it "should create a vhost config file from template file with site aliases" do
-      @strategy.send(:create_vhost_config)
+      @strategy.send(:create_vhost_config!)
       File.read(@temp_file.path).should == <<-CONFIG
 
 <VirtualHost *:80>
@@ -365,19 +365,19 @@ describe Plow::Strategy::UbuntuHardy do
   
   ##################################################################################################
   
-  describe '#install_vhost_config (private)' do
+  describe '#install_vhost_config! (private)' do
     it "should enable vhost and restart apache2" do
       @strategy.should_receive(:shell).with(<<-COMMANDS)
           a2ensite www.apple.com.conf
           apache2ctl graceful
       COMMANDS
-      @strategy.send(:install_vhost_config)
+      @strategy.send(:install_vhost_config!)
     end
   end
   
   ##################################################################################################
   
-  describe '#execute' do
+  describe '#execute!' do
     before(:each) do
       @strategy.stub!(:user_exists?).and_return(false)
       @strategy.stub!(:user_home_exists?).and_return(true)
@@ -397,16 +397,16 @@ describe Plow::Strategy::UbuntuHardy do
     end
     
     it "should run the default process" do
-      @strategy.should_receive(:create_user)
-      @strategy.should_not_receive(:create_user_home)
-      @strategy.should_receive(:create_sites_home)
-      @strategy.should_receive(:create_app_root)
-      @strategy.should_receive(:create_app_public)
-      @strategy.should_receive(:create_app_logs)
-      @strategy.should_receive(:create_vhost_config)
-      @strategy.should_receive(:install_vhost_config)
+      @strategy.should_receive(:create_user!)
+      @strategy.should_not_receive(:create_user_home!)
+      @strategy.should_receive(:create_sites_home!)
+      @strategy.should_receive(:create_app_root!)
+      @strategy.should_receive(:create_app_public!)
+      @strategy.should_receive(:create_app_logs!)
+      @strategy.should_receive(:create_vhost_config!)
+      @strategy.should_receive(:install_vhost_config!)
       
-      @strategy.execute
+      @strategy.execute!
       
       @strategy.app_public_path.should == '/home/steve/sites/www.apple.com/public'
       @strategy.app_log_path.should == '/home/steve/sites/www.apple.com/log'
@@ -427,15 +427,15 @@ describe Plow::Strategy::UbuntuHardy do
       @strategy.stub!(:user_exists?).and_return(true)
       
       @strategy.should_not_receive(:create_user)
-      @strategy.should_not_receive(:create_user_home)
-      @strategy.should_receive(:create_sites_home)
-      @strategy.should_receive(:create_app_root)
-      @strategy.should_receive(:create_app_public)
-      @strategy.should_receive(:create_app_logs)
-      @strategy.should_receive(:create_vhost_config)
-      @strategy.should_receive(:install_vhost_config)
+      @strategy.should_not_receive(:create_user_home!)
+      @strategy.should_receive(:create_sites_home!)
+      @strategy.should_receive(:create_app_root!)
+      @strategy.should_receive(:create_app_public!)
+      @strategy.should_receive(:create_app_logs!)
+      @strategy.should_receive(:create_vhost_config!)
+      @strategy.should_receive(:install_vhost_config!)
       
-      @strategy.execute
+      @strategy.execute!
       
       @strategy.app_public_path.should == '/home/steve/sites/www.apple.com/public'
       @strategy.app_log_path.should == '/home/steve/sites/www.apple.com/log'
@@ -455,16 +455,16 @@ describe Plow::Strategy::UbuntuHardy do
     it "should run the missing user home process" do
       @strategy.stub!(:user_home_exists?).and_return(false)
       
-      @strategy.should_receive(:create_user)
-      @strategy.should_receive(:create_user_home)
-      @strategy.should_receive(:create_sites_home)
-      @strategy.should_receive(:create_app_root)
-      @strategy.should_receive(:create_app_public)
-      @strategy.should_receive(:create_app_logs)
-      @strategy.should_receive(:create_vhost_config)
-      @strategy.should_receive(:install_vhost_config)
+      @strategy.should_receive(:create_user!)
+      @strategy.should_receive(:create_user_home!)
+      @strategy.should_receive(:create_sites_home!)
+      @strategy.should_receive(:create_app_root!)
+      @strategy.should_receive(:create_app_public!)
+      @strategy.should_receive(:create_app_logs!)
+      @strategy.should_receive(:create_vhost_config!)
+      @strategy.should_receive(:install_vhost_config!)
       
-      @strategy.execute
+      @strategy.execute!
       
       @strategy.app_public_path.should == '/home/steve/sites/www.apple.com/public'
       @strategy.app_log_path.should == '/home/steve/sites/www.apple.com/log'
@@ -484,16 +484,16 @@ describe Plow::Strategy::UbuntuHardy do
     it "should run the existing sites home process" do
       @strategy.stub!(:sites_home_exists?).and_return(true)
       
-      @strategy.should_receive(:create_user)
-      @strategy.should_not_receive(:create_user_home)
-      @strategy.should_not_receive(:create_sites_home)
-      @strategy.should_receive(:create_app_root)
-      @strategy.should_receive(:create_app_public)
-      @strategy.should_receive(:create_app_logs)
-      @strategy.should_receive(:create_vhost_config)
-      @strategy.should_receive(:install_vhost_config)
+      @strategy.should_receive(:create_user!)
+      @strategy.should_not_receive(:create_user_home!)
+      @strategy.should_not_receive(:create_sites_home!)
+      @strategy.should_receive(:create_app_root!)
+      @strategy.should_receive(:create_app_public!)
+      @strategy.should_receive(:create_app_logs!)
+      @strategy.should_receive(:create_vhost_config!)
+      @strategy.should_receive(:install_vhost_config!)
       
-      @strategy.execute
+      @strategy.execute!
       
       @strategy.app_public_path.should == '/home/steve/sites/www.apple.com/public'
       @strategy.app_log_path.should == '/home/steve/sites/www.apple.com/log'
@@ -513,16 +513,16 @@ describe Plow::Strategy::UbuntuHardy do
     it "should run the existing app root process" do
       @strategy.stub!(:app_root_exists?).and_return(true)
       
-      @strategy.should_receive(:create_user)
-      @strategy.should_not_receive(:create_user_home)
-      @strategy.should_receive(:create_sites_home)
-      @strategy.should_not_receive(:create_app_root)
-      @strategy.should_not_receive(:create_app_public)
-      @strategy.should_not_receive(:create_app_logs)
-      @strategy.should_not_receive(:create_vhost_config)
-      @strategy.should_not_receive(:install_vhost_config)
+      @strategy.should_receive(:create_user!)
+      @strategy.should_not_receive(:create_user_home!)
+      @strategy.should_receive(:create_sites_home!)
+      @strategy.should_not_receive(:create_app_root!)
+      @strategy.should_not_receive(:create_app_public!)
+      @strategy.should_not_receive(:create_app_logs!)
+      @strategy.should_not_receive(:create_vhost_config!)
+      @strategy.should_not_receive(:install_vhost_config!)
       
-      lambda { @strategy.execute }.should raise_error(Plow::AppRootAlreadyExistsError, '/home/steve/sites/www.apple.com')
+      lambda { @strategy.execute! }.should raise_error(Plow::AppRootAlreadyExistsError, '/home/steve/sites/www.apple.com')
       
       $stdout.string.should == <<-OUTPUT
 ==> creating steve user
@@ -534,16 +534,16 @@ describe Plow::Strategy::UbuntuHardy do
     it "should run the existing vhost config process" do
       @strategy.stub!(:vhost_config_exists?).and_return(true)
       
-      @strategy.should_receive(:create_user)
-      @strategy.should_not_receive(:create_user_home)
-      @strategy.should_receive(:create_sites_home)
-      @strategy.should_receive(:create_app_root)
-      @strategy.should_receive(:create_app_public)
-      @strategy.should_receive(:create_app_logs)
-      @strategy.should_not_receive(:create_vhost_config)
-      @strategy.should_not_receive(:install_vhost_config)
+      @strategy.should_receive(:create_user!)
+      @strategy.should_not_receive(:create_user_home!)
+      @strategy.should_receive(:create_sites_home!)
+      @strategy.should_receive(:create_app_root!)
+      @strategy.should_receive(:create_app_public!)
+      @strategy.should_receive(:create_app_logs!)
+      @strategy.should_not_receive(:create_vhost_config!)
+      @strategy.should_not_receive(:install_vhost_config!)
       
-      lambda { @strategy.execute }.should raise_error(Plow::ConfigFileAlreadyExistsError, '/etc/apache2/sites-available/www.apple.com.conf')
+      lambda { @strategy.execute! }.should raise_error(Plow::ConfigFileAlreadyExistsError, '/etc/apache2/sites-available/www.apple.com.conf')
       
       @strategy.app_public_path.should == '/home/steve/sites/www.apple.com/public'
       @strategy.app_log_path.should == '/home/steve/sites/www.apple.com/log'
