@@ -151,4 +151,4 @@ Patches are always welcome and appreciated!  To contribute your work back to the
 * Commit your changes and publish the change-set.
 * Send me a pull request.  All specs must pass!
 
-Take a moment to get a feel for the style of coding, specifications, and in-line documentation.  I apologize in advance for setting the standards so high.  Please see {file:doc/ROAD-MAP} to learn how to flow with the project.
+Take a moment to get a feel for the style of coding, specifications, and in-line documentation.  I apologize in advance for setting the standards so high.  Please see {file:doc/ROAD-MAP.markdown} to learn how to flow with the project.
