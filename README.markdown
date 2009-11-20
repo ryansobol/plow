@@ -63,7 +63,9 @@ Plow is distributed though the RubyGems ecosystem.  Assuming you've already inst
 
     sudo gem install plow
 
-LET ME BE CRYSTAL CLEAR.  DO NOT INSTALL THIS PACKAGE TO ANY NON-ROOT USER'S GEM REPOSITORY.  YOU'VE BEEN WARNED.  Please see {file:doc/SECURITY} for a detailed explanation of this advisory.
+**LET ME BE CRYSTAL CLEAR.  DO NOT INSTALL THIS PACKAGE TO ANY NON-ROOT USER'S GEM REPOSITORY.  YOU'VE BEEN WARNED.**
+
+Please see {file:doc/SECURITY.markdown} for a detailed explanation of this advisory.
 
 Note that Plow is RubyGems **compatible** while also simultaneously **decoupled** from it.  Feel free to install Plow manually or use any Ruby package management system of your choice.
 
