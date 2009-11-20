@@ -5,7 +5,7 @@ Image courtesy of [Mother Earth News](http://www.motherearthnews.com/Modern-Home
 PLOW Release 0.1.0 (October 13th 2009)
 ======================================
 
-Copyright &copy; 2009 Ryan Sobol. Licensed under the MIT license.  Please see the {file:LICENSE} for more information.
+Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license.  Please see the {file:LICENSE} for more information.
 
 **Source Code**: [http://github.com/ryansobol/plow](http://github.com/ryansobol/plow)  
 **Documentation**: [http://yardoc.org/docs/ryansobol-plow](http://yardoc.org/docs/ryansobol-plow)  
@@ -22,7 +22,7 @@ WHAT'S NEW?
 
 I'm currently working at towards assembling a "complete software" package for you.  Please stay tuned for the official launch of version 1.0.0.  :D
 
-Please see {file:doc/HISTORY} for the historical overview of the project.
+Please see {file:doc/HISTORY.markdown} for the historical overview of the project.
 
 SYNOPSIS
 --------
