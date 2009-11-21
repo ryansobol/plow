@@ -8,5 +8,5 @@ require 'plow/application'
 # Library namespace
 class Plow
   # Current stable released version
-  VERSION = "0.1.0"
+  VERSION = "1.0.0"
 end

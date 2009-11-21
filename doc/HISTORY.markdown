@@ -1,45 +1,41 @@
-History of Plow
-===============
+Plow release 1.0.0 (November 21, 2009)
+========================================
 
-1.0.0 released on November ??th 2009
-------------------------------------
+The first official public release of Plow!
 
-  * bin/plow and bin/plow1.9
-    * two ruby 1.9.1 compatible command-line executables.
-    * combined with Plow::Application, the entire application logic is decoupled from the plow generator library.
-  * lib/plow.rb
-    * adds the lib/ directory to the head of the load path if necessary
-    * specifies the load order for critical, library-wide classes
-    * maintains the library version in memory
-  * lib/plow/application.rb
-    * decoupled argument parsing from the generator
-    * displays usage for the command-line executables
-    * handles run-time errors gracefully for the user
-    * starts the generator
-    * Combined with the executables, the entire application logic is decoupled from the plow generator library.
-  * lib/plow/binding_struct.rb
-    * adapter class that converts a Hash object into instances variables, which then is used as the binding object for ERB
-  * lib/plow/core_ext/object.rb
-    * expands the base `Object` class with sensible methods
-  * lib/plow/dependencies.rb
-    * provides parse-time and run-time dependency checking and warning
-  * lib/plow/errors.rb
-    * defines a handful of run-time error classes
-  * lib/plow/generator.rb
-    * maintains the shared state data including a strategy object
-    * passes execution to the strategy object
-    * provides shared logic for outputting messages to the user
-    * provides shared logic for executing shell commands
-    * provides shared logic for evaluating ERB template files
-  * lib/plow/strategy/ubuntu_hardy.rb
-    * userhome-based strategy for generating a system-wide web-site structure for the Linux Ubuntu Hardy 8.04.3 LTS operating system
-    * understanding and managing the security implications of web server of virtual hosts
-  * lib/plow/strategy/ubuntu_hardy/templates/apache2-vhost.conf
-    * a simple apache2 virtual host ERB template file for the Linux Ubuntu Hardy 8.04.3 LTS operating system
-  * Rakefile
-    * incorporating deployments with jeweler and gemcutter and rubyforge
+SYNOPSIS
+--------
 
-0.1.0 released on October 13th 2009
------------------------------------
+Plows the fertile soil of your filesystem into neatly organized plots of web-site templates
 
-  * Canonical 'plow' namespace reserved on Gemcutter and Rubyforge
+FEATURES
+--------
+
+1. Sharpens it's blade by ensuring that both a Linux system user account and it's home path exist
+2. Penetrates the soil by forming the web-site root path within the user home
+3. Seeds the web-site with an index page and web server log files
+4. Fertilizes the web-site by installing a virtual host configuration into the web server
+
+REQUIREMENTS
+------------
+
+**Supported operating system + web server combinations**
+
+* Linux Ubuntu 8.04.3 LTS (Hardy Heron) + Apache 2.2.8
+
+**Required dependencies**
+
+* Ruby 1.9.1
+
+**Optional development dependencies**
+
+* Rake 0.8.7 (bundled with Ruby 1.9.1)
+* Jeweler 1.3.0
+* RSpec 1.2.9
+* YARD 0.4.0
+* BlueCloth 2.0.5
+
+Plow release 0.1.0 (October 13, 2009)
+=======================================
+
+  * Canonical gem namespace, 'plow', reserved on [Gemcutter](http://gemcutter.org/gems/plow) and [Rubyforge](http://plow.rubyforge.org/)

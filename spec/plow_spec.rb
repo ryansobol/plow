@@ -4,7 +4,7 @@ require 'spec_helper'
 describe "Plow" do
   describe "version synchronizing" do
     before(:each) do
-      @expected = "0.1.0"
+      @expected = "1.0.0"
     end
     
     it "should be correct for Plow::VERSION" do

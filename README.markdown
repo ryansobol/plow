@@ -2,11 +2,12 @@
 
 Image courtesy of [Mother Earth News](http://www.motherearthnews.com/Modern-Homesteading/1974-05-01/Walking-Plow.aspx)
 
-PLOW Release 0.1.0 (October 13th 2009)
+Plow release 1.0.0 (November 21, 2009)
 ======================================
 
 Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license.  Please see the {file:LICENSE} for more information.
 
+**Homepage**: [http://gemcutter.org/gems/plow](http://gemcutter.org/gems/plow)  
 **Source Code**: [http://github.com/ryansobol/plow](http://github.com/ryansobol/plow)  
 **Documentation**: [http://yardoc.org/docs/ryansobol-plow](http://yardoc.org/docs/ryansobol-plow)  
 **Code Metrics**: [http://devver.net/caliper/project?repo=git%3A%2F%2Fgithub.com%2Fryansobol%2Fplow.git](http://devver.net/caliper/project?repo=git%3A%2F%2Fgithub.com%2Fryansobol%2Fplow.git)  
@@ -16,11 +17,7 @@ Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license.  Please see the {
 WHAT'S NEW?
 -----------
 
-**v0.1.0**
-
-* Canonical 'plow' namespace reserved on [Gemcutter](http://gemcutter.org/gems/plow) and [Rubyforge](http://rubyforge.org/projects/plow/)
-
-I'm currently working at towards assembling a "complete software" package for you.  Please stay tuned for the official launch of version 1.0.0.  :D
+The first official public release of Plow!
 
 Please see {file:doc/HISTORY.markdown} for the historical overview of the project.
 
