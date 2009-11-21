@@ -368,7 +368,7 @@ describe Plow::Strategy::UbuntuHardy do
   describe '#install_vhost_config! (private)' do
     it "should enable vhost and restart apache2" do
       @strategy.should_receive(:shell).with(<<-COMMANDS)
-          a2ensite www.apple.com.conf
+          a2ensite www.apple.com.conf > /dev/null
           apache2ctl graceful
       COMMANDS
       @strategy.send(:install_vhost_config!)

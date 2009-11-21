@@ -88,13 +88,38 @@ Plow is bundled with two executables named `plow` and `plow1.9`.  They are nearl
 EXAMPLE
 -------
 
-    $ plow steve www.apple.com apple.com
+    $ sudo plow steve www.apple.com apple.com
+    Plow 1.0.0. Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license.
+    ==> creating steve user
+    Adding user `steve' ...
+    Adding new group `steve' (1001) ...
+    Adding new user `steve' (1001) with group `steve' ...
+    Creating home directory `/home/steve' ...
+    Copying files from `/etc/skel' ...
+    Enter new UNIX password: 
+    Retype new UNIX password: 
+    passwd: password updated successfully
+    Changing the user information for steve
+    Enter the new value, or press ENTER for the default
+    	Full Name []: 
+    	Room Number []: 
+    	Work Phone []: 
+    	Home Phone []: 
+    	Other []: 
+    Is the information correct? [y/N] y
+    ==> existing /home/steve
+    ==> creating /home/steve/sites
+    ==> creating /home/steve/sites/www.apple.com
+    ==> creating /home/steve/sites/www.apple.com/public
+    ==> creating /home/steve/sites/www.apple.com/log
+    ==> creating /etc/apache2/sites-available/www.apple.com.conf
+    ==> installing /etc/apache2/sites-available/www.apple.com.conf
     
-    ... plow interation ...
+    $ su - steve
+    Password: 
     
     $ tree /home/steve/sites/
     /home/steve/sites/
-    |-- README
     `-- www.apple.com
         |-- log
         |   `-- apache2
@@ -102,15 +127,32 @@ EXAMPLE
         |       `-- error.log
         `-- public
             `-- index.html
-    
-    4 directories, 4 files
+            
+    4 directories, 3 files
     
     $ ls -hal /home/steve/sites/www.apple.com/log/apache2/
-    total 196K
-    drwxr-x--- 2 root  steve 4.0K Sep  5 03:11 .
-    drwxr-xr-x 3 steve steve 4.0K Sep  5 03:09 ..
-    -rw-r----- 1 root  steve 136K Sep  9 11:10 access.log
-    -rw-r----- 1 root  steve  48K Sep  9 09:06 error.log
+    total 8.0K
+    drwxr-x--- 2 root  steve 4.0K 2009-11-21 16:33 .
+    drwxr-xr-x 3 steve steve 4.0K 2009-11-21 16:33 ..
+    -rw-r----- 1 root  steve    0 2009-11-21 16:33 access.log
+    -rw-r----- 1 root  steve    0 2009-11-21 16:33 error.log
+    
+    $ cat /etc/apache2/sites-available/www.apple.com.conf
+    
+    <VirtualHost *:80>
+      ServerAdmin webmaster
+      ServerName www.apple.com
+      
+      ServerAlias apple.com
+      
+      DirectoryIndex index.html
+      DocumentRoot /home/steve/sites/www.apple.com/public
+      
+      LogLevel warn
+      ErrorLog  /home/steve/sites/www.apple.com/log/apache2/error.log
+      CustomLog /home/steve/sites/www.apple.com/log/apache2/access.log combined
+    </VirtualHost>
+    
 
 MOTIVATION
 ----------

@@ -19,7 +19,7 @@ begin
     gem.homepage          = "http://github.com/ryansobol/plow"
     gem.authors           = ["Ryan Sobol"]
     
-    gem.required_ruby_version = Plow::Dependencies::REQUIRED_RUBY_VERSION
+    gem.required_ruby_version = "~> #{Plow::Dependencies::REQUIRED_RUBY_VERSION}"
     
     Plow::Dependencies::DEVELOPMENT_GEMS.each_pair do |name, version|
       gem.add_development_dependency(name.to_s, version)

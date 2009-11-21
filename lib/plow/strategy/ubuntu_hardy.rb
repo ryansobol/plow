@@ -306,7 +306,7 @@ class Plow
       # Installs the apache2 vhost config file by enabling the site and restarting the web server.
       def install_vhost_config!
         shell <<-RUN
-          a2ensite #{vhost_file_name}
+          a2ensite #{vhost_file_name} > /dev/null
           apache2ctl graceful
         RUN
       end
