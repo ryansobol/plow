@@ -157,37 +157,41 @@ EXAMPLE
 MOTIVATION
 ----------
 
-There exists numerous software products for controlling and/or managing a unix-based operating systems and web servers.  So, why did I decide to write yet another?  With Plow, I needed to prove to myself that I have the necessary proficiency **to contribute free, open-source, and complete software for the benefit human-kind**.
+As of the time of writing, there exists countless software products for managing unix-based operating systems and web servers.  So then, why did I decide to write yet another?  For me, Plow was a self-issued challenge **to contribute free, open-source, and complete software for the benefit human-kind**.
 
-The terms "free" and "open-source" are common enough to be implicitly understood, or at least, [easily googled](http://www.google.com/searchq=free+open-source).  But what of the term "complete software"?  For me, complete software means four exclusive characteristics:
+The terms "free" and "open-source" software are common enough to be implicitly understood, or at least, [easily googled](http://www.google.com/searchq=free+open-source).  But what of the term "complete software"?  For me, complete software has four exclusive characteristics:
 
-* Usability enhanced through elegant user-interface combined with straight-forward documentation
+* Usability enhanced through elegant user-interface and straight-forward documentation
 * Stability verified through automated test specifications
 * Performance demonstrated through benchmarks
 * Sustainability preserved through both human and computer readable code
 
-I have tirelessly worked to achieve a high standard in all four characteristics.  As my peer, I am grateful of your input on improving this project in any of these areas.  Please see the sections on REPORTING ISSUES and CONTRIBUTING for further information.
+Though never finished, I have worked tirelessly to set a the bar high within each of these characteristics.  As my peer, I am grateful of your input on improving this project.  If you are interested in generously donating your time to Plow, please read the below sections on REPORTING ISSUES and CONTRIBUTING to learn how to best direct your energy.
 
 REPORTING ISSUES
 ----------------
 
-Is Plow not behaving like you expect it should?  Please forgive me!  Would you take a moment to shed light on my negligence over at the [Issue Tracker](http://github.com/ryansobol/plow/issues)?  
+Is Plow not behaving like you expect it should?  Please forgive me!  Would you take a moment to shed light on my negligence over at the [Issue Tracker](http://github.com/ryansobol/plow/issues)?  Here's a **Pro Tip** -- you can read through existing issues and vote for which issues you'd like to see resolved first!
 
-Thank you, in advance, for taking the time to help improve Plow.
+Thank you for taking the time to help improve Plow.
 
 CONTRIBUTING
 ------------
 
-Is Plow not behaving like you need?  Open-source to the rescue!  There is a plethora of documentation to bring you up to speed.  The API documentation is generated, once the dependencies are met (please see the REQUIREMENTS section), by running the follow:
+Is Plow not behaving like you need?  Open-source to the rescue!  There is a plethora of documentation to bring a Rubyist of any level up to speed.  The API documentation is generated, once the dependencies are met (please see the REQUIREMENTS section), by issuing the follow command:
 
     $ rake yard
 
-Patches are always welcome and appreciated!  To contribute your work back to the source, the process is straight-forward:
+Patches are always welcome and appreciated!  The process is straight-forward for contributing your work back to the source:
 
 * Fork the project -- may I suggest [Github](http://www.github.com)?
-* Make your feature addition or bug fix with specifications -- it's important that I don't break your hard work in a future version unintentionally.
+* Make your feature addition or bug fix **with specifications**.  It's important that I don't break your hard work in a future version unintentionally.
 * Please do not casually alter files in the project root. (e.g. LICENSE, Rakefile, README.markdown, VERSION, etc.)
 * Commit your changes and publish the change-set.
-* Send me a pull request.  All specs must pass!
+* Send me a pull request.  Remember, all specs must pass!
 
-Take a moment to get a feel for the style of coding, specifications, and in-line documentation.  I apologize in advance for setting the standards so high.  Please see {file:doc/ROAD-MAP.markdown} to learn how to flow with the project.
+Before making your change, take a moment to get a feel for the style of coding, specifications, and in-line documentation.
+
+Please see {file:doc/ROAD-MAP.markdown} to learn how to flow with the project.  In the near future, I plan on pushing this content directly into the [Issue Tracker](http://github.com/ryansobol/plow/issues).
+
+Again, thank you for taking the time to help improve Plow.
