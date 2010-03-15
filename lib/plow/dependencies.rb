@@ -42,10 +42,10 @@ class Plow
     
     # bluecloth is a hidden yard dependency for markdown support
     DEVELOPMENT_GEMS = {
-      :jeweler   => '1.3.0',
+      :jeweler   => '1.4.0',
       :rspec     => '1.3.0',
-      :yard      => '0.4.0',
-      :bluecloth => '2.0.5'
+      :yard      => '0.5.3',
+      :bluecloth => '2.0.7'
     }
     
     # Thanx rspec for bucking the pattern :(
@@ -84,10 +84,10 @@ class Plow
     #
     # @example Sample warning message
     #   The following development gem dependencies could not be found. Without them, some available development features are missing:
-    #   jeweler --version '1.3.0'
+    #   jeweler --version '1.4.0'
     #   rspec --version '1.3.0'
-    #   yard --version '0.4.0'
-    #   bluecloth --version '2.0.5'
+    #   yard --version '0.5.3'
+    #   bluecloth --version '2.0.7'
     def self.render_warnings
       unless @@warnings_cache.empty?
         message = []

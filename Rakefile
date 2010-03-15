@@ -6,7 +6,7 @@ Plow::Dependencies.warn_at_exit
 
 begin
   # TODO experiment with how rubygems activates gems by version requirement in ruby 1.9.1.
-  # gem 'jeweler', '1.3.0'
+  # gem 'jeweler', '1.4.0'
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     # The gem object is a kind of Gem::Specification 

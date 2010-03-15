@@ -12,10 +12,10 @@ describe Plow::Dependencies do
 
     it "development gem names and versions should be correct" do
       expected = {
-        :jeweler   => '1.3.0',
+        :jeweler   => '1.4.0',
         :rspec     => '1.3.0',
-        :yard      => '0.4.0',
-        :bluecloth => '2.0.5'
+        :yard      => '0.5.3',
+        :bluecloth => '2.0.7'
       }
 
       Plow::Dependencies::DEVELOPMENT_GEMS.should == expected
@@ -100,7 +100,7 @@ Please visit http://www.ruby-lang.org/ for installation instructions.
     
     it "should create and cache one warning from a known development gem dependency" do
       Plow::Dependencies.create_warning_for(LoadError.new("no such file to load -- jeweler"))
-      Plow::Dependencies.class_variable_get(:@@warnings_cache).should ==  ["jeweler --version '1.3.0'"]
+      Plow::Dependencies.class_variable_get(:@@warnings_cache).should ==  ["jeweler --version '1.4.0'"]
     end
     
     it "should create and cache warnings from all known development gem dependencies" do
@@ -115,10 +115,10 @@ Please visit http://www.ruby-lang.org/ for installation instructions.
       end
 
       expected = [
-        "jeweler --version '1.3.0'", 
+        "jeweler --version '1.4.0'", 
         "rspec --version '1.3.0'", 
-        "yard --version '0.4.0'", 
-        "bluecloth --version '2.0.5'"
+        "yard --version '0.5.3'", 
+        "bluecloth --version '2.0.7'"
       ]
       Plow::Dependencies.class_variable_get(:@@warnings_cache).should == expected
     end
@@ -148,10 +148,10 @@ Please visit http://www.ruby-lang.org/ for installation instructions.
       $stdout.string.should == <<-MESSAGE
 
 The following development gem dependencies could not be found. Without them, some available development features are missing:
-jeweler --version '1.3.0'
+jeweler --version '1.4.0'
 rspec --version '1.3.0'
-yard --version '0.4.0'
-bluecloth --version '2.0.5'
+yard --version '0.5.3'
+bluecloth --version '2.0.7'
       MESSAGE
     end
     
