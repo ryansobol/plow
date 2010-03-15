@@ -7,27 +7,27 @@ describe Plow::Generator do
   
   describe ".new when failing" do
     it "should raise Plow::InvalidSystemUserNameError if first argument is blank" do
-      lambda { Plow::Generator.new(nil, 'not-blank') }.should raise_error(Plow::InvalidSystemUserNameError, nil)
+      lambda { Plow::Generator.new(nil, 'not-blank') }.should raise_exception(Plow::InvalidSystemUserNameError, nil)
     end
     
     it "should raise Plow::InvalidSystemUserNameError if first argument contains a blank space" do
-      lambda { Plow::Generator.new('oh noes!', 'not-blank') }.should raise_error(Plow::InvalidSystemUserNameError, 'oh noes!')
+      lambda { Plow::Generator.new('oh noes!', 'not-blank') }.should raise_exception(Plow::InvalidSystemUserNameError, 'oh noes!')
     end
     
     it "should raise Plow::InvalidWebSiteNameError if second argument is blank" do
-      lambda { Plow::Generator.new('not-blank', nil) }.should raise_error(Plow::InvalidWebSiteNameError, nil)
+      lambda { Plow::Generator.new('not-blank', nil) }.should raise_exception(Plow::InvalidWebSiteNameError, nil)
     end
     
     it "should raise Plow::InvalidWebSiteNameError if second argument contains a blank space" do
-      lambda { Plow::Generator.new('not-blank', 'oh noes!') }.should raise_error(Plow::InvalidWebSiteNameError, 'oh noes!')
+      lambda { Plow::Generator.new('not-blank', 'oh noes!') }.should raise_exception(Plow::InvalidWebSiteNameError, 'oh noes!')
     end
     
     it "should raise Plow::InvalidWebSiteAliasError if third argument is blank" do
-      lambda { Plow::Generator.new('not-blank', 'not-blank', nil) }.should raise_error(Plow::InvalidWebSiteAliasError, nil)
+      lambda { Plow::Generator.new('not-blank', 'not-blank', nil) }.should raise_exception(Plow::InvalidWebSiteAliasError, nil)
     end
     
     it "should raise Plow::InvalidWebSiteAliasError if third argument contains a blank space" do
-      lambda { Plow::Generator.new('not-blank', 'not-blank', 'oh noes!') }.should raise_error(Plow::InvalidWebSiteAliasError, 'oh noes!')
+      lambda { Plow::Generator.new('not-blank', 'not-blank', 'oh noes!') }.should raise_exception(Plow::InvalidWebSiteAliasError, 'oh noes!')
     end
   end
   
@@ -85,7 +85,7 @@ describe Plow::Generator do
     it "should raise Plow::NonRootProcessOwnerError when process is owned by non-root user" do
       Process.stub!(:uid).and_return(1)
       generator = Plow::Generator.new('steve', 'www.apple.com', 'apple.com')
-      lambda { generator.run! }.should raise_error(Plow::NonRootProcessOwnerError)
+      lambda { generator.run! }.should raise_exception(Plow::NonRootProcessOwnerError)
     end
     
     it "should execute the strategy when process is owned by root user" do

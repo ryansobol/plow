@@ -101,12 +101,12 @@ describe Plow::Strategy::UbuntuHardy do
     
     it "should raise Plow::ReservedSystemUserNameError for a system account where user id < 1000" do
       @context.stub!(:user_name).and_return('sshd')
-      lambda { @strategy.send(:user_exists?) }.should raise_error(Plow::ReservedSystemUserNameError, 'sshd')
+      lambda { @strategy.send(:user_exists?) }.should raise_exception(Plow::ReservedSystemUserNameError, 'sshd')
     end
     
     it "should raise Plow::ReservedSystemUserNameError for a system account where user id == 65534" do
       @context.stub!(:user_name).and_return('nobody')
-      lambda { @strategy.send(:user_exists?) }.should raise_error(Plow::ReservedSystemUserNameError, 'nobody')
+      lambda { @strategy.send(:user_exists?) }.should raise_exception(Plow::ReservedSystemUserNameError, 'nobody')
     end
     
     it "should return false when no matching non-system account is found" do
@@ -138,7 +138,7 @@ describe Plow::Strategy::UbuntuHardy do
     
     it "should raise Plow::SystemUserNameNotFoundError if no matching user name is found" do
       @context.stub!(:user_name).and_return('microsoft-steve')
-      lambda { @strategy.send(:user_home_exists?) }.should raise_error(Plow::SystemUserNameNotFoundError, 'microsoft-steve')
+      lambda { @strategy.send(:user_home_exists?) }.should raise_exception(Plow::SystemUserNameNotFoundError, 'microsoft-steve')
     end
     
     describe "when home directory exists for existing user" do
@@ -522,7 +522,7 @@ describe Plow::Strategy::UbuntuHardy do
       @strategy.should_not_receive(:create_vhost_config!)
       @strategy.should_not_receive(:install_vhost_config!)
       
-      lambda { @strategy.execute! }.should raise_error(Plow::AppRootAlreadyExistsError, '/home/steve/sites/www.apple.com')
+      lambda { @strategy.execute! }.should raise_exception(Plow::AppRootAlreadyExistsError, '/home/steve/sites/www.apple.com')
       
       $stdout.string.should == <<-OUTPUT
 ==> creating steve user
@@ -543,7 +543,7 @@ describe Plow::Strategy::UbuntuHardy do
       @strategy.should_not_receive(:create_vhost_config!)
       @strategy.should_not_receive(:install_vhost_config!)
       
-      lambda { @strategy.execute! }.should raise_error(Plow::ConfigFileAlreadyExistsError, '/etc/apache2/sites-available/www.apple.com.conf')
+      lambda { @strategy.execute! }.should raise_exception(Plow::ConfigFileAlreadyExistsError, '/etc/apache2/sites-available/www.apple.com.conf')
       
       @strategy.app_public_path.should == '/home/steve/sites/www.apple.com/public'
       @strategy.app_log_path.should == '/home/steve/sites/www.apple.com/log'

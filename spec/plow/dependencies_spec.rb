@@ -13,7 +13,7 @@ describe Plow::Dependencies do
     it "development gem names and versions should be correct" do
       expected = {
         :jeweler   => '1.3.0',
-        :rspec     => '1.2.9',
+        :rspec     => '1.3.0',
         :yard      => '0.4.0',
         :bluecloth => '2.0.5'
       }
@@ -53,27 +53,27 @@ Please visit http://www.ruby-lang.org/ for installation instructions.
     
     it "should abort for ruby 1.8.6" do
       version = '1.8.6'
-      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should raise_error(SystemExit, expected_message(version))
+      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should raise_exception(SystemExit, expected_message(version))
     end
     
     it "should abort for ruby 1.8.7" do
       version = '1.8.7'
-      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should raise_error(SystemExit, expected_message(version))
+      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should raise_exception(SystemExit, expected_message(version))
     end
     
     it "should abort for ruby 1.9.0" do
       version = '1.9.0'
-      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should raise_error(SystemExit, expected_message(version))
+      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should raise_exception(SystemExit, expected_message(version))
     end
     
     it "should not abort for ruby 1.9.1" do
       version = '1.9.1'
-      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should_not raise_error(SystemExit, expected_message(version))
+      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should_not raise_exception(SystemExit, expected_message(version))
     end
     
     it "should abort for ruby 1.9.2" do
       version = '1.9.2'
-      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should raise_error(SystemExit, expected_message(version))
+      lambda { Plow::Dependencies.send(:check_ruby_version, version) }.should raise_exception(SystemExit, expected_message(version))
     end
   end
   
@@ -116,7 +116,7 @@ Please visit http://www.ruby-lang.org/ for installation instructions.
 
       expected = [
         "jeweler --version '1.3.0'", 
-        "rspec --version '1.2.9'", 
+        "rspec --version '1.3.0'", 
         "yard --version '0.4.0'", 
         "bluecloth --version '2.0.5'"
       ]
@@ -124,7 +124,7 @@ Please visit http://www.ruby-lang.org/ for installation instructions.
     end
     
     it "should raise an exception when creating a warning from an unknown development gem dependency" do
-      lambda { Plow::Dependencies.create_warning_for(LoadError.new("no such file to load -- _fakegem")) }.should raise_error(RuntimeError, "Cannot create a dependency warning for unknown development gem -- _fakegem")
+      lambda { Plow::Dependencies.create_warning_for(LoadError.new("no such file to load -- _fakegem")) }.should raise_exception(RuntimeError, "Cannot create a dependency warning for unknown development gem -- _fakegem")
     end
   end
   
@@ -149,7 +149,7 @@ Please visit http://www.ruby-lang.org/ for installation instructions.
 
 The following development gem dependencies could not be found. Without them, some available development features are missing:
 jeweler --version '1.3.0'
-rspec --version '1.2.9'
+rspec --version '1.3.0'
 yard --version '0.4.0'
 bluecloth --version '2.0.5'
       MESSAGE

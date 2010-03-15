@@ -49,16 +49,16 @@ MESSAGE
     end
     
     it "should output the version stamp" do
-      lambda { Plow::Application.launch }.should raise_error
+      lambda { Plow::Application.launch }.should raise_exception
       $stdout.string.should == @expected_version_stamp + "\n"
     end
     
     it "should abort with usage message with 0 arguments" do
-      lambda { Plow::Application.launch }.should raise_error(SystemExit, @expected_message)
+      lambda { Plow::Application.launch }.should raise_exception(SystemExit, @expected_message)
     end
     
     it "should abort with usage message with 1 argument" do
-      lambda { Plow::Application.launch('marco') }.should raise_error(SystemExit, @expected_message)
+      lambda { Plow::Application.launch('marco') }.should raise_exception(SystemExit, @expected_message)
     end
   end
 
@@ -143,7 +143,7 @@ MESSAGE
       Plow::Generator.should_receive(:new).and_raise(expected_error)
 
       expected_message = "ERROR: #{@bad_argv[0]} is an invalid system user name"
-      lambda { Plow::Application.launch(*@bad_argv) }.should raise_error(SystemExit, expected_message)
+      lambda { Plow::Application.launch(*@bad_argv) }.should raise_exception(SystemExit, expected_message)
     end
     
     it "should render error message to the user for raised Plow::InvalidWebSiteNameError" do
@@ -151,7 +151,7 @@ MESSAGE
       Plow::Generator.should_receive(:new).and_raise(expected_error)
       
       expected_message = "ERROR: #{@bad_argv[1]} is an invalid web-site name"
-      lambda { Plow::Application.launch(*@bad_argv) }.should raise_error(SystemExit, expected_message)
+      lambda { Plow::Application.launch(*@bad_argv) }.should raise_exception(SystemExit, expected_message)
     end
     
     it "should render error message to the user for raised Plow::InvalidWebSiteAliasError" do
@@ -159,7 +159,7 @@ MESSAGE
       Plow::Generator.should_receive(:new).and_raise(expected_error)
       
       expected_message = "ERROR: #{@bad_argv[2]} is an invalid web-site alias"
-      lambda { Plow::Application.launch(*@bad_argv) }.should raise_error(SystemExit, expected_message)
+      lambda { Plow::Application.launch(*@bad_argv) }.should raise_exception(SystemExit, expected_message)
     end
   end
   
@@ -185,7 +185,7 @@ MESSAGE
       @generator.should_receive(:run!).and_raise(expected_error)
       
       expected_message = "ERROR: This process must be owned or executed by root"
-      lambda { Plow::Application.launch(*@argv) }.should raise_error(SystemExit, expected_message)
+      lambda { Plow::Application.launch(*@argv) }.should raise_exception(SystemExit, expected_message)
     end
     
     it "should render error message to the user for raised Plow::ReservedSystemUserNameError" do
@@ -197,7 +197,7 @@ MESSAGE
       @generator.should_receive(:run!).and_raise(expected_error)
       
       expected_message = "ERROR: #{@argv[0]} is a reserved system user name"
-      lambda { Plow::Application.launch(*@argv) }.should raise_error(SystemExit, expected_message)
+      lambda { Plow::Application.launch(*@argv) }.should raise_exception(SystemExit, expected_message)
     end
     
     it "should render error message to the user for raised Plow::SystemUserNameNotFoundError" do
@@ -209,7 +209,7 @@ MESSAGE
       @generator.should_receive(:run!).and_raise(expected_error)
       
       expected_message = "ERROR: System user name #{@argv[0]} cannot be found when it should exist"
-      lambda { Plow::Application.launch(*@argv) }.should raise_error(SystemExit, expected_message)
+      lambda { Plow::Application.launch(*@argv) }.should raise_exception(SystemExit, expected_message)
     end
     
     it "should render error message to the user for raised Plow::AppRootAlreadyExistsError" do
@@ -222,7 +222,7 @@ MESSAGE
       @generator.should_receive(:run!).and_raise(expected_error)
       
       expected_message = "ERROR: Application root path #{app_home_path} already exists"
-      lambda { Plow::Application.launch(*@argv) }.should raise_error(SystemExit, expected_message)
+      lambda { Plow::Application.launch(*@argv) }.should raise_exception(SystemExit, expected_message)
     end
     
     it "should render error message to the user for raised Plow::AppRootAlreadyExistsError" do
@@ -235,7 +235,7 @@ MESSAGE
       @generator.should_receive(:run!).and_raise(expected_error)
       
       expected_message = "ERROR: Configuration file #{config_file_path} already exists"
-      lambda { Plow::Application.launch(*@argv) }.should raise_error(SystemExit, expected_message)
+      lambda { Plow::Application.launch(*@argv) }.should raise_exception(SystemExit, expected_message)
     end
   end
 end
