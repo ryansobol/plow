@@ -2,8 +2,8 @@
 
 Image courtesy of [Mother Earth News](http://www.motherearthnews.com/Modern-Homesteading/1974-05-01/Walking-Plow.aspx)
 
-Plow release 1.0.0 (November 21, 2009)
-======================================
+Plow release 1.0.1 (March 15, 2009)
+===================================
 
 Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license.  Please see the {file:LICENSE} for more information.
 
@@ -17,7 +17,7 @@ Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license.  Please see the {
 WHAT'S NEW?
 -----------
 
-The first official public release of Plow!
+The optional development dependencies were updated to their latest stable releases.
 
 Please see {file:doc/HISTORY.markdown} for the historical overview of the project.
 
@@ -48,10 +48,10 @@ REQUIREMENTS
 **Optional development dependencies**
 
 * Rake 0.8.7 (bundled with Ruby 1.9.1)
-* Jeweler 1.3.0
-* RSpec 1.2.9
-* YARD 0.4.0
-* BlueCloth 2.0.5
+* Jeweler 1.4.0
+* RSpec 1.3.0
+* YARD 0.5.3
+* BlueCloth 2.0.7
 
 INSTALLING
 ----------
@@ -89,7 +89,7 @@ EXAMPLE
 -------
 
     $ sudo plow steve www.apple.com apple.com
-    Plow 1.0.0. Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license.
+    Plow 1.0.1. Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license.
     ==> creating steve user
     Adding user `steve' ...
     Adding new group `steve' (1001) ...

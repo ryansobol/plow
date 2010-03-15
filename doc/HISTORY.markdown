@@ -1,5 +1,15 @@
+Plow release 1.0.1 (March 15, 2009)
+===================================
+
+The optional development dependencies were updated to their latest stable releases.
+
+* Jeweler 1.4.0
+* RSpec 1.3.0
+* YARD 0.5.3
+* BlueCloth 2.0.7
+
 Plow release 1.0.0 (November 21, 2009)
-========================================
+======================================
 
 The first official public release of Plow!
 

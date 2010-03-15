@@ -4,7 +4,7 @@ require 'spec_helper'
 describe Plow::Application do
   
   before(:each) do
-    @expected_version_stamp = "Plow 1.0.0. Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license."
+    @expected_version_stamp = "Plow 1.0.1. Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license."
   end
   
   ##################################################################################################

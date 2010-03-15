@@ -89,7 +89,7 @@ MESSAGE
       #
       # @return [String] Version stamp
       # @example Sample version stamp
-      #   Plow 1.0.0. Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license.
+      #   Plow 1.0.1. Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license.
       def version_stamp
         "Plow #{Plow::VERSION}. Copyright (c) 2009 Ryan Sobol. Licensed under the MIT license."
       end
